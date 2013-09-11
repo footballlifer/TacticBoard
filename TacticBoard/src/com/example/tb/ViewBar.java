@@ -50,10 +50,12 @@ public class ViewBar extends LinearLayout {
 	public void onViewClicked(View V) {
 		switch (V.getId()) {
 		case R.id.o:
+			mTacticBoard.setDefaultPaint();
 			mO.setBackgroundColor(Color.BLUE);
 			mX.setBackgroundColor(Color.WHITE);
 			break;
 		case R.id.x:
+			mTacticBoard.setDashPaint();
 			mX.setBackgroundColor(Color.BLUE);
 			mO.setBackgroundColor(Color.WHITE);
 			break;	

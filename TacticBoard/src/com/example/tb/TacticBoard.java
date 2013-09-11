@@ -5,13 +5,12 @@ import java.util.Stack;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -21,7 +20,7 @@ import android.view.View;
 public class TacticBoard extends View {
 	private boolean DEBUG = true;
 	private String TAG = "TacticBoard";
-		
+	
 	private Stack<Bitmap> mUndos = new Stack<Bitmap>();
 	public static int maxUndos = 10;
 
@@ -36,16 +35,16 @@ public class TacticBoard extends View {
 
 	private final float RADIUS_TRIANGLE = 20;
 	private static final int INVALIDATE_EXTRA_BORDER = 10;
-	private static final float TOUCH_TOLERANCE = 8;
+	private static final float TOUCH_TOLERANCE = 2;
 	private static final boolean RENDERING_ANTIALIAS = true;
 	private static final boolean DITHER_FLAG = true;
 
 	private int mCertainColor = 0xFF000000;
-	private float mStrokeWidth = 2.0f;
+	private float mStrokeWidth = 4.0f;
 
-	private void init(Context context) {
+	public void setDefaultPaint() {
 		Log.i(TAG, "Constructor Initialized");
-
+		mPaint.reset();
 		mPaint.setAntiAlias(RENDERING_ANTIALIAS);
 		mPaint.setColor(mCertainColor);
 		mPaint.setStyle(Paint.Style.STROKE);
@@ -53,24 +52,29 @@ public class TacticBoard extends View {
 		mPaint.setStrokeCap(Paint.Cap.ROUND);
 		mPaint.setStrokeWidth(mStrokeWidth);
 		mPaint.setDither(DITHER_FLAG);
-
+		
 		mLastX = -1;
 		mLastY = -1;
 	}
 	
+	public void setDashPaint() {
+		setDefaultPaint();
+		mPaint.setPathEffect(new DashPathEffect(new float[] {20, 20}, 0));
+	}
+	
 	public TacticBoard(Context context) {
 		super(context);
-		init(context);
+		setDefaultPaint();
 	}
 	
 	public TacticBoard(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init(context);
+		setDefaultPaint();
 	}
 
 	public TacticBoard(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		init(context);
+		setDefaultPaint();
 	}
 	
 	public void clearUndo() {
@@ -91,7 +95,7 @@ public class TacticBoard extends View {
 		}
 
 		Bitmap bitmap = Bitmap.createBitmap(mBitmap.getWidth(),
-				mBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+				mBitmap.getHeight(), Bitmap.Config.ARGB_4444);
 		Canvas canvas = new Canvas();
 		canvas.setBitmap(bitmap);
 		canvas.drawBitmap(mBitmap, 0, 0, mPaint);
@@ -99,6 +103,7 @@ public class TacticBoard extends View {
 		mUndos.push(bitmap);
 	}
 
+	//TODO: Bug for undo
 	public void undo() {
 		Bitmap prev = null;
 		try {
@@ -128,7 +133,7 @@ public class TacticBoard extends View {
 	}
 
 	public void newImage(int width, int height) {
-		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
 		Canvas canvas = new Canvas();
 		canvas.setBitmap(bitmap);
 
@@ -225,7 +230,11 @@ public class TacticBoard extends View {
 				(int) (centerX + RADIUS_TRIANGLE + INVALIDATE_EXTRA_BORDER),
 				(int) (centerY + RADIUS_TRIANGLE + INVALIDATE_EXTRA_BORDER) );
 		
+
+		mPaint.setStyle(Paint.Style.FILL);
 		mCanvas.drawPath(triangle, mPaint);
+		mPaint.setStyle(Paint.Style.STROKE);
+		
 		return invalidRect;
 	}
 	

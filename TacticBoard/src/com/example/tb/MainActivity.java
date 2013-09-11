@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class MainActivity extends Activity implements View.OnTouchListener {
 	private boolean DEBUG = true;
