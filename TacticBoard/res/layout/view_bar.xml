@@ -11,17 +11,17 @@
         android:src="@drawable/undo" />
 
     <ImageView
-        android:id="@+id/o"
+        android:id="@+id/solid_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/o" />
+        android:src="@drawable/solid_line" />
 
     <ImageView
-        android:id="@+id/x"
+        android:id="@+id/dash_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/x" />
+        android:src="@drawable/dash_line" />
 
 </LinearLayout>

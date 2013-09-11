@@ -21,23 +21,29 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int o=0x7f020001;
-        public static final int undo=0x7f020002;
-        public static final int x=0x7f020003;
+        public static final int dash_line=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int o=0x7f020002;
+        public static final int solid_line=0x7f020003;
+        public static final int undo=0x7f020004;
+        public static final int x=0x7f020005;
     }
     public static final class id {
-        public static final int action_settings=0x7f080006;
+        public static final int action_settings=0x7f080009;
+        public static final int button_layout=0x7f080004;
+        public static final int close_btn=0x7f080005;
+        public static final int color_grid=0x7f080003;
         public static final int container=0x7f080000;
+        public static final int dash_line=0x7f080008;
         public static final int frame=0x7f080002;
-        public static final int o=0x7f080004;
+        public static final int solid_line=0x7f080007;
         public static final int tb=0x7f080001;
-        public static final int undo=0x7f080003;
-        public static final int x=0x7f080005;
+        public static final int undo=0x7f080006;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int view_bar=0x7f030001;
+        public static final int color_dialog=0x7f030001;
+        public static final int view_bar=0x7f030002;
     }
     public static final class menu {
         public static final int main=0x7f070000;

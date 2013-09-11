@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 public class ViewBar extends LinearLayout {
 	TacticBoard mTacticBoard;
 	private ImageView mUndo;
-	private ImageView mO;
-	private ImageView mX;
+	private ImageView mSolidLine;
+	private ImageView mDashLine;
 	
 	public ViewBar(Context context, TacticBoard tb) {
 		super(context);
@@ -21,8 +21,8 @@ public class ViewBar extends LinearLayout {
 		inflater.inflate(R.layout.view_bar, this, true);
 		
 		mUndo = (ImageView) findViewById(R.id.undo);
-		mO = (ImageView) findViewById(R.id.o);
-		mX = (ImageView) findViewById(R.id.x);
+		mSolidLine = (ImageView) findViewById(R.id.solid_line);
+		mDashLine = (ImageView) findViewById(R.id.dash_line);
 		
 		mUndo.setOnClickListener(new OnClickListener() {
 			@Override
@@ -31,14 +31,14 @@ public class ViewBar extends LinearLayout {
 			}
 		});
 		
-		mO.setOnClickListener(new OnClickListener() {
+		mSolidLine.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				onViewClicked(v);
 			}
 		});
 		
-		mX.setOnClickListener(new OnClickListener() {
+		mDashLine.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				onViewClicked(v);
@@ -49,17 +49,16 @@ public class ViewBar extends LinearLayout {
 	
 	public void onViewClicked(View V) {
 		switch (V.getId()) {
-		case R.id.o:
+		case R.id.solid_line:
 			mTacticBoard.setDefaultPaint();
-			mO.setBackgroundColor(Color.BLUE);
-			mX.setBackgroundColor(Color.WHITE);
+			mSolidLine.setBackgroundColor(Color.BLUE);
+			mDashLine.setBackgroundColor(Color.WHITE);
 			break;
-		case R.id.x:
+		case R.id.dash_line:
 			mTacticBoard.setDashPaint();
-			mX.setBackgroundColor(Color.BLUE);
-			mO.setBackgroundColor(Color.WHITE);
-			break;	
+			mDashLine.setBackgroundColor(Color.BLUE);
+			mSolidLine.setBackgroundColor(Color.WHITE);
+			break;
 		}
-	}
-	
+	}	
 }
