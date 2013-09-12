@@ -20,7 +20,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 	private ImageView mSolidLine;
 	private ImageView mShortDashLine;
 	private ImageView mLongDashLine;
-	private Button mColorBtn;
+	private ImageView mColorSetting;
 	
 	private ColorPaletteDialog mColorDialog;
 	
@@ -39,7 +39,8 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		mSolidLine = (ImageView) findViewById(R.id.solid_line);
 		mShortDashLine = (ImageView) findViewById(R.id.short_dash_line);
 		mLongDashLine = (ImageView) findViewById(R.id.long_dash_line);
-		mColorBtn = (Button) findViewById(R.id.color);
+		mColorSetting = (ImageView) findViewById(R.id.color_setting);
+		mColorSetting.setBackgroundColor(Color.BLACK);
 		
 		mColorDialog = new ColorPaletteDialog(mContext);
 		mColorDialog.setCanceledOnTouchOutside(true);
@@ -49,6 +50,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			public void onColorSelected(int color) {
 				mColor = color;
 				mTacticBoard.updatePaintProperty(mColor, mSize);
+				mColorSetting.setBackgroundColor(mColor);
 			}
 		};
 		
@@ -56,7 +58,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		mSolidLine.setOnClickListener(this);
 		mShortDashLine.setOnClickListener(this);
 		mLongDashLine.setOnClickListener(this);
-		mColorBtn.setOnClickListener(this);
+		mColorSetting.setOnClickListener(this);
 	}
 
 	@Override
@@ -87,7 +89,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			mLongDashLine.setBackgroundColor(Color.LTGRAY);
 			break;	
 		
-		case R.id.color:
+		case R.id.color_setting:
 			mColorDialog.show();
 			break;
 		default:

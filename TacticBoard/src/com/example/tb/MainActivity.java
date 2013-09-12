@@ -44,9 +44,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
 			RelativeLayout.LayoutParams layoutParamsX = (RelativeLayout.LayoutParams) mImageViewX
 					.getLayoutParams();
-			layoutParamsX.leftMargin = 100;
+			layoutParamsX.leftMargin = 70;
 			layoutParamsX.topMargin = 0;
-			layoutParamsX.rightMargin = 0;
+			layoutParamsX.rightMargin = 10;
 			layoutParamsX.bottomMargin = 0;
 			mImageViewX.setLayoutParams(layoutParamsX);
 		}
