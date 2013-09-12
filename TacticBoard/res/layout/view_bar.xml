@@ -11,6 +11,13 @@
         android:src="@drawable/undo" />
 
     <ImageView
+        android:id="@+id/move"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/movement" />
+    
+    <ImageView
         android:id="@+id/solid_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

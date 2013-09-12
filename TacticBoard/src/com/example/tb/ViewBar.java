@@ -17,10 +17,13 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 	
 	private TacticBoard mTacticBoard;
 	private ImageView mUndo;
+	private ImageView mMove;
 	private ImageView mSolidLine;
 	private ImageView mShortDashLine;
 	private ImageView mLongDashLine;
 	private ImageView mColorSetting;
+	
+	private boolean mMoving = true;
 	
 	private ColorPaletteDialog mColorDialog;
 	
@@ -36,11 +39,14 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		inflater.inflate(R.layout.view_bar, this, true);
 		
 		mUndo = (ImageView) findViewById(R.id.undo);
+		mMove = (ImageView) findViewById(R.id.move);
 		mSolidLine = (ImageView) findViewById(R.id.solid_line);
 		mShortDashLine = (ImageView) findViewById(R.id.short_dash_line);
 		mLongDashLine = (ImageView) findViewById(R.id.long_dash_line);
 		mColorSetting = (ImageView) findViewById(R.id.color_setting);
 		mColorSetting.setBackgroundColor(Color.BLACK);
+		((MainActivity) mContext).setMoving(mMoving);
+		mMove.setBackgroundColor(Color.LTGRAY);
 		
 		mColorDialog = new ColorPaletteDialog(mContext);
 		mColorDialog.setCanceledOnTouchOutside(true);
@@ -55,6 +61,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		};
 		
 		mUndo.setOnClickListener(this);
+		mMove.setOnClickListener(this);		
 		mSolidLine.setOnClickListener(this);
 		mShortDashLine.setOnClickListener(this);
 		mLongDashLine.setOnClickListener(this);
@@ -75,6 +82,18 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			mLongDashLine.setBackgroundColor(Color.WHITE);
 			break;
 		
+		case R.id.move:
+			if (mMoving) {
+				mMove.setBackgroundColor(Color.WHITE);
+				mMoving = false;
+			} else {
+				mMove.setBackgroundColor(Color.LTGRAY);
+				mMoving = true;
+			}
+			
+			((MainActivity) mContext).setMoving(mMoving);
+			break;
+			
 		case R.id.short_dash_line:
 			mTacticBoard.setShortDashPaint();
 			mSolidLine.setBackgroundColor(Color.WHITE);

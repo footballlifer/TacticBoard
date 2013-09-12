@@ -23,7 +23,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	
 	private int xDelta;
 	private int yDelta;
-
+	
+	private boolean mMoving = true;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,6 +61,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	}
 
 	public boolean onTouch(View view, MotionEvent event) {
+		if (mMoving == false) return false;
+		
 		final int x = (int) event.getRawX();
 		final int y = (int) event.getRawY();
 		switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -89,6 +93,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
 	}
 
+	public void setMoving(boolean b) {
+		this.mMoving = b;
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
