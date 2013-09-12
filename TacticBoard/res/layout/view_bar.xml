@@ -14,20 +14,27 @@
         android:id="@+id/solid_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:src="@drawable/solid_line" />
 
     <ImageView
-        android:id="@+id/dash_line"
+        android:id="@+id/short_dash_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/dash_line" />
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/short_dash" />
+
+    <ImageView
+        android:id="@+id/long_dash_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/long_dash" />
 
     <Button
         android:id="@+id/color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Color" />
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:text="C" />
 
 </LinearLayout>

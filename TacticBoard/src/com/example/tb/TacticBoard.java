@@ -57,9 +57,14 @@ public class TacticBoard extends View {
 		mLastY = -1;
 	}
 	
-	public void setDashPaint() {
+	public void setShortDashPaint() {
 		setDefaultPaint();
-		mPaint.setPathEffect(new DashPathEffect(new float[] {20, 20}, 0));
+		mPaint.setPathEffect(new DashPathEffect(new float[] {10, 10}, 0));
+	}
+	
+	public void setLongDashPaint() {
+		setDefaultPaint();
+		mPaint.setPathEffect(new DashPathEffect(new float[] {25, 25}, 0));
 	}
 	
 	public TacticBoard(Context context) {

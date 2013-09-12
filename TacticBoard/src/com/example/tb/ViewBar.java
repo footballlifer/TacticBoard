@@ -18,7 +18,8 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 	private TacticBoard mTacticBoard;
 	private ImageView mUndo;
 	private ImageView mSolidLine;
-	private ImageView mDashLine;
+	private ImageView mShortDashLine;
+	private ImageView mLongDashLine;
 	private Button mColorBtn;
 	
 	private ColorPaletteDialog mColorDialog;
@@ -36,7 +37,8 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		
 		mUndo = (ImageView) findViewById(R.id.undo);
 		mSolidLine = (ImageView) findViewById(R.id.solid_line);
-		mDashLine = (ImageView) findViewById(R.id.dash_line);
+		mShortDashLine = (ImageView) findViewById(R.id.short_dash_line);
+		mLongDashLine = (ImageView) findViewById(R.id.long_dash_line);
 		mColorBtn = (Button) findViewById(R.id.color);
 		
 		mColorDialog = new ColorPaletteDialog(mContext);
@@ -52,7 +54,8 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		
 		mUndo.setOnClickListener(this);
 		mSolidLine.setOnClickListener(this);
-		mDashLine.setOnClickListener(this);
+		mShortDashLine.setOnClickListener(this);
+		mLongDashLine.setOnClickListener(this);
 		mColorBtn.setOnClickListener(this);
 	}
 
@@ -65,15 +68,24 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		
 		case R.id.solid_line:
 			mTacticBoard.setDefaultPaint();
-			mSolidLine.setBackgroundColor(Color.BLUE);
-			mDashLine.setBackgroundColor(Color.WHITE);
+			mSolidLine.setBackgroundColor(Color.LTGRAY);
+			mShortDashLine.setBackgroundColor(Color.WHITE);
+			mLongDashLine.setBackgroundColor(Color.WHITE);
 			break;
 		
-		case R.id.dash_line:
-			mTacticBoard.setDashPaint();
-			mDashLine.setBackgroundColor(Color.BLUE);
+		case R.id.short_dash_line:
+			mTacticBoard.setShortDashPaint();
 			mSolidLine.setBackgroundColor(Color.WHITE);
+			mShortDashLine.setBackgroundColor(Color.LTGRAY);
+			mLongDashLine.setBackgroundColor(Color.WHITE);
 			break;
+			
+		case R.id.long_dash_line:
+			mTacticBoard.setLongDashPaint();
+			mSolidLine.setBackgroundColor(Color.WHITE);
+			mShortDashLine.setBackgroundColor(Color.WHITE);
+			mLongDashLine.setBackgroundColor(Color.LTGRAY);
+			break;	
 		
 		case R.id.color:
 			mColorDialog.show();

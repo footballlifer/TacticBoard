@@ -20,7 +20,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	private ViewGroup mContainer;
 	private ImageView mImageViewO;
 	private ImageView mImageViewX;
-
+	
 	private int xDelta;
 	private int yDelta;
 
