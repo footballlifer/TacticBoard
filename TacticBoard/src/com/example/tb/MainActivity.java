@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,6 +30,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
 		mContainer = (ViewGroup) findViewById(R.id.container);
@@ -54,10 +57,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		}
 
 		mTacticBoard = (TacticBoard) findViewById(R.id.tb);
+		
 		ViewBar vb = new ViewBar(this, mTacticBoard);
-
-		FrameLayout fl = (FrameLayout) findViewById(R.id.frame);
-		fl.addView(vb);
+		FrameLayout frameBar = (FrameLayout) findViewById(R.id.frame_bar);
+		frameBar.addView(vb);
 	}
 
 	public boolean onTouch(View view, MotionEvent event) {
