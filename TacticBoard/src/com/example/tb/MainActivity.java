@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -13,6 +14,8 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +24,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	private String TAG = "MainActivity";
 	
 	private final int MAX_PLAYER = 2;
+	private final float TEXT_SIZE_SMALL = 15.0f;
+	private final float TEXT_SIZE_MEDIUM = 25.0f;
+	private final float TEXT_SIZE_LARGE = 35.0f;
 	
 	private TacticBoard mTacticBoard;
 	private ViewGroup mContainer;
@@ -28,6 +34,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	private ImageView mImageViewX;
 	private EditText mEditText;
 	private TextView mTextView;
+	private RadioGroup mRadioGroup;
 	
 	private int xDelta;
 	private int yDelta;
@@ -42,7 +49,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		setContentView(R.layout.activity_main);
 
 		mContainer = (ViewGroup) findViewById(R.id.container);
-		
+					    
 		for (int i = 0; i < MAX_PLAYER; i++) {
 			mImageViewO = new ImageView(this);
 			mImageViewO.setImageResource(R.drawable.o);
@@ -113,21 +120,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		this.mMoving = b;
 	}
 	
-	public void plusText() {	
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    LayoutInflater inflater = this.getLayoutInflater();
-
-	    View dialogView = inflater.inflate(R.layout.text_dialog, null);
-	    builder.setView(dialogView);
-	    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-	    	@Override
-	    	public void onClick(DialogInterface dialog, int id) {
-	    		mTextView.setText(mEditText.getText());
-	    	}
-	    });	    
+	public void showPlusTextDialog() {	
+		LayoutInflater inflater = this.getLayoutInflater();
+	    View view = inflater.inflate(R.layout.text_dialog, null);
+	    mEditText = (EditText) view.findViewById(R.id.text);
+	    mRadioGroup = (RadioGroup) view.findViewById(R.id.radio_text);	
 	    
-	    mEditText = (EditText) dialogView.findViewById(R.id.text);
-		mEditText.clearComposingText();
+	    ((RadioButton) view.findViewById(R.id.radio_small)).setTextSize(TEXT_SIZE_SMALL);
+	    ((RadioButton) view.findViewById(R.id.radio_medium)).setTextSize(TEXT_SIZE_MEDIUM);
+	    ((RadioButton) view.findViewById(R.id.radio_large)).setTextSize(TEXT_SIZE_LARGE);
+
 	    mTextView = new TextView(this);
 	    mTextView.setOnTouchListener(this);
 	    mContainer.addView(mTextView);
@@ -138,10 +140,40 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	    layoutText.topMargin = 220;
 	    layoutText.rightMargin = 10;
 	    layoutText.bottomMargin = 0;
-	    
-	    //layoutText.addRule(RelativeLayout.CENTER_IN_PARENT);
-	    
+	    	    
 	    mTextView.setLayoutParams(layoutText);
+	    
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle("Add Text");
+	    builder.setView(view);
+	    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	    	@Override
+	    	public void onClick(DialogInterface dialog, int id) {
+	    		int selectedId = mRadioGroup.getCheckedRadioButtonId();
+	    		float size = TEXT_SIZE_MEDIUM;
+	    		switch(selectedId) {
+	    		case R.id.radio_small:
+	    			size = TEXT_SIZE_SMALL;
+	    			break;
+	    			
+	    		case R.id.radio_medium:
+	    			size = TEXT_SIZE_MEDIUM;
+	    			break;
+	    		
+	    		case R.id.radio_large:
+	    			size = TEXT_SIZE_LARGE;
+	    			break;
+	    			
+	    		default:
+	    			size = TEXT_SIZE_MEDIUM;
+	    			Log.e(TAG, "Error: default text size selected");
+	    			break;
+	    		}
+	    		mTextView.setTextSize(size);
+	    		mEditText.clearComposingText();
+	    		mTextView.setText(mEditText.getText());
+	    	}
+	    });
 	    
 	    AlertDialog ad = builder.create();
 	    ad.show();

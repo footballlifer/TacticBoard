@@ -9,8 +9,8 @@
         android:id="@+id/frame_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" >
+        android:layout_alignParentTop="true" 
+        android:layout_alignParentRight="true">
     </FrameLayout>
 
     <FrameLayout
@@ -33,13 +33,13 @@
         android:layout_below="@+id/frame_bar"
         android:layout_centerHorizontal="true" >
 
-        <!-- 
+        <!--
         <ImageView
             android:id="@+id/img_ground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ground2" />
-            -->
+        -->
 
     </FrameLayout>
 

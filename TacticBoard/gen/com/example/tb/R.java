@@ -184,22 +184,26 @@ public final class R {
         public static final int x_old=0x7f020012;
     }
     public static final class id {
-        public static final int action_settings=0x7f09000f;
-        public static final int color3=0x7f09000d;
+        public static final int action_settings=0x7f090013;
+        public static final int color3=0x7f090011;
         public static final int color_grid=0x7f090005;
-        public static final int color_setting=0x7f09000e;
+        public static final int color_setting=0x7f090012;
         public static final int container=0x7f090000;
         public static final int frame_bar=0x7f090001;
         public static final int frame_ground=0x7f090004;
         public static final int frame_td=0x7f090002;
-        public static final int long_dash_line=0x7f09000b;
-        public static final int move=0x7f090008;
-        public static final int plus_text=0x7f09000c;
-        public static final int short_dash_line=0x7f09000a;
-        public static final int solid_line=0x7f090009;
+        public static final int long_dash_line=0x7f09000f;
+        public static final int move=0x7f09000c;
+        public static final int plus_text=0x7f090010;
+        public static final int radio_large=0x7f09000a;
+        public static final int radio_medium=0x7f090009;
+        public static final int radio_small=0x7f090008;
+        public static final int radio_text=0x7f090007;
+        public static final int short_dash_line=0x7f09000e;
+        public static final int solid_line=0x7f09000d;
         public static final int tb=0x7f090003;
         public static final int text=0x7f090006;
-        public static final int undo=0x7f090007;
+        public static final int undo=0x7f09000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
