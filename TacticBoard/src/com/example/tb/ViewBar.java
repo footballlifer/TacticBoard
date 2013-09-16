@@ -1,10 +1,13 @@
 package com.example.tb;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +25,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 	private ImageView mShortDashLine;
 	private ImageView mLongDashLine;
 	private ImageView mColorSetting;
+	private ImageView mText;
 	
 	private boolean mMoving = true;
 	
@@ -44,13 +48,23 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		mShortDashLine = (ImageView) findViewById(R.id.short_dash_line);
 		mLongDashLine = (ImageView) findViewById(R.id.long_dash_line);
 		mColorSetting = (ImageView) findViewById(R.id.color_setting);
+		mText = (ImageView) findViewById(R.id.plus_text);
+		
+		mUndo.setOnClickListener(this);
+		mMove.setOnClickListener(this);		
+		mSolidLine.setOnClickListener(this);
+		mShortDashLine.setOnClickListener(this);
+		mLongDashLine.setOnClickListener(this);
+		mColorSetting.setOnClickListener(this);
+		mText.setOnClickListener(this);
+		
 		mColorSetting.setBackgroundColor(Color.BLACK);
 		((MainActivity) mContext).setMoving(mMoving);
 		mMove.setBackgroundColor(Color.LTGRAY);
 		
 		mColorDialog = new ColorPaletteDialog(mContext);
 		mColorDialog.setCanceledOnTouchOutside(true);
-		
+
 		ColorPaletteDialog.sListener = new ColorPaletteDialog.OnColorSelectedListener() {
 			@Override
 			public void onColorSelected(int color) {
@@ -59,13 +73,6 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 				mColorSetting.setBackgroundColor(mColor);
 			}
 		};
-		
-		mUndo.setOnClickListener(this);
-		mMove.setOnClickListener(this);		
-		mSolidLine.setOnClickListener(this);
-		mShortDashLine.setOnClickListener(this);
-		mLongDashLine.setOnClickListener(this);
-		mColorSetting.setOnClickListener(this);
 	}
 
 	@Override
@@ -111,6 +118,42 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		case R.id.color_setting:
 			mColorDialog.show();
 			break;
+		
+		case R.id.plus_text:
+			((MainActivity) mContext).plusText();
+			
+			/*
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+	                mContext);
+	        builder.setCancelable(true);
+	        builder.setTitle("Title");
+	        
+	        builder.setInverseBackgroundForced(true);
+	        builder.setPositiveButton("Yes",
+	                new DialogInterface.OnClickListener() {
+	                    @Override
+	                    public void onClick(DialogInterface dialog,
+	                            int which) {
+	                        dialog.dismiss();
+	                    }
+	                });
+	        builder.setNegativeButton("No",
+	                new DialogInterface.OnClickListener() {
+	                    @Override
+	                    public void onClick(DialogInterface dialog,
+	                            int which) {
+	                        dialog.dismiss();
+	                    }
+	                });
+	        AlertDialog alert = builder.create();
+	        alert.show();
+			
+			*/
+			
+			
+			
+			break;	
+		
 		default:
 			Log.e(TAG, "ERROR: switch default clided");
 			break;

@@ -1,16 +1,24 @@
 package com.example.tb;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements View.OnTouchListener {
 	private boolean DEBUG = true;
@@ -21,6 +29,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	private ViewGroup mContainer;
 	private ImageView mImageViewO;
 	private ImageView mImageViewX;
+	
+	private LinearLayout mTextLayout;
+	private EditText mText;
 	
 	private int xDelta;
 	private int yDelta;
@@ -35,7 +46,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		setContentView(R.layout.activity_main);
 
 		mContainer = (ViewGroup) findViewById(R.id.container);
-
+		mTextLayout = (LinearLayout) findViewById(R.id.text_layout);
+		mText = (EditText) findViewById(R.id.editText1);
+		
 		for (int i = 0; i < MAX_PLAYER; i++) {
 			mImageViewO = new ImageView(this);
 			mImageViewO.setImageResource(R.drawable.o);
@@ -98,6 +111,73 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
 	public void setMoving(boolean b) {
 		this.mMoving = b;
+	}
+	
+	public void plusText() {
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    // Get the layout inflater
+	    LayoutInflater inflater = this.getLayoutInflater();
+
+	    // Inflate and set the layout for the dialog
+	    // Pass null as the parent view because its going in the dialog layout
+	    View dialogView = inflater.inflate(R.layout.text_dialog, null);
+	    builder.setView(dialogView);
+	    // Add action buttons
+	    mText = (EditText) dialogView.findViewById(R.id.text);
+	    TextView tv = new TextView(this);
+	    mContainer.addView(tv);
+	    
+	    Button b = (Button) findViewById(R.id.text_ok);
+	    if (b == null) 
+	    	Log.e(TAG, "button null");
+	    else 
+	    	Log.e(TAG, "button not null");
+	    
+	    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	               @Override
+	               public void onClick(DialogInterface dialog, int id) {
+	                   
+	            	   mText.getText();
+	               }
+	           });
+		
+	    AlertDialog ad = builder.create();
+	    ad.show();
+	    
+		/*
+		mTextLayout.setVisibility(View.VISIBLE);
+		InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		// only will trigger it if no physical keyboard is open
+		mgr.showSoftInput(mText, InputMethodManager.SHOW_IMPLICIT);
+		*/
+		
+		//new TextDialog(this).show();
+		/*
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+                getApplicationContext());
+        builder.setCancelable(true);
+        builder.setTitle("Title");
+        builder.setInverseBackgroundForced(true);
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                            int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                            int which) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+		*/
 	}
 	
 	@Override

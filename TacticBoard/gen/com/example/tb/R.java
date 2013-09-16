@@ -34,32 +34,40 @@ public final class R {
         public static final int short_dash=0x7f02000a;
         public static final int solid=0x7f02000b;
         public static final int solid_line_old=0x7f02000c;
-        public static final int undo=0x7f02000d;
-        public static final int undo_old=0x7f02000e;
-        public static final int x=0x7f02000f;
-        public static final int x_old=0x7f020010;
+        public static final int text=0x7f02000d;
+        public static final int text_plus=0x7f02000e;
+        public static final int undo=0x7f02000f;
+        public static final int undo_old=0x7f020010;
+        public static final int x=0x7f020011;
+        public static final int x_old=0x7f020012;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000e;
-        public static final int color3=0x7f08000c;
-        public static final int color_grid=0x7f080006;
-        public static final int color_setting=0x7f08000d;
+        public static final int action_settings=0x7f080013;
+        public static final int button1=0x7f080007;
+        public static final int color3=0x7f080011;
+        public static final int color_grid=0x7f080008;
+        public static final int color_setting=0x7f080012;
         public static final int container=0x7f080000;
+        public static final int editText1=0x7f080006;
         public static final int frame_bar=0x7f080001;
         public static final int frame_ground=0x7f080004;
         public static final int frame_td=0x7f080002;
-        public static final int img_ground=0x7f080005;
-        public static final int long_dash_line=0x7f08000b;
-        public static final int move=0x7f080008;
-        public static final int short_dash_line=0x7f08000a;
-        public static final int solid_line=0x7f080009;
+        public static final int long_dash_line=0x7f08000f;
+        public static final int move=0x7f08000c;
+        public static final int plus_text=0x7f080010;
+        public static final int short_dash_line=0x7f08000e;
+        public static final int solid_line=0x7f08000d;
         public static final int tb=0x7f080003;
-        public static final int undo=0x7f080007;
+        public static final int text=0x7f080009;
+        public static final int text_layout=0x7f080005;
+        public static final int text_ok=0x7f08000a;
+        public static final int undo=0x7f08000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int color_dialog=0x7f030001;
-        public static final int view_bar=0x7f030002;
+        public static final int text_dialog=0x7f030002;
+        public static final int view_bar=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f070000;
