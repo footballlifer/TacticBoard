@@ -22,6 +22,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 	private ImageView mLongDashLine;
 	private ImageView mColorSetting;
 	private ImageView mPlusText;
+	private ImageView mSave;
 	
 	private boolean mMoving = true;
 	
@@ -45,6 +46,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		mLongDashLine = (ImageView) findViewById(R.id.long_dash_line);
 		mColorSetting = (ImageView) findViewById(R.id.color_setting);
 		mPlusText = (ImageView) findViewById(R.id.plus_text);
+		mSave = (ImageView) findViewById(R.id.save);
 		
 		mUndo.setOnClickListener(this);
 		mMove.setOnClickListener(this);		
@@ -53,6 +55,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		mLongDashLine.setOnClickListener(this);
 		mColorSetting.setOnClickListener(this);
 		mPlusText.setOnClickListener(this);
+		mSave.setOnClickListener(this);
 		
 		mColorSetting.setBackgroundColor(Color.BLACK);
 		((MainActivity) mContext).setMoving(mMoving);
@@ -119,6 +122,10 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			((MainActivity) mContext).showPlusTextDialog();
 			break;
 		
+		case R.id.save:
+			((MainActivity) mContext).saveImgToGallery();
+			break;	
+			
 		default:
 			Log.e(TAG, "ERROR: switch default clided");
 			break;

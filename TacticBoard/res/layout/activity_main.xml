@@ -9,38 +9,43 @@
         android:id="@+id/frame_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" 
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/frame_td"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/frame_bar"
-        android:layout_centerHorizontal="true" >
+    <RelativeLayout
+        android:id="@+id/board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/frame_bar">
 
-        <com.example.tb.TacticBoard
-            android:id="@+id/tb"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/frame_ground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/frame_bar"
-        android:layout_centerHorizontal="true" >
-
-        <!--
-        <ImageView
-            android:id="@+id/img_ground"
+        <FrameLayout
+            android:id="@+id/frame_td"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ground2" />
-        -->
+            android:layout_centerHorizontal="true" >
 
-    </FrameLayout>
+            <com.example.tb.TacticBoard
+                android:id="@+id/tb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frame_ground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true" >
+
+            <!--
+	        <ImageView
+	            android:id="@+id/img_ground"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:src="@drawable/ground2" />
+            -->
+
+        </FrameLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

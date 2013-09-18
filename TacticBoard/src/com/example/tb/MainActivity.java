@@ -1,14 +1,24 @@
 package com.example.tb;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
@@ -30,6 +40,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	
 	private TacticBoard mTacticBoard;
 	private ViewGroup mContainer;
+	private ViewGroup mBoard;
 	private ImageView mImageViewO;
 	private ImageView mImageViewX;
 	private EditText mEditText;
@@ -47,18 +58,19 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
-
+		
 		mContainer = (ViewGroup) findViewById(R.id.container);
-					    
+		mBoard = (ViewGroup) findViewById(R.id.board);
+		
 		for (int i = 0; i < MAX_PLAYER; i++) {
 			mImageViewO = new ImageView(this);
 			mImageViewO.setImageResource(R.drawable.o);
-			mContainer.addView(mImageViewO);
+			mBoard.addView(mImageViewO);
 			mImageViewO.setOnTouchListener(this);
 
 			mImageViewX = new ImageView(this);
 			mImageViewX.setImageResource(R.drawable.x);
-			mContainer.addView(mImageViewX);
+			mBoard.addView(mImageViewX);
 			mImageViewX.setOnTouchListener(this);
 
 			RelativeLayout.LayoutParams layoutParamsX = (RelativeLayout.LayoutParams) mImageViewX
@@ -132,7 +144,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
 	    mTextView = new TextView(this);
 	    mTextView.setOnTouchListener(this);
-	    mContainer.addView(mTextView);
+	    mBoard.addView(mTextView);
 	    
 	    RelativeLayout.LayoutParams layoutText = (RelativeLayout.LayoutParams) mTextView
 				.getLayoutParams();
@@ -177,6 +189,38 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	    
 	    AlertDialog ad = builder.create();
 	    ad.show();
+	}
+	
+	public void saveImgToGallery() {
+		Bitmap b = takeScreenShot();
+		saveBitmap(b);
+	}
+	
+	private Bitmap takeScreenShot() {
+		View rootView = findViewById(R.id.board);
+		rootView.setDrawingCacheEnabled(true);
+		Bitmap result = Bitmap.createBitmap(rootView.getDrawingCache());
+		rootView.setDrawingCacheEnabled(false);
+		return result;
+	}
+
+	private void saveBitmap(Bitmap bitmap) {
+		File imagePath = new File(Environment.getExternalStorageDirectory()
+				+ "/screenshot2.png");
+		FileOutputStream fos;
+
+		try {
+			fos = new FileOutputStream(imagePath);
+			bitmap.compress(CompressFormat.PNG, 100, fos);
+			fos.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "kakpple", "kakpple pic");
 	}
 	
 	@Override
