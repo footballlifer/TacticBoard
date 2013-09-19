@@ -169,23 +169,24 @@ public final class R {
         public static final int ground=0x7f020003;
         public static final int ground2=0x7f020004;
         public static final int ic_launcher=0x7f020005;
-        public static final int long_dash=0x7f020006;
-        public static final int movement=0x7f020007;
-        public static final int o=0x7f020008;
-        public static final int o_old=0x7f020009;
-        public static final int save2=0x7f02000a;
-        public static final int short_dash=0x7f02000b;
-        public static final int solid=0x7f02000c;
-        public static final int solid_line_old=0x7f02000d;
-        public static final int text=0x7f02000e;
-        public static final int text_plus=0x7f02000f;
-        public static final int undo=0x7f020010;
-        public static final int undo_old=0x7f020011;
-        public static final int x=0x7f020012;
-        public static final int x_old=0x7f020013;
+        public static final int icon_new=0x7f020006;
+        public static final int long_dash=0x7f020007;
+        public static final int movement=0x7f020008;
+        public static final int o=0x7f020009;
+        public static final int o_old=0x7f02000a;
+        public static final int save2=0x7f02000b;
+        public static final int short_dash=0x7f02000c;
+        public static final int solid=0x7f02000d;
+        public static final int solid_line_old=0x7f02000e;
+        public static final int text=0x7f02000f;
+        public static final int text_plus=0x7f020010;
+        public static final int undo=0x7f020011;
+        public static final int undo_old=0x7f020012;
+        public static final int x=0x7f020013;
+        public static final int x_old=0x7f020014;
     }
     public static final class id {
-        public static final int action_settings=0x7f090015;
+        public static final int action_settings=0x7f090016;
         public static final int board=0x7f090002;
         public static final int color3=0x7f090012;
         public static final int color_grid=0x7f090006;
@@ -196,6 +197,7 @@ public final class R {
         public static final int frame_td=0x7f090003;
         public static final int long_dash_line=0x7f090010;
         public static final int move=0x7f09000d;
+        public static final int new_file=0x7f090015;
         public static final int plus_text=0x7f090011;
         public static final int radio_large=0x7f09000b;
         public static final int radio_medium=0x7f09000a;

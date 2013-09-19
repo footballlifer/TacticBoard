@@ -4,21 +4,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
@@ -47,6 +51,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	private TextView mTextView;
 	private RadioGroup mRadioGroup;
 	
+	private List<ImageView> mImgOList = new ArrayList<ImageView>();
+	private List<ImageView> mImgXList = new ArrayList<ImageView>();
+	private Stack<TextView> mTextStack = new Stack<TextView>();
+	
 	private int xDelta;
 	private int yDelta;
 	
@@ -64,11 +72,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		
 		for (int i = 0; i < MAX_PLAYER; i++) {
 			mImageViewO = new ImageView(this);
+			mImgOList.add(mImageViewO);
 			mImageViewO.setImageResource(R.drawable.o);
 			mBoard.addView(mImageViewO);
 			mImageViewO.setOnTouchListener(this);
 
 			mImageViewX = new ImageView(this);
+			mImgXList.add(mImageViewX);
 			mImageViewX.setImageResource(R.drawable.x);
 			mBoard.addView(mImageViewX);
 			mImageViewX.setOnTouchListener(this);
@@ -143,6 +153,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	    ((RadioButton) view.findViewById(R.id.radio_large)).setTextSize(TEXT_SIZE_LARGE);
 
 	    mTextView = new TextView(this);
+	    mTextStack.push(mTextView);
 	    mTextView.setOnTouchListener(this);
 	    mBoard.addView(mTextView);
 	    
@@ -221,6 +232,40 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		}
 
 		MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "kakpple", "kakpple pic");
+	}
+	
+	public void resetPaintBoard() {
+		while(!mTextStack.isEmpty()) {
+			TextView tv = (TextView) mTextStack.pop();
+			((RelativeLayout) tv.getParent()).removeView(tv);
+		}
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		int height = size.y;
+		mTacticBoard.newImage(width, height);
+		
+		for (ImageView iv : mImgOList) {
+			RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) iv.getLayoutParams();
+			p.leftMargin = 0;
+			p.topMargin = 0;
+			p.rightMargin = 0;
+			p.bottomMargin = 0;
+			
+			iv.setLayoutParams(p);	
+		}
+		
+		for (ImageView iv : mImgXList) {
+			RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) iv.getLayoutParams();
+			p.leftMargin = 70;
+			p.topMargin = 0;
+			p.rightMargin = 0;
+			p.bottomMargin = 0;
+			
+			iv.setLayoutParams(p);	
+		}	
 	}
 	
 	@Override

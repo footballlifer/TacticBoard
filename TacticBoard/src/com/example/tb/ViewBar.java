@@ -23,6 +23,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 	private ImageView mColorSetting;
 	private ImageView mPlusText;
 	private ImageView mSave;
+	private ImageView mNew;
 	
 	private boolean mMoving = true;
 	
@@ -47,6 +48,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		mColorSetting = (ImageView) findViewById(R.id.color_setting);
 		mPlusText = (ImageView) findViewById(R.id.plus_text);
 		mSave = (ImageView) findViewById(R.id.save);
+		mNew = (ImageView) findViewById(R.id.new_file);
 		
 		mUndo.setOnClickListener(this);
 		mMove.setOnClickListener(this);		
@@ -56,6 +58,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		mColorSetting.setOnClickListener(this);
 		mPlusText.setOnClickListener(this);
 		mSave.setOnClickListener(this);
+		mNew.setOnClickListener(this);
 		
 		mColorSetting.setBackgroundColor(Color.BLACK);
 		((MainActivity) mContext).setMoving(mMoving);
@@ -124,6 +127,10 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		
 		case R.id.save:
 			((MainActivity) mContext).saveImgToGallery();
+			break;	
+		
+		case R.id.new_file:
+			((MainActivity) mContext).resetPaintBoard();
 			break;	
 			
 		default:

@@ -16,16 +16,20 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class TacticBoard extends View {
 	private boolean DEBUG = true;
 	private String TAG = "TacticBoard";
 	
 	private Stack<Bitmap> mUndos = new Stack<Bitmap>();
+	private Stack<Path> mPathStack = new Stack<Path>();
+	
 	public static int maxUndos = 10;
 
 	private final Paint mPaint = new Paint();
-	private final Path mPath = new Path();
+	private Path mPath = new Path();
 	private Canvas mCanvas;
 	private Bitmap mBitmap;
 	private float mLastX;
@@ -185,7 +189,10 @@ public class TacticBoard extends View {
 			if (rect != null) {
 				invalidate(rect);
 			}
-			mPath.rewind();
+			
+			mPathStack.push(mPath);
+			mPath = new Path();
+			//mPath.rewind();
 			
 			rect = drawArrow();
 			invalidate(rect);
@@ -289,6 +296,13 @@ public class TacticBoard extends View {
 			mCanvas.drawPath(mPath, mPaint);	
 		}
 		return invalidRect;
+	}
+	
+	public void resetAllPath() {
+		while(!mPathStack.isEmpty()){
+			Path p = (Path) mPathStack.pop();				
+			p.reset();
+		}
 	}
 	
 	public boolean save(OutputStream outStream) {

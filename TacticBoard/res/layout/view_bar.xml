@@ -70,4 +70,10 @@
         android:layout_height="wrap_content"
         android:src="@drawable/save2" />
 
+    <ImageView
+        android:id="@+id/new_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_new" />
+
 </LinearLayout>
