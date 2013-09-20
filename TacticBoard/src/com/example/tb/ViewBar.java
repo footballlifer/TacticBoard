@@ -13,8 +13,9 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 	private String TAG = "ViewBar";
 	
 	private Context mContext;
-	
 	private TacticBoard mTacticBoard;
+	private ColorPaletteDialog mColorDialog;
+
 	private ImageView mUndo;
 	private ImageView mMove;
 	private ImageView mSolidLine;
@@ -27,9 +28,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 	private ImageView mShare;
 	
 	private boolean mMoving = true;
-	
-	private ColorPaletteDialog mColorDialog;
-	
+		
 	private int mColor = 0xff000000;
 	private int mSize = 2;
 	
