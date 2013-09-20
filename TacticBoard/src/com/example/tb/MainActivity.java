@@ -11,9 +11,11 @@ import java.util.Stack;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -217,7 +219,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
 	private void saveBitmap(Bitmap bitmap) {
 		File imagePath = new File(Environment.getExternalStorageDirectory()
-				+ "/screenshot2.png");
+				+ "/TacticBoard.png");
 		FileOutputStream fos;
 
 		try {
@@ -266,6 +268,18 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 			
 			iv.setLayoutParams(p);	
 		}	
+	}
+	
+	public void share() {
+		saveImgToGallery();
+		Intent share = new Intent(Intent.ACTION_SEND);
+
+		share.setType("text/plain");
+		share.putExtra(Intent.EXTRA_TEXT, "Share via Tactic Board");
+		share.setType("image/jpeg");
+		share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/TacticBoard.png"));
+		
+		startActivity(Intent.createChooser(share, "Share Image"));
 	}
 	
 	@Override
