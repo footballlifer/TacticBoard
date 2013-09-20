@@ -274,8 +274,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		saveImgToGallery();
 		Intent share = new Intent(Intent.ACTION_SEND);
 
-		share.setType("text/plain");
-		share.putExtra(Intent.EXTRA_TEXT, "Share via Tactic Board");
+		//share.setType("text/plain");
+		//share.putExtra(Intent.EXTRA_TEXT, "Share via Tactic Board");
 		share.setType("image/jpeg");
 		share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/TacticBoard.png"));
 		
