@@ -174,17 +174,13 @@ public final class R {
         public static final int long_dash=0x7f020008;
         public static final int movement=0x7f020009;
         public static final int o=0x7f02000a;
-        public static final int o_old=0x7f02000b;
-        public static final int save2=0x7f02000c;
-        public static final int short_dash=0x7f02000d;
-        public static final int solid=0x7f02000e;
-        public static final int solid_line_old=0x7f02000f;
-        public static final int text=0x7f020010;
-        public static final int text_plus=0x7f020011;
-        public static final int undo=0x7f020012;
-        public static final int undo_old=0x7f020013;
-        public static final int x=0x7f020014;
-        public static final int x_old=0x7f020015;
+        public static final int save2=0x7f02000b;
+        public static final int short_dash=0x7f02000c;
+        public static final int solid=0x7f02000d;
+        public static final int text=0x7f02000e;
+        public static final int text_plus=0x7f02000f;
+        public static final int undo=0x7f020010;
+        public static final int x=0x7f020011;
     }
     public static final class id {
         public static final int action_settings=0x7f090017;
