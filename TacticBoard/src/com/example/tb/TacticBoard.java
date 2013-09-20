@@ -16,8 +16,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class TacticBoard extends View {
 	private boolean DEBUG = true;
