@@ -28,7 +28,7 @@ public class TacticBoard extends View {
 	private Stack<Bitmap> mUndos = new Stack<Bitmap>();
 	private Stack<Path> mPathStack = new Stack<Path>();
 	
-	public static int maxUndos = 10;
+	public static int maxUndos = 11;
 
 	private final Paint mPaint = new Paint();
 	private Path mPath = new Path();
@@ -91,6 +91,7 @@ public class TacticBoard extends View {
 		setDefaultPaint();
 	}
 	
+	// unused API
 	public void clearUndo() {
 		while (true) {
 			Bitmap prev = (Bitmap) mUndos.pop();
@@ -150,10 +151,11 @@ public class TacticBoard extends View {
 		mPaint.setStrokeWidth(size);
 	}
 
-	public void newImage() {
+	public void resetTacticBoard() {
 		if (mViewWidth > 0 && mViewHeight > 0) {
 			newImage(mViewWidth, mViewHeight);
 		}
+		mUndos.clear();
 	}
 	
 	public void newImage(int width, int height) {

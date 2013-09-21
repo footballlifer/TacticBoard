@@ -234,13 +234,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "kakpple", "kakpple pic");
 	}
 	
-	public void resetPaintBoard() {
+	public void reset() {
 		while(!mTextStack.isEmpty()) {
 			TextView tv = (TextView) mTextStack.pop();
 			((RelativeLayout) tv.getParent()).removeView(tv);
 		}
 		
-		mTacticBoard.newImage();
+		mTacticBoard.resetTacticBoard();
 		
 		for (ImageView iv : mImgOList) {
 			RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) iv.getLayoutParams();

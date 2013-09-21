@@ -132,7 +132,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			break;	
 		
 		case R.id.new_file:
-			((MainActivity) mContext).resetPaintBoard();
+			((MainActivity) mContext).reset();
 			break;	
 		
 		case R.id.share:
