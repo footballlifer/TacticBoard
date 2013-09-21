@@ -5,8 +5,8 @@ import java.util.Stack;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -20,6 +20,10 @@ import android.view.View;
 public class TacticBoard extends View {
 	private boolean DEBUG = true;
 	private String TAG = "TacticBoard";
+	
+	private Context mContext;
+	private int mViewWidth;
+	private int mViewHeight;
 	
 	private Stack<Bitmap> mUndos = new Stack<Bitmap>();
 	private Stack<Path> mPathStack = new Stack<Path>();
@@ -71,16 +75,19 @@ public class TacticBoard extends View {
 	
 	public TacticBoard(Context context) {
 		super(context);
+		this.mContext = context;
 		setDefaultPaint();
 	}
 	
 	public TacticBoard(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.mContext = context;
 		setDefaultPaint();
 	}
 
 	public TacticBoard(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		this.mContext = context;
 		setDefaultPaint();
 	}
 	
@@ -130,8 +137,12 @@ public class TacticBoard extends View {
 	}
 
 	public void drawBackGround(Canvas canvas) {
-		if (canvas != null) 
-			canvas.drawColor(Color.WHITE);
+		if (canvas != null) {
+			Bitmap bg = BitmapFactory.decodeResource(getResources(),R.drawable.img_field);
+			Bitmap scaledBg = Bitmap.createScaledBitmap(bg, mViewWidth, mViewHeight, true);
+			canvas.drawBitmap (scaledBg, 0, 0, null);
+			//canvas.drawColor(Color.WHITE);
+		}
 	}
 
 	public void updatePaintProperty(int color, int size) {
@@ -139,6 +150,12 @@ public class TacticBoard extends View {
 		mPaint.setStrokeWidth(size);
 	}
 
+	public void newImage() {
+		if (mViewWidth > 0 && mViewHeight > 0) {
+			newImage(mViewWidth, mViewHeight);
+		}
+	}
+	
 	public void newImage(int width, int height) {
 		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
 		Canvas canvas = new Canvas();
@@ -152,8 +169,10 @@ public class TacticBoard extends View {
 	}
 
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		if (w > 0 && h >0) 
-			newImage(w,h);
+		this.mViewWidth = w;
+		this.mViewHeight = h;
+		if (mViewWidth > 0 && mViewHeight >0) 
+			newImage(mViewWidth, mViewHeight);
 	}
 	
 	protected void onDraw(Canvas canvas) {

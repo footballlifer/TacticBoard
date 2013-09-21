@@ -14,13 +14,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -242,12 +240,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 			((RelativeLayout) tv.getParent()).removeView(tv);
 		}
 		
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		int height = size.y;
-		mTacticBoard.newImage(width, height);
+		mTacticBoard.newImage();
 		
 		for (ImageView iv : mImgOList) {
 			RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) iv.getLayoutParams();
