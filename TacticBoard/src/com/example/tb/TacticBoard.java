@@ -316,6 +316,7 @@ public class TacticBoard extends View {
 		return invalidRect;
 	}
 	
+	// unused API
 	public void resetAllPath() {
 		while(!mPathStack.isEmpty()){
 			Path p = (Path) mPathStack.pop();				
