@@ -28,7 +28,7 @@ public class TacticBoard extends View {
 	private Stack<Bitmap> mUndos = new Stack<Bitmap>();
 	private Stack<Path> mPathStack = new Stack<Path>();
 	
-	public static int maxUndos = 11;
+	public static int maxUndos = 10;
 
 	private final Paint mPaint = new Paint();
 	private Path mPath = new Path();
@@ -103,8 +103,8 @@ public class TacticBoard extends View {
 	public void saveImageToUndoStack() {
 		if (mBitmap == null) return;
 		
-		while (mUndos.size() >= maxUndos) {
-			Bitmap i = (Bitmap) mUndos.get(mUndos.size() - 1);
+		if (mUndos.size() >= maxUndos) {
+			Bitmap i = (Bitmap) mUndos.get(0);
 			i.recycle();
 			mUndos.remove(i);
 		}
@@ -118,7 +118,6 @@ public class TacticBoard extends View {
 		mUndos.push(bitmap);
 	}
 
-	//TODO: Bug for undo
 	public void undo() {
 		Bitmap prev = null;
 		try {
@@ -324,6 +323,7 @@ public class TacticBoard extends View {
 		}
 	}
 	
+	// unused API
 	public boolean save(OutputStream outStream) {
 		try {
 			mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
