@@ -38,6 +38,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	private String TAG = "MainActivity";
 	
 	private final int MAX_PLAYER = 2;
+	
 	private final float TEXT_SIZE_SMALL = 15.0f;
 	private final float TEXT_SIZE_MEDIUM = 25.0f;
 	private final float TEXT_SIZE_LARGE = 35.0f;
@@ -47,8 +48,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	private ViewGroup mBoard;
 	private ImageView mImageViewO;
 	private ImageView mImageViewX;
+	
 	private EditText mEditText;
-	private TextView mTextView;
 	private RadioGroup mRadioGroup;
 	
 	private List<ImageView> mImgOList = new ArrayList<ImageView>();
@@ -72,30 +73,24 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		
 		for (int i = 0; i < MAX_PLAYER; i++) {
 			mImageViewO = new ImageView(this);
-			mImgOList.add(mImageViewO);
 			mImageViewO.setImageResource(R.drawable.o);
-			mBoard.addView(mImageViewO);
 			mImageViewO.setOnTouchListener(this);
+			mBoard.addView(mImageViewO);
+			mImgOList.add(mImageViewO);
 
 			mImageViewX = new ImageView(this);
-			mImgXList.add(mImageViewX);
 			mImageViewX.setImageResource(R.drawable.x);
-			mBoard.addView(mImageViewX);
 			mImageViewX.setOnTouchListener(this);
+			mBoard.addView(mImageViewX);
+			mImgXList.add(mImageViewX);
 
-			RelativeLayout.LayoutParams layoutParamsX = (RelativeLayout.LayoutParams) mImageViewX
-					.getLayoutParams();
-			layoutParamsX.leftMargin = 70;
-			layoutParamsX.topMargin = 0;
-			layoutParamsX.rightMargin = 10;
-			layoutParamsX.bottomMargin = 0;
-			mImageViewX.setLayoutParams(layoutParamsX);
+			setViewRelativeParams(mImageViewX, 70, 0, 0, 0);
 		}
 
 		mTacticBoard = (TacticBoard) findViewById(R.id.tb);
 		
-		ViewBar vb = new ViewBar(this, mTacticBoard);
 		FrameLayout frameBar = (FrameLayout) findViewById(R.id.frame_bar);
+		ViewBar vb = new ViewBar(this, mTacticBoard);
 		frameBar.addView(vb);
 	}
 
@@ -106,42 +101,29 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		final int y = (int) event.getRawY();
 		
 		switch (event.getAction() & MotionEvent.ACTION_MASK) {
+		
 		case MotionEvent.ACTION_DOWN:
-			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view
-					.getLayoutParams();
+			RelativeLayout.LayoutParams params = 
+					(RelativeLayout.LayoutParams) view.getLayoutParams();
 			xDelta = x - params.leftMargin;
 			yDelta = y - params.topMargin;
 			break;
 		
-		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_MOVE:
+			setViewRelativeParams(view, x-xDelta, y-yDelta, -50, -50);
 			break;
-		
-		case MotionEvent.ACTION_POINTER_DOWN:
-			break;
-		
+			
+		case MotionEvent.ACTION_UP:		
+		case MotionEvent.ACTION_POINTER_DOWN:		
 		case MotionEvent.ACTION_POINTER_UP:
 			break;
-		
-		case MotionEvent.ACTION_MOVE:
-			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
-					.getLayoutParams();
-			layoutParams.leftMargin = x - xDelta;
-			layoutParams.topMargin = y - yDelta;
-			layoutParams.rightMargin = -50;
-			layoutParams.bottomMargin = -50;
-			view.setLayoutParams(layoutParams);
-			break;
-		
+			
 		}
 		
 		mContainer.invalidate();
 		return true;
 	}
 
-	public void setMoving(boolean b) {
-		this.mMoving = b;
-	}
-	
 	public void showPlusTextDialog() {	
 		LayoutInflater inflater = this.getLayoutInflater();
 	    View view = inflater.inflate(R.layout.text_dialog, null);
@@ -152,19 +134,6 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	    ((RadioButton) view.findViewById(R.id.radio_medium)).setTextSize(TEXT_SIZE_MEDIUM);
 	    ((RadioButton) view.findViewById(R.id.radio_large)).setTextSize(TEXT_SIZE_LARGE);
 
-	    mTextView = new TextView(this);
-	    mTextStack.push(mTextView);
-	    mTextView.setOnTouchListener(this);
-	    mBoard.addView(mTextView);
-	    
-	    RelativeLayout.LayoutParams layoutText = (RelativeLayout.LayoutParams) mTextView
-				.getLayoutParams();
-	    layoutText.leftMargin = 270;
-	    layoutText.topMargin = 220;
-	    layoutText.rightMargin = 10;
-	    layoutText.bottomMargin = 0;
-	    	    
-	    mTextView.setLayoutParams(layoutText);
 	    
 	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle("Add Text");
@@ -192,14 +161,24 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	    			Log.e(TAG, "Error: default text size selected");
 	    			break;
 	    		}
-	    		mTextView.setTextSize(size);
 	    		mEditText.clearComposingText();
-	    		mTextView.setText(mEditText.getText());
+	    		addText(mEditText.getText().toString(), size);
 	    	}
 	    });
 	    
 	    AlertDialog ad = builder.create();
 	    ad.show();
+	}
+	
+	private void addText(String txt, float size) {
+		TextView tv = new TextView(this);
+		tv.setOnTouchListener(this);
+	    mTextStack.push(tv);
+	    mBoard.addView(tv);
+	     
+	    setViewRelativeParams(tv, 270, 220, 0, 0);
+	    tv.setTextSize(size);
+		tv.setText(txt);
 	}
 	
 	public void saveImgToGallery() {
@@ -218,10 +197,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	private void saveBitmap(Bitmap bitmap) {
 		File imagePath = new File(Environment.getExternalStorageDirectory()
 				+ "/TacticBoard.png");
-		FileOutputStream fos;
-
 		try {
-			fos = new FileOutputStream(imagePath);
+			FileOutputStream fos = new FileOutputStream(imagePath);
 			bitmap.compress(CompressFormat.PNG, 100, fos);
 			fos.flush();
 			fos.close();
@@ -242,25 +219,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		
 		mTacticBoard.resetTacticBoard();
 		
-		for (ImageView iv : mImgOList) {
-			RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) iv.getLayoutParams();
-			p.leftMargin = 0;
-			p.topMargin = 0;
-			p.rightMargin = 0;
-			p.bottomMargin = 0;
-			
-			iv.setLayoutParams(p);	
-		}
+		for (ImageView iv : mImgOList)
+			setViewRelativeParams(iv, 0, 0, 0, 0);
 		
-		for (ImageView iv : mImgXList) {
-			RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) iv.getLayoutParams();
-			p.leftMargin = 70;
-			p.topMargin = 0;
-			p.rightMargin = 0;
-			p.bottomMargin = 0;
-			
-			iv.setLayoutParams(p);	
-		}	
+		for (ImageView iv : mImgXList) 
+			setViewRelativeParams(iv, 70, 0, 0, 0);
 	}
 	
 	public void share() {
@@ -273,6 +236,21 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/TacticBoard.png"));
 		
 		startActivity(Intent.createChooser(share, "Share Image"));
+	}
+	
+	private void setViewRelativeParams(View v, int l, int t, int r, int b) {
+		RelativeLayout.LayoutParams p = 
+				(RelativeLayout.LayoutParams) v.getLayoutParams();
+		p.leftMargin = l;
+		p.topMargin = t;
+		p.rightMargin = r;
+		p.bottomMargin = b;
+		
+		v.setLayoutParams(p);	
+	}
+	
+	public void setMoving(boolean b) {
+		this.mMoving = b;
 	}
 	
 	@Override
