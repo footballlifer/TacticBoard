@@ -149,7 +149,15 @@ public class TacticBoard extends View {
 		mPaint.setColor(color);
 		mPaint.setStrokeWidth(size);
 	}
+	
+	public void updatePaintColor(int color) {
+		mPaint.setColor(color);
+	}
 
+	public void updatePaintSize(int size) {
+		mPaint.setStrokeWidth(size);
+	}
+	
 	public void resetTacticBoard() {
 		if (mViewWidth > 0 && mViewHeight > 0) {
 			newImage(mViewWidth, mViewHeight);

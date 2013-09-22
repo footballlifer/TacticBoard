@@ -73,7 +73,8 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			@Override
 			public void onColorSelected(int color) {
 				mColor = color;
-				mTacticBoard.updatePaintProperty(mColor, mSize);
+				((MainActivity) mContext).setTextColor(mColor);
+				mTacticBoard.updatePaintColor(mColor);
 				mColorSetting.setBackgroundColor(mColor);
 			}
 		};

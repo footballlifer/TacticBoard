@@ -51,6 +51,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	
 	private EditText mEditText;
 	private RadioGroup mRadioGroup;
+	private int mTextColor = 0xFF000000;
 	
 	private List<ImageView> mImgOList = new ArrayList<ImageView>();
 	private List<ImageView> mImgXList = new ArrayList<ImageView>();
@@ -128,6 +129,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		LayoutInflater inflater = this.getLayoutInflater();
 	    View view = inflater.inflate(R.layout.text_dialog, null);
 	    mEditText = (EditText) view.findViewById(R.id.text);
+	    mEditText.setTextColor(mTextColor);
 	    mRadioGroup = (RadioGroup) view.findViewById(R.id.radio_text);	
 	    
 	    ((RadioButton) view.findViewById(R.id.radio_small)).setTextSize(TEXT_SIZE_SMALL);
@@ -178,6 +180,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	     
 	    setViewRelativeParams(tv, 270, 220, 0, 0);
 	    tv.setTextSize(size);
+	    tv.setTextColor(mTextColor);
 		tv.setText(txt);
 	}
 	
@@ -217,6 +220,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 			((RelativeLayout) tv.getParent()).removeView(tv);
 		}
 		
+		this.mTextColor = 0xFF000000;
+		
 		mTacticBoard.resetTacticBoard();
 		
 		for (ImageView iv : mImgOList)
@@ -251,6 +256,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	
 	public void setMoving(boolean b) {
 		this.mMoving = b;
+	}
+	
+	public void setTextColor(int color) {
+		this.mTextColor = color;
 	}
 	
 	@Override
