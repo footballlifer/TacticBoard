@@ -220,7 +220,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 			((RelativeLayout) tv.getParent()).removeView(tv);
 		}
 		
-		this.mTextColor = 0xFF000000;
+		//this.mTextColor = 0xFF000000;
 		
 		mTacticBoard.resetTacticBoard();
 		
