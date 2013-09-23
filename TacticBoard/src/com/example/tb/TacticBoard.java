@@ -48,6 +48,16 @@ public class TacticBoard extends View {
 	private int mCertainColor = 0xFF000000;
 	private float mStrokeWidth = 4.0f;
 
+	private Bitmap mBackGround;
+	private Bitmap mScaledBackGround;
+	
+	public void init(Context context) {
+		this.mContext = context;
+		setDefaultPaint();
+		mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.img_field);
+		//mScaledBackGround = Bitmap.createScaledBitmap(mBackGround, mViewWidth, mViewHeight, true);
+	}
+	
 	public void setDefaultPaint() {
 		Log.i(TAG, "Constructor Initialized");
 		mPaint.reset();
@@ -75,20 +85,17 @@ public class TacticBoard extends View {
 	
 	public TacticBoard(Context context) {
 		super(context);
-		this.mContext = context;
-		setDefaultPaint();
+		init(context);
 	}
 	
 	public TacticBoard(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		this.mContext = context;
-		setDefaultPaint();
+		init(context);
 	}
 
 	public TacticBoard(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		this.mContext = context;
-		setDefaultPaint();
+		init(context);
 	}
 	
 	// unused API
@@ -128,7 +135,7 @@ public class TacticBoard extends View {
 		}
 
 		if (prev != null) {
-			drawBackGround(mCanvas);
+			//drawBackGround(mCanvas);
 			mCanvas.drawBitmap(prev, 0, 0, mPaint);
 			invalidate();
 
@@ -138,9 +145,8 @@ public class TacticBoard extends View {
 
 	public void drawBackGround(Canvas canvas) {
 		if (canvas != null) {
-			Bitmap bg = BitmapFactory.decodeResource(getResources(),R.drawable.img_field);
-			Bitmap scaledBg = Bitmap.createScaledBitmap(bg, mViewWidth, mViewHeight, true);
-			canvas.drawBitmap (scaledBg, 0, 0, null);
+			mScaledBackGround = Bitmap.createScaledBitmap(mBackGround, mViewWidth, mViewHeight, true);
+			canvas.drawBitmap (mScaledBackGround, 0, 0, null);
 			//canvas.drawColor(Color.WHITE);
 		}
 	}
