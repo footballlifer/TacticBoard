@@ -23,8 +23,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -33,15 +35,12 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements View.OnTouchListener {
+public class MainActivity extends Activity 
+implements View.OnTouchListener, View.OnLongClickListener {
 	private boolean DEBUG = true;
 	private String TAG = "MainActivity";
 	
-	private final int MAX_PLAYER = 2;
-	
-	private final float TEXT_SIZE_SMALL = 15.0f;
-	private final float TEXT_SIZE_MEDIUM = 25.0f;
-	private final float TEXT_SIZE_LARGE = 35.0f;
+	private final int MAX_PLAYER = 11;
 	
 	private TacticBoard mTacticBoard;
 	private ViewGroup mContainer;
@@ -49,7 +48,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	private ImageView mImageViewO;
 	private ImageView mImageViewX;
 	
-	private EditText mEditText;
+	private final float TEXT_SIZE_SMALL = 15.0f;
+	private final float TEXT_SIZE_MEDIUM = 25.0f;
+	private final float TEXT_SIZE_LARGE = 35.0f;
+	
+	// following members are used in dialog
+	private View mView;
+	private EditText mAddingText;
+	private EditText mChangingText;
 	private RadioGroup mRadioGroup;
 	private int mTextColor = 0xFF000000;
 	
@@ -96,6 +102,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	}
 
 	public boolean onTouch(View view, MotionEvent event) {
+		Log.e(TAG, "Moving:"+mMoving);
 		if (mMoving == false) return false;
 		
 		final int x = (int) event.getRawX();
@@ -125,21 +132,55 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 		return true;
 	}
 
+	@Override
+	public boolean onLongClick(View view) {		
+		// when mMoving is false, onLongClick will be activated
+		mView = view;
+		LayoutInflater inflater = this.getLayoutInflater();
+	    View editTextDialog = inflater.inflate(R.layout.edit_text_dialog, null);
+	    mChangingText = (EditText) editTextDialog.findViewById(R.id.changing_text);
+	    mChangingText.setTextColor(mTextColor);
+		mChangingText.setText( ((TextView)mView).getText().toString() );
+
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle("Edit Text");
+	    builder.setView(editTextDialog);
+	    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	    	@Override
+	    	public void onClick(DialogInterface dialog, int id) {
+	    		mChangingText.clearComposingText();
+	    		((TextView)mView).setText(mChangingText.getText().toString());
+	    	}
+	    });
+	    
+	    builder.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
+	    	@Override
+	    	public void onClick(DialogInterface dialog, int id) {
+				mTextStack.remove((TextView)mView);
+	    		((RelativeLayout)mView.getParent()).removeView(mView);
+	    	}
+	    });
+	    
+	    AlertDialog ad = builder.create();
+	    ad.show();
+		return false;
+	}
+	
 	public void showPlusTextDialog() {	
 		LayoutInflater inflater = this.getLayoutInflater();
-	    View view = inflater.inflate(R.layout.text_dialog, null);
-	    mEditText = (EditText) view.findViewById(R.id.text);
-	    mEditText.setTextColor(mTextColor);
-	    mRadioGroup = (RadioGroup) view.findViewById(R.id.radio_text);	
+	    View textDialog = inflater.inflate(R.layout.text_dialog, null);
+	    mAddingText = (EditText) textDialog.findViewById(R.id.adding_text);
+	    mAddingText.setTextColor(mTextColor);
+	    mRadioGroup = (RadioGroup) textDialog.findViewById(R.id.radio_text);	
 	    
-	    ((RadioButton) view.findViewById(R.id.radio_small)).setTextSize(TEXT_SIZE_SMALL);
-	    ((RadioButton) view.findViewById(R.id.radio_medium)).setTextSize(TEXT_SIZE_MEDIUM);
-	    ((RadioButton) view.findViewById(R.id.radio_large)).setTextSize(TEXT_SIZE_LARGE);
+	    ((RadioButton) textDialog.findViewById(R.id.radio_small)).setTextSize(TEXT_SIZE_SMALL);
+	    ((RadioButton) textDialog.findViewById(R.id.radio_medium)).setTextSize(TEXT_SIZE_MEDIUM);
+	    ((RadioButton) textDialog.findViewById(R.id.radio_large)).setTextSize(TEXT_SIZE_LARGE);
 
 	    
 	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle("Add Text");
-	    builder.setView(view);
+	    builder.setView(textDialog);
 	    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	    	@Override
 	    	public void onClick(DialogInterface dialog, int id) {
@@ -163,8 +204,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	    			Log.e(TAG, "Error: default text size selected");
 	    			break;
 	    		}
-	    		mEditText.clearComposingText();
-	    		addText(mEditText.getText().toString(), size);
+	    		mAddingText.clearComposingText();
+	    		addText(mAddingText.getText().toString(), size);
 	    	}
 	    });
 	    
@@ -175,6 +216,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 	private void addText(String txt, float size) {
 		TextView tv = new TextView(this);
 		tv.setOnTouchListener(this);
+		tv.setOnLongClickListener(this);
 	    mTextStack.push(tv);
 	    mBoard.addView(tv);
 	     
