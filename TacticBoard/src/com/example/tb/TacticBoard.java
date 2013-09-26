@@ -40,8 +40,19 @@ public class TacticBoard extends View {
 	private float mCurveEndY;
 
 	private final float RADIUS_TRIANGLE = 20;
-	private final float RADIUS_CIRCLE = 50;
-	private final float TEXT_SIZE = 50;
+	private final float RADIUS_CIRCLE = 15;
+	private final float TEXT_SIZE = 30;
+	private final int LINE_NUMBER_COLOR = 0xFFFFFFFF;
+	private float mStartX = -1;
+	private float mStartY = -1;
+	private int mLineCount = 1;
+	
+	private final int SHORT_DASH_WIDTH = 3;
+	private final int SHORT_DASH_DOT = 5;
+	private final int SHORT_DASH_SPACE = 10;
+	private final int LONG_DASH_WIDTH = 5;
+	private final int LONG_DASH_DOT = 40;
+	private final int LONG_DASH_SPACE = 30;
 	
 	private static final int INVALIDATE_EXTRA_BORDER = 10;
 	private static final float TOUCH_TOLERANCE = 2;
@@ -71,6 +82,7 @@ public class TacticBoard extends View {
 		this.mContext = context;
 		setDefaultPaint();
 		mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.img_field);
+		mLineCount = 1;
 	}
 	
 	public void setDefaultPaint() {
@@ -90,22 +102,16 @@ public class TacticBoard extends View {
 	
 	public void setShortDashPaint() {
 		setDefaultPaint();
-		mPaint.setPathEffect(new DashPathEffect(new float[] {10, 10}, 0));
+		mPaint.setStrokeWidth(SHORT_DASH_WIDTH);
+		mPaint.setPathEffect(
+				new DashPathEffect(new float[] {SHORT_DASH_DOT, SHORT_DASH_SPACE}, 0));
 	}
 	
-	// TODO change long pass style
 	public void setLongDashPaint() {
 		setDefaultPaint();
-		mPaint.setPathEffect(new DashPathEffect(new float[] {25, 25}, 0));
-	}
-	
-	// unused API
-	public void clearUndo() {
-		while (true) {
-			Bitmap prev = (Bitmap) mUndoStack.pop();
-			if (prev == null) return;
-			prev.recycle();
-		}
+		mPaint.setStrokeWidth(LONG_DASH_WIDTH);
+		mPaint.setPathEffect(
+				new DashPathEffect(new float[] {LONG_DASH_DOT, LONG_DASH_SPACE}, 0));
 	}
 
 	public void saveImageToUndoStack() {
@@ -130,6 +136,7 @@ public class TacticBoard extends View {
 		Bitmap prev = null;
 		try {
 			prev = (Bitmap) mUndoStack.pop();
+			if (mLineCount > 0) mLineCount --;
 		} catch (Exception e) {
 			Log.e(TAG, "undo exception");
 			e.printStackTrace();
@@ -169,6 +176,7 @@ public class TacticBoard extends View {
 			newImage(mViewWidth, mViewHeight);
 		}
 		mUndoStack.clear();
+		mLineCount = 1;
 	}
 	
 	public void newImage(int width, int height) {
@@ -205,11 +213,10 @@ public class TacticBoard extends View {
 		case MotionEvent.ACTION_DOWN:
 			saveImageToUndoStack();
 			
-			rect = touchDown(event);
-			if (rect != null) invalidate(rect);
+			mStartX = event.getX();
+			mStartY = event.getY();
 			
-			//TODO kakpple test
-			rect = drawLineNumber(event);
+			rect = touchDown(event);
 			if (rect != null) invalidate(rect);
 			
 			return true;		
@@ -222,9 +229,7 @@ public class TacticBoard extends View {
 		
 		case MotionEvent.ACTION_UP:
 			rect = touchMoveOrUp(event);
-			if (rect != null) {
-				invalidate(rect);
-			}
+			if (rect != null) invalidate(rect);
 			
 			mPathStack.push(mPath);
 			mPath = new Path();
@@ -233,33 +238,35 @@ public class TacticBoard extends View {
 			rect = drawArrow();
 			invalidate(rect);
 			
+			rect = drawLineNumber(mStartX, mStartY);
+			if (rect != null) invalidate(rect);
+			
 			return true;
 		}
 
 		return false;
 	}
 	
-	//TODO kakpple test
-	private Rect drawLineNumber(MotionEvent event) {
-		float x = event.getX();
-		float y = event.getY();
+	private Rect drawLineNumber(float startX, float startY) {
+		float x = startX;
+		float y = startY;
 		
-		int number = mUndoStack.size();
-		String lineNumber = Integer.toString(number);
+		String lineNumber = Integer.toString(mLineCount);
 		
-		mCanvas.drawCircle(x, y, RADIUS_CIRCLE, mPaint);
-		mPaint.setTextSize(TEXT_SIZE);
-		
-		Paint p = new Paint();
-	    Rect bounds = new Rect();
-	    p.getTextBounds(lineNumber, 0, lineNumber.length(), bounds);
-	    
-		mCanvas.drawText(lineNumber, x + bounds.width()/2, y - bounds.height()/2, mPaint);
-		mCanvas.drawRect(bounds, mPaint);
-		
-		Log.e(TAG, "bounds:" + bounds.width()+ " "+bounds.height());
+		// draw circle at the starting line point
+		//mPaint.setStyle(Paint.Style.FILL);
+		//mCanvas.drawCircle(x, y, RADIUS_CIRCLE, mPaint);
+		//mPaint.setStyle(Paint.Style.STROKE);
 
-		//mCanvas.drawText(lineNumber, 0, y + bounds.bottom, mPaint);
+	    Rect numberRect = new Rect();
+		Paint pNumber = new Paint();
+		pNumber.setTextSize(TEXT_SIZE);
+		pNumber.setColor(LINE_NUMBER_COLOR);
+	    pNumber.getTextBounds(lineNumber, 0, lineNumber.length(), numberRect);
+	    
+		mCanvas.drawText(lineNumber, x - numberRect.width()/2, y + numberRect.height()/2, pNumber);
+		
+		mLineCount ++;
 		
 		Rect invalidRect = new Rect();
 		invalidRect.set((int) (x - RADIUS_CIRCLE - INVALIDATE_EXTRA_BORDER), 
@@ -270,8 +277,6 @@ public class TacticBoard extends View {
 		return invalidRect;
 	}
 	
-	//TODO add number to line
-	//TODO change triangle style
 	private Rect drawArrow() {
 		float preX = mCurveEndX;
 		float preY = mCurveEndY;
@@ -286,19 +291,23 @@ public class TacticBoard extends View {
 		else 
 			alphaDegree = 180 - alphaDegree;
 		
-		float p1x = centerX;
-		float p1y = centerY - RADIUS_TRIANGLE;
+		float p1x = (float) centerX;
+		float p1y = (float) centerY - RADIUS_TRIANGLE;
 		
 		float p2x = (float) (centerX - RADIUS_TRIANGLE * Math.sqrt(3)/2);
 		float p2y = (float) (centerY + RADIUS_TRIANGLE/2);
 		
-		float p3x = (float) (centerX + RADIUS_TRIANGLE * Math.sqrt(3)/2);
-		float p3y = (float) (centerY + RADIUS_TRIANGLE/2);
+		float p3x = (float) centerX;
+		float p3y = (float) (centerY + RADIUS_TRIANGLE/4);
+		
+		float p4x = (float) (centerX + RADIUS_TRIANGLE * Math.sqrt(3)/2);
+		float p4y = (float) (centerY + RADIUS_TRIANGLE/2);
 		
 		Path triangle = new Path();
 		triangle.moveTo(p1x, p1y);
 		triangle.lineTo(p2x, p2y);
 		triangle.lineTo(p3x, p3y);
+		triangle.lineTo(p4x, p4y);
 		triangle.lineTo(p1x, p1y);
 		
 		Matrix m = new Matrix();
@@ -383,6 +392,15 @@ public class TacticBoard extends View {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	// unused API
+	public void clearUndo() {
+		while (true) {
+			Bitmap prev = (Bitmap) mUndoStack.pop();
+			if (prev == null) return;
+			prev.recycle();
 		}
 	}
 	
