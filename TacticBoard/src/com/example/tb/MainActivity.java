@@ -90,7 +90,8 @@ implements View.OnTouchListener, View.OnLongClickListener {
 			mImageViewX.setOnTouchListener(this);
 			mBoard.addView(mImageViewX);
 			mImgXList.add(mImageViewX);
-
+			
+			//TODO avoid hard coding
 			setViewRelativeParams(mImageViewX, 70, 0, 0, 0);
 		}
 
@@ -102,7 +103,6 @@ implements View.OnTouchListener, View.OnLongClickListener {
 	}
 
 	public boolean onTouch(View view, MotionEvent event) {
-		Log.e(TAG, "Moving:"+mMoving);
 		if (mMoving == false) return false;
 		
 		final int x = (int) event.getRawX();
@@ -177,7 +177,6 @@ implements View.OnTouchListener, View.OnLongClickListener {
 	    ((RadioButton) textDialog.findViewById(R.id.radio_medium)).setTextSize(TEXT_SIZE_MEDIUM);
 	    ((RadioButton) textDialog.findViewById(R.id.radio_large)).setTextSize(TEXT_SIZE_LARGE);
 
-	    
 	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle("Add Text");
 	    builder.setView(textDialog);
@@ -219,7 +218,8 @@ implements View.OnTouchListener, View.OnLongClickListener {
 		tv.setOnLongClickListener(this);
 	    mTextStack.push(tv);
 	    mBoard.addView(tv);
-	     
+	    
+	    //TODO avoid hard coding
 	    setViewRelativeParams(tv, 270, 220, 0, 0);
 	    tv.setTextSize(size);
 	    tv.setTextColor(mTextColor);
@@ -239,6 +239,7 @@ implements View.OnTouchListener, View.OnLongClickListener {
 		return result;
 	}
 
+	//TODO avoid hard coding
 	private void saveBitmap(Bitmap bitmap) {
 		File imagePath = new File(Environment.getExternalStorageDirectory()
 				+ "/TacticBoard.png");
@@ -256,13 +257,12 @@ implements View.OnTouchListener, View.OnLongClickListener {
 		MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "kakpple", "kakpple pic");
 	}
 	
+	//TODO avoid hard coding
 	public void reset() {
 		while(!mTextStack.isEmpty()) {
 			TextView tv = (TextView) mTextStack.pop();
 			((RelativeLayout) tv.getParent()).removeView(tv);
 		}
-		
-		//this.mTextColor = 0xFF000000;
 		
 		mTacticBoard.resetTacticBoard();
 		
@@ -273,6 +273,7 @@ implements View.OnTouchListener, View.OnLongClickListener {
 			setViewRelativeParams(iv, 70, 0, 0, 0);
 	}
 	
+	//TODO avoid hard coding
 	public void share() {
 		saveImgToGallery();
 		Intent share = new Intent(Intent.ACTION_SEND);

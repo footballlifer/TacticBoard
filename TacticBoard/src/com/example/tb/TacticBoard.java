@@ -25,7 +25,7 @@ public class TacticBoard extends View {
 	private int mViewWidth;
 	private int mViewHeight;
 	
-	private Stack<Bitmap> mUndos = new Stack<Bitmap>();
+	private Stack<Bitmap> mUndoStack = new Stack<Bitmap>();
 	private Stack<Path> mPathStack = new Stack<Path>();
 	
 	public static int maxUndos = 10;
@@ -40,6 +40,9 @@ public class TacticBoard extends View {
 	private float mCurveEndY;
 
 	private final float RADIUS_TRIANGLE = 20;
+	private final float RADIUS_CIRCLE = 50;
+	private final float TEXT_SIZE = 50;
+	
 	private static final int INVALIDATE_EXTRA_BORDER = 10;
 	private static final float TOUCH_TOLERANCE = 2;
 	private static final boolean RENDERING_ANTIALIAS = true;
@@ -51,11 +54,23 @@ public class TacticBoard extends View {
 	private Bitmap mBackGround;
 	private Bitmap mScaledBackGround;
 	
+	public TacticBoard(Context context) {
+		super(context);
+		init(context);
+	}	
+	public TacticBoard(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init(context);
+	}
+	public TacticBoard(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		init(context);
+	}
+	
 	public void init(Context context) {
 		this.mContext = context;
 		setDefaultPaint();
 		mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.img_field);
-		//mScaledBackGround = Bitmap.createScaledBitmap(mBackGround, mViewWidth, mViewHeight, true);
 	}
 	
 	public void setDefaultPaint() {
@@ -78,30 +93,16 @@ public class TacticBoard extends View {
 		mPaint.setPathEffect(new DashPathEffect(new float[] {10, 10}, 0));
 	}
 	
+	// TODO change long pass style
 	public void setLongDashPaint() {
 		setDefaultPaint();
 		mPaint.setPathEffect(new DashPathEffect(new float[] {25, 25}, 0));
 	}
 	
-	public TacticBoard(Context context) {
-		super(context);
-		init(context);
-	}
-	
-	public TacticBoard(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init(context);
-	}
-
-	public TacticBoard(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		init(context);
-	}
-	
 	// unused API
 	public void clearUndo() {
 		while (true) {
-			Bitmap prev = (Bitmap) mUndos.pop();
+			Bitmap prev = (Bitmap) mUndoStack.pop();
 			if (prev == null) return;
 			prev.recycle();
 		}
@@ -110,10 +111,10 @@ public class TacticBoard extends View {
 	public void saveImageToUndoStack() {
 		if (mBitmap == null) return;
 		
-		if (mUndos.size() >= maxUndos) {
-			Bitmap i = (Bitmap) mUndos.get(0);
+		if (mUndoStack.size() >= maxUndos) {
+			Bitmap i = (Bitmap) mUndoStack.get(0);
 			i.recycle();
-			mUndos.remove(i);
+			mUndoStack.remove(i);
 		}
 
 		Bitmap bitmap = Bitmap.createBitmap(mBitmap.getWidth(),
@@ -122,20 +123,19 @@ public class TacticBoard extends View {
 		canvas.setBitmap(bitmap);
 		canvas.drawBitmap(mBitmap, 0, 0, mPaint);
 
-		mUndos.push(bitmap);
+		mUndoStack.push(bitmap);
 	}
 
 	public void undo() {
 		Bitmap prev = null;
 		try {
-			prev = (Bitmap) mUndos.pop();
+			prev = (Bitmap) mUndoStack.pop();
 		} catch (Exception e) {
 			Log.e(TAG, "undo exception");
 			e.printStackTrace();
 		}
 
 		if (prev != null) {
-			//drawBackGround(mCanvas);
 			mCanvas.drawBitmap(prev, 0, 0, mPaint);
 			invalidate();
 
@@ -168,7 +168,7 @@ public class TacticBoard extends View {
 		if (mViewWidth > 0 && mViewHeight > 0) {
 			newImage(mViewWidth, mViewHeight);
 		}
-		mUndos.clear();
+		mUndoStack.clear();
 	}
 	
 	public void newImage(int width, int height) {
@@ -208,6 +208,10 @@ public class TacticBoard extends View {
 			rect = touchDown(event);
 			if (rect != null) invalidate(rect);
 			
+			//TODO kakpple test
+			rect = drawLineNumber(event);
+			if (rect != null) invalidate(rect);
+			
 			return true;		
 			
 		case MotionEvent.ACTION_MOVE:
@@ -235,6 +239,39 @@ public class TacticBoard extends View {
 		return false;
 	}
 	
+	//TODO kakpple test
+	private Rect drawLineNumber(MotionEvent event) {
+		float x = event.getX();
+		float y = event.getY();
+		
+		int number = mUndoStack.size();
+		String lineNumber = Integer.toString(number);
+		
+		mCanvas.drawCircle(x, y, RADIUS_CIRCLE, mPaint);
+		mPaint.setTextSize(TEXT_SIZE);
+		
+		Paint p = new Paint();
+	    Rect bounds = new Rect();
+	    p.getTextBounds(lineNumber, 0, lineNumber.length(), bounds);
+	    
+		mCanvas.drawText(lineNumber, x + bounds.width()/2, y - bounds.height()/2, mPaint);
+		mCanvas.drawRect(bounds, mPaint);
+		
+		Log.e(TAG, "bounds:" + bounds.width()+ " "+bounds.height());
+
+		//mCanvas.drawText(lineNumber, 0, y + bounds.bottom, mPaint);
+		
+		Rect invalidRect = new Rect();
+		invalidRect.set((int) (x - RADIUS_CIRCLE - INVALIDATE_EXTRA_BORDER), 
+						(int) (y - RADIUS_CIRCLE - INVALIDATE_EXTRA_BORDER),
+						(int) (x + RADIUS_CIRCLE + INVALIDATE_EXTRA_BORDER), 
+						(int) (y + RADIUS_CIRCLE + INVALIDATE_EXTRA_BORDER) );
+		
+		return invalidRect;
+	}
+	
+	//TODO add number to line
+	//TODO change triangle style
 	private Rect drawArrow() {
 		float preX = mCurveEndX;
 		float preY = mCurveEndY;
@@ -274,7 +311,6 @@ public class TacticBoard extends View {
 				(int) (centerX + RADIUS_TRIANGLE + INVALIDATE_EXTRA_BORDER),
 				(int) (centerY + RADIUS_TRIANGLE + INVALIDATE_EXTRA_BORDER) );
 		
-
 		mPaint.setStyle(Paint.Style.FILL);
 		mCanvas.drawPath(triangle, mPaint);
 		mPaint.setStyle(Paint.Style.STROKE);
