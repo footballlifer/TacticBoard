@@ -104,6 +104,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			}
 			
 			((MainActivity) mContext).setMoving(mMoving);
+			mTacticBoard.setMoving(!mMoving);
 			break;
 			
 		case R.id.short_dash_line:

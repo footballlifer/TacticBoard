@@ -65,6 +65,8 @@ public class TacticBoard extends View {
 	private Bitmap mBackGround;
 	private Bitmap mScaledBackGround;
 	
+	private boolean mMoving = false;
+	
 	public TacticBoard(Context context) {
 		super(context);
 		init(context);
@@ -205,7 +207,13 @@ public class TacticBoard extends View {
 			canvas.drawBitmap(mBitmap, 0, 0, null);
 	}
 
+	public void setMoving(boolean b) {
+		mMoving = b;
+	}
+	
 	public boolean onTouchEvent(MotionEvent event) {
+		if (mMoving == false) return false;
+		
 		int action = event.getAction();
 		Rect rect = null;
 		

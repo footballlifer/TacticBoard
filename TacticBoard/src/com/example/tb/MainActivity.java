@@ -254,7 +254,7 @@ implements View.OnTouchListener, View.OnLongClickListener {
 			e.printStackTrace();
 		}
 
-		MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "kakpple", "kakpple pic");
+		MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "TB", "TB Picture");
 	}
 	
 	//TODO avoid hard coding
