@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -73,6 +74,9 @@ implements View.OnTouchListener, View.OnLongClickListener {
 		super.onCreate(savedInstanceState);
         
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// remove status bar
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_main);
 		
 		mContainer = (ViewGroup) findViewById(R.id.container);
