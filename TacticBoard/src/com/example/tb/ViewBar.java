@@ -1,14 +1,21 @@
 package com.example.tb;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.DragShadowBuilder;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
-public class ViewBar extends LinearLayout implements View.OnClickListener {
+public class ViewBar extends LinearLayout 
+implements View.OnClickListener, View.OnTouchListener {
 	private boolean DEBUG = true;
 	private String TAG = "ViewBar";
 	
@@ -16,6 +23,8 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 	private TacticBoard mTacticBoard;
 	private ColorPaletteDialog mColorDialog;
 
+	private ImageView mO;
+	private ImageView mX;
 	private ImageView mUndo;
 	private ImageView mMove;
 	private ImageView mSolidLine;
@@ -26,7 +35,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 	private ImageView mSave;
 	private ImageView mNew;
 	private ImageView mShare;
-	
+		
 	private boolean mMoving = true;
 		
 	private int mColor = 0xff000000;
@@ -40,6 +49,8 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.view_bar, this, true);
 		
+		mO = (ImageView) findViewById(R.id.img_o);
+		mX = (ImageView) findViewById(R.id.img_x);
 		mUndo = (ImageView) findViewById(R.id.undo);
 		mMove = (ImageView) findViewById(R.id.move);
 		mSolidLine = (ImageView) findViewById(R.id.solid_line);
@@ -50,7 +61,9 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		mSave = (ImageView) findViewById(R.id.save);
 		mNew = (ImageView) findViewById(R.id.new_file);
 		mShare = (ImageView) findViewById(R.id.share);
-		
+
+		mO.setOnTouchListener(this);
+		mX.setOnTouchListener(this);
 		mUndo.setOnClickListener(this);
 		mMove.setOnClickListener(this);		
 		mSolidLine.setOnClickListener(this);
@@ -83,10 +96,11 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			}
 		};
 	}
-	
+		
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		
 		case R.id.undo:
 			mTacticBoard.undo();
 			break;
@@ -163,5 +177,15 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			break;
 		}
 	}
-	
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		ClipData data = ClipData.newPlainText("", "");
+		
+		DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+		v.startDrag(data, shadowBuilder, v, 0);
+		v.setVisibility(View.INVISIBLE);
+		return true;
+	}
+
 }

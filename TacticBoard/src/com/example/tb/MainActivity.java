@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -37,7 +38,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity 
-implements View.OnTouchListener, View.OnLongClickListener {
+implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	private boolean DEBUG = true;
 	private String TAG = "MainActivity";
 	
@@ -81,19 +82,47 @@ implements View.OnTouchListener, View.OnLongClickListener {
 		
 		mContainer = (ViewGroup) findViewById(R.id.container);
 		mBoard = (ViewGroup) findViewById(R.id.board);
+		mBoard.setOnDragListener(this);	
 		
-		for (int i = 0; i < MAX_PLAYER; i++) {
-			addImgView(ImgView.PLAYER_O, 0, 0, 0, 0);
-			addImgView(ImgView.PLAYER_X, 0, 70, 0, 0);
-		}
-
 		mTacticBoard = (TacticBoard) findViewById(R.id.tb);
+		ViewBar vb = new ViewBar(this, mTacticBoard);
 		
 		FrameLayout frameBar = (FrameLayout) findViewById(R.id.frame_bar);
-		ViewBar vb = new ViewBar(this, mTacticBoard);
 		frameBar.addView(vb);
 	}
 
+	@Override
+	public boolean onDrag(View v, DragEvent event) {
+		float x = event.getX();
+		float y = event.getY();
+		
+		switch (event.getAction()) {
+		case DragEvent.ACTION_DRAG_STARTED:
+		case DragEvent.ACTION_DRAG_ENTERED:
+		case DragEvent.ACTION_DRAG_EXITED:
+			break;
+			
+		case DragEvent.ACTION_DROP:
+			View view = (View) event.getLocalState();
+			
+			if (view.getId() == R.id.img_o)
+				addImgView(ImgView.PLAYER_O, (int)x-view.getWidth()/2, (int)y-view.getHeight()/2, 0, 0);
+			else if (view.getId() == R.id.img_x)
+				addImgView(ImgView.PLAYER_X, (int)x-view.getWidth()/2, (int)y-view.getHeight()/2, 0, 0);
+			
+			view.setVisibility(View.VISIBLE);
+			break;
+			
+		case DragEvent.ACTION_DRAG_ENDED:
+			break;
+			
+		default:
+			break;
+		}
+		return true;
+	}
+	
+	
 	private void addImgView (ImgView imgV, int l, int t, int r, int b) {
 		ImageView iv = new ImageView(this);
 		
