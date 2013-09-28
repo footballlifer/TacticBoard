@@ -26,6 +26,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -70,6 +71,11 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	
 	private boolean mMoving = true;
 	
+	private int mLeft;
+	private int mTop;
+	private int mRight;
+	private int mBottom;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -109,7 +115,8 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 				addImgView(ImgView.PLAYER_O, (int)x-view.getWidth()/2, (int)y-view.getHeight()/2, 0, 0);
 			else if (view.getId() == R.id.img_x)
 				addImgView(ImgView.PLAYER_X, (int)x-view.getWidth()/2, (int)y-view.getHeight()/2, 0, 0);
-			
+			else if (view.getId() == R.id.plus_text)
+				showPlusTextDialog((int)x, (int)y, 0, 0);
 			view.setVisibility(View.VISIBLE);
 			break;
 			
@@ -208,7 +215,12 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		return false;
 	}
 	
-	public void showPlusTextDialog() {	
+	public void showPlusTextDialog(int l, int t, int r, int b) {	
+		mLeft = l;
+		mTop = t;
+		mRight = r;
+		mBottom = b;
+		
 		LayoutInflater inflater = this.getLayoutInflater();
 	    View textDialog = inflater.inflate(R.layout.text_dialog, null);
 	    mAddingText = (EditText) textDialog.findViewById(R.id.adding_text);
@@ -246,7 +258,8 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	    			break;
 	    		}
 	    		mAddingText.clearComposingText();
-	    		addText(mAddingText.getText().toString(), size);
+	    		addText(mAddingText.getText().toString(), size,
+	    				mLeft, mTop, mRight, mBottom);
 	    	}
 	    });
 	    
@@ -254,18 +267,17 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	    ad.show();
 	}
 	
-	private void addText(String txt, float size) {
+	private void addText(String txt, float size, int l, int t, int r, int b) {
 		TextView tv = new TextView(this);
 		tv.setOnTouchListener(this);
 		tv.setOnLongClickListener(this);
 	    mTextStack.push(tv);
 	    mBoard.addView(tv);
 	    
-	    //TODO avoid hard coding
-	    setViewRelativeParams(tv, 270, 220, 0, 0);
 	    tv.setTextSize(size);
 	    tv.setTextColor(mTextColor);
 		tv.setText(txt);
+		setViewRelativeParams(tv, l, t, r, b);
 	}
 	
 	public void saveImgToGallery() {

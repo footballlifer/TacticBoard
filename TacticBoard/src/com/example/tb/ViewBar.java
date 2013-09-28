@@ -70,7 +70,11 @@ implements View.OnClickListener, View.OnTouchListener {
 		mShortDashLine.setOnClickListener(this);
 		mLongDashLine.setOnClickListener(this);
 		mColorSetting.setOnClickListener(this);
-		mPlusText.setOnClickListener(this);
+		
+		//TODO test
+		mPlusText.setOnTouchListener(this);
+		//mPlusText.setOnClickListener(this);
+		
 		mSave.setOnClickListener(this);
 		mNew.setOnClickListener(this);
 		mShare.setOnClickListener(this);
@@ -157,7 +161,8 @@ implements View.OnClickListener, View.OnTouchListener {
 			break;
 		
 		case R.id.plus_text:
-			((MainActivity) mContext).showPlusTextDialog();
+			//TODO test
+			//((MainActivity) mContext).showPlusTextDialog();
 			break;
 		
 		case R.id.save:

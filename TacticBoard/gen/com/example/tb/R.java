@@ -195,8 +195,8 @@ public final class R {
         public static final int color_setting=0x7f090014;
         public static final int container=0x7f090000;
         public static final int frame_bar=0x7f090001;
-        public static final int img_o=0x7f09000c;
-        public static final int img_x=0x7f09000b;
+        public static final int img_o=0x7f09000b;
+        public static final int img_x=0x7f09000c;
         public static final int long_dash_line=0x7f090011;
         public static final int move=0x7f09000e;
         public static final int new_file=0x7f090016;
