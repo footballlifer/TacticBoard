@@ -62,8 +62,12 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		mNew.setOnClickListener(this);
 		mShare.setOnClickListener(this);
 		
+		// default color is black
 		mColorSetting.setBackgroundColor(Color.BLACK);
+		
+		// by default, view moving is enabled, drawing is not
 		((MainActivity) mContext).setMoving(mMoving);
+		mTacticBoard.setMoving(false);
 		mMove.setBackgroundColor(Color.LTGRAY);
 		
 		mColorDialog = new ColorPaletteDialog(mContext);
@@ -79,7 +83,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			}
 		};
 	}
-
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -87,38 +91,51 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 			mTacticBoard.undo();
 			break;
 		
-		case R.id.solid_line:
-			mTacticBoard.setDefaultPaint();
-			mSolidLine.setBackgroundColor(Color.LTGRAY);
+		case R.id.move:
+			mMove.setBackgroundColor(Color.LTGRAY);	
+			mSolidLine.setBackgroundColor(Color.WHITE);
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.WHITE);
+			
+			((MainActivity) mContext).setMoving(true);
+			mTacticBoard.setMoving(false);
+
 			break;
 		
-		case R.id.move:
-			if (mMoving) {
-				mMove.setBackgroundColor(Color.WHITE);
-				mMoving = false;
-			} else {
-				mMove.setBackgroundColor(Color.LTGRAY);
-				mMoving = true;
-			}
+		case R.id.solid_line:
+			mTacticBoard.setDefaultPaint();
+			mMove.setBackgroundColor(Color.WHITE);	
+			mSolidLine.setBackgroundColor(Color.LTGRAY);
+			mShortDashLine.setBackgroundColor(Color.WHITE);
+			mLongDashLine.setBackgroundColor(Color.WHITE);	
 			
-			((MainActivity) mContext).setMoving(mMoving);
-			mTacticBoard.setMoving(!mMoving);
+			((MainActivity) mContext).setMoving(false);
+			mTacticBoard.setMoving(true);
+			
 			break;
-			
+				
 		case R.id.short_dash_line:
 			mTacticBoard.setShortDashPaint();
+			mMove.setBackgroundColor(Color.WHITE);	
 			mSolidLine.setBackgroundColor(Color.WHITE);
 			mShortDashLine.setBackgroundColor(Color.LTGRAY);
 			mLongDashLine.setBackgroundColor(Color.WHITE);
+			
+			((MainActivity) mContext).setMoving(false);
+			mTacticBoard.setMoving(true);
+			
 			break;
 			
 		case R.id.long_dash_line:
 			mTacticBoard.setLongDashPaint();
+			mMove.setBackgroundColor(Color.WHITE);	
 			mSolidLine.setBackgroundColor(Color.WHITE);
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.LTGRAY);
+			
+			((MainActivity) mContext).setMoving(false);
+			mTacticBoard.setMoving(true);
+			
 			break;	
 		
 		case R.id.color_setting:
