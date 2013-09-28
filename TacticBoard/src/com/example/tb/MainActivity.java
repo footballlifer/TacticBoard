@@ -43,11 +43,11 @@ implements View.OnTouchListener, View.OnLongClickListener {
 	
 	private final int MAX_PLAYER = 11;
 	
+	enum ImgView {PLAYER_O, PLAYER_X};
+	
 	private TacticBoard mTacticBoard;
 	private ViewGroup mContainer;
 	private ViewGroup mBoard;
-	private ImageView mImageViewO;
-	private ImageView mImageViewX;
 	
 	private final float TEXT_SIZE_SMALL = 15.0f;
 	private final float TEXT_SIZE_MEDIUM = 25.0f;
@@ -83,20 +83,8 @@ implements View.OnTouchListener, View.OnLongClickListener {
 		mBoard = (ViewGroup) findViewById(R.id.board);
 		
 		for (int i = 0; i < MAX_PLAYER; i++) {
-			mImageViewO = new ImageView(this);
-			mImageViewO.setImageResource(R.drawable.o);
-			mImageViewO.setOnTouchListener(this);
-			mBoard.addView(mImageViewO);
-			mImgOList.add(mImageViewO);
-
-			mImageViewX = new ImageView(this);
-			mImageViewX.setImageResource(R.drawable.x);
-			mImageViewX.setOnTouchListener(this);
-			mBoard.addView(mImageViewX);
-			mImgXList.add(mImageViewX);
-			
-			//TODO avoid hard coding
-			setViewRelativeParams(mImageViewX, 70, 0, 0, 0);
+			addImgView(ImgView.PLAYER_O, 0, 0, 0, 0);
+			addImgView(ImgView.PLAYER_X, 0, 70, 0, 0);
 		}
 
 		mTacticBoard = (TacticBoard) findViewById(R.id.tb);
@@ -106,6 +94,27 @@ implements View.OnTouchListener, View.OnLongClickListener {
 		frameBar.addView(vb);
 	}
 
+	private void addImgView (ImgView imgV, int l, int t, int r, int b) {
+		ImageView iv = new ImageView(this);
+		
+		switch (imgV) {
+		case PLAYER_O:
+			iv.setImageResource(R.drawable.o);
+			mImgOList.add(iv);
+			break;
+		
+		case PLAYER_X:
+			iv.setImageResource(R.drawable.x);
+			mImgOList.add(iv);
+			break;
+				
+		}
+		
+		iv.setOnTouchListener(this);
+		mBoard.addView(iv);
+		setViewRelativeParams(iv, l, t, r, b);
+	}
+	
 	public boolean onTouch(View view, MotionEvent event) {
 		if (mMoving == false) return false;
 		

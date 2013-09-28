@@ -62,7 +62,7 @@ public class ViewBar extends LinearLayout implements View.OnClickListener {
 		mNew.setOnClickListener(this);
 		mShare.setOnClickListener(this);
 		
-		// default color is black
+		// set default color to black
 		mColorSetting.setBackgroundColor(Color.BLACK);
 		
 		// by default, view moving is enabled, drawing is not
