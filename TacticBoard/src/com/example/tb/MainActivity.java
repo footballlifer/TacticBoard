@@ -135,7 +135,6 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		return true;
 	}
 	
-	
 	private void addImgView (ImgView imgV, int l, int t, int r, int b) {
 		ImageView iv = new ImageView(this);
 		
@@ -334,7 +333,6 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "TB", "TB Picture");
 	}
 	
-	//TODO avoid hard coding
 	public void reset() {
 		while(!mTextStack.isEmpty()) {
 			TextView tv = (TextView) mTextStack.pop();
@@ -343,11 +341,14 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		
 		mTacticBoard.resetTacticBoard();
 		
-		for (ImageView iv : mImgOList)
-			setViewRelativeParams(iv, 0, 0, 0, 0);
+		for (ImageView iv : mImgOList) 
+			((RelativeLayout) iv.getParent()).removeView(iv);	
+
+		for (ImageView iv : mImgXList)
+			((RelativeLayout) iv.getParent()).removeView(iv);
 		
-		for (ImageView iv : mImgXList) 
-			setViewRelativeParams(iv, 70, 0, 0, 0);
+		mImgOList.clear();	
+		mImgXList.clear();
 	}
 	
 	//TODO avoid hard coding
