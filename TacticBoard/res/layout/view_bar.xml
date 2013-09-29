@@ -8,26 +8,26 @@
         android:id="@+id/img_o"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/o" />
+        android:src="@drawable/o3" />
     
     <ImageView
         android:id="@+id/img_x"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/x" />  
+        android:src="@drawable/x3" />  
     
     <ImageView
         android:id="@+id/plus_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/text_plus" />
+        android:src="@drawable/text_plus3" />
     
     <ImageView
         android:id="@+id/undo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/undo" 
+        android:src="@drawable/undo3" 
         android:background="@drawable/selector"/>
 
     <ImageView
@@ -35,38 +35,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/movement" />
+        android:src="@drawable/movement3" />
 
     <ImageView
         android:id="@+id/solid_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/solid" />
+        android:src="@drawable/solid3" />
 
     <ImageView
         android:id="@+id/short_dash_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/short_dash" />
+        android:src="@drawable/short_dash3" />
 
     <ImageView
         android:id="@+id/long_dash_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/long_dash" />
+        android:src="@drawable/long_dash3" />
 
-    <!--  
-    <ImageView
-        android:id="@+id/plus_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:src="@drawable/text_plus" />
-	-->
-	
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
