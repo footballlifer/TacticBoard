@@ -51,30 +51,28 @@ implements View.OnClickListener, View.OnTouchListener {
 		
 		mO = (ImageView) findViewById(R.id.img_o);
 		mX = (ImageView) findViewById(R.id.img_x);
+		mPlusText = (ImageView) findViewById(R.id.plus_text);
+
 		mUndo = (ImageView) findViewById(R.id.undo);
 		mMove = (ImageView) findViewById(R.id.move);
 		mSolidLine = (ImageView) findViewById(R.id.solid_line);
 		mShortDashLine = (ImageView) findViewById(R.id.short_dash_line);
 		mLongDashLine = (ImageView) findViewById(R.id.long_dash_line);
 		mColorSetting = (ImageView) findViewById(R.id.color_setting);
-		mPlusText = (ImageView) findViewById(R.id.plus_text);
 		mSave = (ImageView) findViewById(R.id.save);
 		mNew = (ImageView) findViewById(R.id.new_file);
 		mShare = (ImageView) findViewById(R.id.share);
 
 		mO.setOnTouchListener(this);
-		mX.setOnTouchListener(this);
+		mX.setOnTouchListener(this);		
+		mPlusText.setOnTouchListener(this);
+		
 		mUndo.setOnClickListener(this);
 		mMove.setOnClickListener(this);		
 		mSolidLine.setOnClickListener(this);
 		mShortDashLine.setOnClickListener(this);
 		mLongDashLine.setOnClickListener(this);
 		mColorSetting.setOnClickListener(this);
-		
-		//TODO test
-		mPlusText.setOnTouchListener(this);
-		//mPlusText.setOnClickListener(this);
-		
 		mSave.setOnClickListener(this);
 		mNew.setOnClickListener(this);
 		mShare.setOnClickListener(this);
@@ -158,11 +156,6 @@ implements View.OnClickListener, View.OnTouchListener {
 		
 		case R.id.color_setting:
 			mColorDialog.show();
-			break;
-		
-		case R.id.plus_text:
-			//TODO test
-			//((MainActivity) mContext).showPlusTextDialog();
 			break;
 		
 		case R.id.save:

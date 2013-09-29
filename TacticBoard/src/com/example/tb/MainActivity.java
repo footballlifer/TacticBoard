@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,6 +29,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -71,6 +74,8 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	
 	private boolean mMoving = true;
 	
+	// this is for global view change listener
+	private TextView mTextView;
 	private int mLeft;
 	private int mTop;
 	private int mRight;
@@ -268,16 +273,31 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	}
 	
 	private void addText(String txt, float size, int l, int t, int r, int b) {
-		TextView tv = new TextView(this);
-		tv.setOnTouchListener(this);
-		tv.setOnLongClickListener(this);
-	    mTextStack.push(tv);
-	    mBoard.addView(tv);
+		mLeft = l;
+		mTop = t;
+		mRight = r;
+		mBottom = b;
+		
+		mTextView = new TextView(this);
+		mTextView.setOnTouchListener(this);
+		mTextView.setOnLongClickListener(this);
+	    mTextStack.push(mTextView);
+	    mBoard.addView(mTextView);
 	    
-	    tv.setTextSize(size);
-	    tv.setTextColor(mTextColor);
-		tv.setText(txt);
-		setViewRelativeParams(tv, l, t, r, b);
+	    mTextView.setTextSize(size);
+	    mTextView.setTextColor(mTextColor);
+	    mTextView.setText(txt);
+		
+		ViewTreeObserver vto = mTextView.getViewTreeObserver();
+		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+			@Override
+			public void onGlobalLayout() {
+				setViewRelativeParams(mTextView,
+						mLeft-mTextView.getWidth()/2, mTop-mTextView.getHeight()/2, mRight, mBottom);
+				mTextView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+			}
+		});
 	}
 	
 	public void saveImgToGallery() {
