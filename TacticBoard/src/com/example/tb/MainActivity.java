@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -229,7 +230,8 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		LayoutInflater inflater = this.getLayoutInflater();
 	    View textDialog = inflater.inflate(R.layout.text_dialog, null);
 	    mAddingText = (EditText) textDialog.findViewById(R.id.adding_text);
-	    mAddingText.setTextColor(mTextColor);
+	    mAddingText.setTextColor(mTextColor);	    
+	    
 	    mRadioGroup = (RadioGroup) textDialog.findViewById(R.id.radio_text);	
 	    
 	    ((RadioButton) textDialog.findViewById(R.id.radio_small)).setTextSize(TEXT_SIZE_SMALL);
@@ -270,6 +272,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	    
 	    AlertDialog ad = builder.create();
 	    ad.show();
+	    ad.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 	}
 	
 	private void addText(String txt, float size, int l, int t, int r, int b) {

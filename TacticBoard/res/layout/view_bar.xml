@@ -17,6 +17,13 @@
         android:src="@drawable/x" />  
     
     <ImageView
+        android:id="@+id/plus_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:src="@drawable/text_plus" />
+    
+    <ImageView
         android:id="@+id/undo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,13 +58,15 @@
         android:layout_marginLeft="0dp"
         android:src="@drawable/long_dash" />
 
+    <!--  
     <ImageView
         android:id="@+id/plus_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
         android:src="@drawable/text_plus" />
-
+	-->
+	
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

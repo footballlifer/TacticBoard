@@ -197,20 +197,20 @@ public final class R {
         public static final int frame_bar=0x7f090001;
         public static final int img_o=0x7f09000b;
         public static final int img_x=0x7f09000c;
-        public static final int long_dash_line=0x7f090011;
-        public static final int move=0x7f09000e;
+        public static final int long_dash_line=0x7f090012;
+        public static final int move=0x7f09000f;
         public static final int new_file=0x7f090016;
-        public static final int plus_text=0x7f090012;
+        public static final int plus_text=0x7f09000d;
         public static final int radio_large=0x7f09000a;
         public static final int radio_medium=0x7f090009;
         public static final int radio_small=0x7f090008;
         public static final int radio_text=0x7f090007;
         public static final int save=0x7f090015;
         public static final int share=0x7f090017;
-        public static final int short_dash_line=0x7f090010;
-        public static final int solid_line=0x7f09000f;
+        public static final int short_dash_line=0x7f090011;
+        public static final int solid_line=0x7f090010;
         public static final int tb=0x7f090003;
-        public static final int undo=0x7f09000d;
+        public static final int undo=0x7f09000e;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
