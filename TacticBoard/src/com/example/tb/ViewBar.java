@@ -182,7 +182,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		
 		DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
 		v.startDrag(data, shadowBuilder, v, 0);
-		v.setVisibility(View.INVISIBLE);
+		//v.setVisibility(View.INVISIBLE);
 		return true;
 	}
 
