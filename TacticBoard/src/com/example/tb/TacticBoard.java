@@ -47,6 +47,7 @@ public class TacticBoard extends View {
 	private float mStartY = -1;
 	private int mLineCount = 1;
 	
+	private final int SOLID_LINE_WIDTH = 4;
 	private final int SHORT_DASH_WIDTH = 3;
 	private final int SHORT_DASH_DOT = 5;
 	private final int SHORT_DASH_SPACE = 10;
@@ -59,8 +60,7 @@ public class TacticBoard extends View {
 	private static final boolean RENDERING_ANTIALIAS = true;
 	private static final boolean DITHER_FLAG = true;
 
-	private int mCertainColor = 0xFF000000;
-	private float mStrokeWidth = 4.0f;
+	private int mColor = 0xFF000000;
 
 	private Bitmap mBackGround;
 	private Bitmap mScaledBackGround;
@@ -91,26 +91,29 @@ public class TacticBoard extends View {
 		Log.i(TAG, "Constructor Initialized");
 		mPaint.reset();
 		mPaint.setAntiAlias(RENDERING_ANTIALIAS);
-		mPaint.setColor(mCertainColor);
+		mPaint.setColor(mColor);
 		mPaint.setStyle(Paint.Style.STROKE);
 		mPaint.setStrokeJoin(Paint.Join.ROUND);
 		mPaint.setStrokeCap(Paint.Cap.ROUND);
-		mPaint.setStrokeWidth(mStrokeWidth);
+		mPaint.setStrokeWidth(SOLID_LINE_WIDTH);
 		mPaint.setDither(DITHER_FLAG);
 		
 		mLastX = -1;
 		mLastY = -1;
 	}
 	
+	public void setSolidLinePaint() {
+		mPaint.setPathEffect(null);
+		mPaint.setStrokeWidth(SOLID_LINE_WIDTH);
+	}
+	
 	public void setShortDashPaint() {
-		setDefaultPaint();
 		mPaint.setStrokeWidth(SHORT_DASH_WIDTH);
 		mPaint.setPathEffect(
 				new DashPathEffect(new float[] {SHORT_DASH_DOT, SHORT_DASH_SPACE}, 0));
 	}
 	
 	public void setLongDashPaint() {
-		setDefaultPaint();
 		mPaint.setStrokeWidth(LONG_DASH_WIDTH);
 		mPaint.setPathEffect(
 				new DashPathEffect(new float[] {LONG_DASH_DOT, LONG_DASH_SPACE}, 0));

@@ -119,7 +119,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			break;
 		
 		case R.id.solid_line:
-			mTacticBoard.setDefaultPaint();
+			mTacticBoard.setSolidLinePaint();
 			mMove.setBackgroundColor(Color.WHITE);	
 			mSolidLine.setBackgroundColor(Color.LTGRAY);
 			mShortDashLine.setBackgroundColor(Color.WHITE);
