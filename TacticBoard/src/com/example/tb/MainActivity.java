@@ -285,7 +285,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		mTextView.setOnLongClickListener(this);
 	    mTextStack.push(mTextView);
 	    mBoard.addView(mTextView);
-	    
+	    // TODO: setText Invisible first 
 	    mTextView.setTextSize(size);
 	    mTextView.setTextColor(mTextColor);
 	    mTextView.setText(txt);

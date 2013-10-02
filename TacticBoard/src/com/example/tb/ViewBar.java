@@ -3,16 +3,14 @@ package com.example.tb;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.DragShadowBuilder;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.PopupWindow;
 
 public class ViewBar extends LinearLayout 
 implements View.OnClickListener, View.OnTouchListener {
@@ -30,15 +28,20 @@ implements View.OnClickListener, View.OnTouchListener {
 	private ImageView mSolidLine;
 	private ImageView mShortDashLine;
 	private ImageView mLongDashLine;
-	private ImageView mColorSetting;
 	private ImageView mPlusText;
-	private ImageView mSave;
-	private ImageView mNew;
-	private ImageView mShare;
-		
+	
+	//Submenu list items
+	private ImageView mList;
+	private View mViewNew;
+	private View mViewSave;
+	private View mViewShare;
+	private View mViewColorSetting;
+	private ImageView mImageViewColor;
+	private PopupWindow mPopupWindow;
+	
 	private boolean mMoving = true;
 		
-	private int mColor = 0xff000000;
+	private int mColor = Color.BLACK;
 	private int mSize = 2;
 	
 	public ViewBar(Context context, TacticBoard tb) {
@@ -52,33 +55,22 @@ implements View.OnClickListener, View.OnTouchListener {
 		mO = (ImageView) findViewById(R.id.img_o);
 		mX = (ImageView) findViewById(R.id.img_x);
 		mPlusText = (ImageView) findViewById(R.id.plus_text);
-
 		mUndo = (ImageView) findViewById(R.id.undo);
 		mMove = (ImageView) findViewById(R.id.move);
 		mSolidLine = (ImageView) findViewById(R.id.solid_line);
 		mShortDashLine = (ImageView) findViewById(R.id.short_dash_line);
 		mLongDashLine = (ImageView) findViewById(R.id.long_dash_line);
-		mColorSetting = (ImageView) findViewById(R.id.color_setting);
-		mSave = (ImageView) findViewById(R.id.save);
-		mNew = (ImageView) findViewById(R.id.new_file);
-		mShare = (ImageView) findViewById(R.id.share);
-
+		mList = (ImageView) findViewById(R.id.list);
+		
 		mO.setOnTouchListener(this);
 		mX.setOnTouchListener(this);		
-		mPlusText.setOnTouchListener(this);
-		
+		mPlusText.setOnTouchListener(this);	
 		mUndo.setOnClickListener(this);
 		mMove.setOnClickListener(this);		
 		mSolidLine.setOnClickListener(this);
 		mShortDashLine.setOnClickListener(this);
 		mLongDashLine.setOnClickListener(this);
-		mColorSetting.setOnClickListener(this);
-		mSave.setOnClickListener(this);
-		mNew.setOnClickListener(this);
-		mShare.setOnClickListener(this);
-		
-		// set default color to black
-		mColorSetting.setBackgroundColor(Color.BLACK);
+		mList.setOnClickListener(this);
 		
 		// by default, view moving is enabled, drawing is not
 		((MainActivity) mContext).setMoving(mMoving);
@@ -94,10 +86,38 @@ implements View.OnClickListener, View.OnTouchListener {
 				mColor = color;
 				((MainActivity) mContext).setTextColor(mColor);
 				mTacticBoard.updatePaintColor(mColor);
-				mColorSetting.setBackgroundColor(mColor);
+				mImageViewColor.setBackgroundColor(mColor);
 			}
 		};
 	}
+	
+	private void popupSubmenu() {
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View popupView = inflater.inflate(R.layout.submenu_list, null);
+		
+		mViewNew = (View) popupView.findViewById(R.id.new_file);
+		mViewSave = (View) popupView.findViewById(R.id.save);
+		mViewShare = (View) popupView.findViewById(R.id.share);
+		mImageViewColor = (ImageView) popupView.findViewById(R.id.color_setting);
+		mViewColorSetting = (View) popupView.findViewById(R.id.color);
+		
+		mViewNew.setOnClickListener(this);
+		mViewSave.setOnClickListener(this);
+		mViewShare.setOnClickListener(this);
+		mViewColorSetting.setOnClickListener(this);
+
+		mImageViewColor.setBackgroundColor(mColor);
+		
+		mPopupWindow = new PopupWindow(popupView, 
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		mPopupWindow.setOutsideTouchable(true);
+		// dismiss popup window while touching outside of popup
+		mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+		mPopupWindow.setFocusable(true);
+		
+		mPopupWindow.showAsDropDown(mList);
+	}
+	
 		
 	@Override
 	public void onClick(View v) {
@@ -154,22 +174,29 @@ implements View.OnClickListener, View.OnTouchListener {
 			
 			break;	
 		
-		case R.id.color_setting:
-			mColorDialog.show();
-			break;
-		
-		case R.id.save:
-			((MainActivity) mContext).saveImgToGallery();
-			break;	
-		
-		case R.id.new_file:
-			((MainActivity) mContext).reset();
-			break;	
-		
-		case R.id.share:
-			((MainActivity) mContext).share();
+		case R.id.list:
+			popupSubmenu();
 			break;	
 			
+		case R.id.new_file:
+			((MainActivity) mContext).reset();
+			if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
+			break;	
+			
+		case R.id.save:
+			((MainActivity) mContext).saveImgToGallery();
+			if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
+			break;	
+			
+		case R.id.share:
+			((MainActivity) mContext).share();
+			if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
+			break;		
+			
+		case R.id.color:
+			mColorDialog.show();
+			break;		
+		
 		default:
 			Log.e(TAG, "ERROR: switch default clided");
 			break;

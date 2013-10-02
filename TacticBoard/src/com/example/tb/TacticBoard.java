@@ -209,7 +209,8 @@ public class TacticBoard extends View {
 		if (mBitmap != null)
 			canvas.drawBitmap(mBitmap, 0, 0, null);
 	}
-
+	
+	//TODO change API name to setDrawing
 	public void setMoving(boolean b) {
 		mMoving = b;
 	}
