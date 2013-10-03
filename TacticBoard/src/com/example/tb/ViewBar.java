@@ -74,7 +74,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		
 		// by default, view moving is enabled, drawing is not
 		((MainActivity) mContext).setMoving(mMoving);
-		mTacticBoard.setMoving(false);
+		mTacticBoard.setDrawing(false);
 		mMove.setBackgroundColor(Color.LTGRAY);
 		
 		mColorDialog = new ColorPaletteDialog(mContext);
@@ -86,7 +86,7 @@ implements View.OnClickListener, View.OnTouchListener {
 				mColor = color;
 				((MainActivity) mContext).setTextColor(mColor);
 				mTacticBoard.updatePaintColor(mColor);
-				mImageViewColor.setBackgroundColor(mColor);
+				//mImageViewColor.setBackgroundColor(mColor);
 			}
 		};
 	}
@@ -134,7 +134,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			mLongDashLine.setBackgroundColor(Color.WHITE);
 			
 			((MainActivity) mContext).setMoving(true);
-			mTacticBoard.setMoving(false);
+			mTacticBoard.setDrawing(false);
 
 			break;
 		
@@ -146,7 +146,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			mLongDashLine.setBackgroundColor(Color.WHITE);	
 			
 			((MainActivity) mContext).setMoving(false);
-			mTacticBoard.setMoving(true);
+			mTacticBoard.setDrawing(true);
 			
 			break;
 				
@@ -158,7 +158,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			mLongDashLine.setBackgroundColor(Color.WHITE);
 			
 			((MainActivity) mContext).setMoving(false);
-			mTacticBoard.setMoving(true);
+			mTacticBoard.setDrawing(true);
 			
 			break;
 			
@@ -170,7 +170,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			mLongDashLine.setBackgroundColor(Color.LTGRAY);
 			
 			((MainActivity) mContext).setMoving(false);
-			mTacticBoard.setMoving(true);
+			mTacticBoard.setDrawing(true);
 			
 			break;	
 		
@@ -195,6 +195,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			
 		case R.id.color:
 			mColorDialog.show();
+			if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
 			break;		
 		
 		default:

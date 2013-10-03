@@ -65,7 +65,7 @@ public class TacticBoard extends View {
 	private Bitmap mBackGround;
 	private Bitmap mScaledBackGround;
 	
-	private boolean mMoving = false;
+	private boolean mDrawing = false;
 	
 	public TacticBoard(Context context) {
 		super(context);
@@ -211,12 +211,12 @@ public class TacticBoard extends View {
 	}
 	
 	//TODO change API name to setDrawing
-	public void setMoving(boolean b) {
-		mMoving = b;
+	public void setDrawing(boolean b) {
+		mDrawing = b;
 	}
 	
 	public boolean onTouchEvent(MotionEvent event) {
-		if (mMoving == false) return false;
+		if (mDrawing == false) return false;
 		
 		int action = event.getAction();
 		Rect rect = null;
