@@ -59,6 +59,8 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	private final float TEXT_SIZE_MEDIUM = 25.0f;
 	private final float TEXT_SIZE_LARGE = 35.0f;
 	
+	private final int REMOVE_BORDWER= 15;
+	
 	// following members are used in dialog
 	private View mView;
 	private EditText mAddingText;
@@ -175,7 +177,10 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 			setViewRelativeParams(view, x-xDelta, y-yDelta, -50, -50);
 			break;
 			
-		case MotionEvent.ACTION_UP:		
+		case MotionEvent.ACTION_UP:	
+			if (x < REMOVE_BORDWER) view.setVisibility(View.INVISIBLE);
+			break;
+			
 		case MotionEvent.ACTION_POINTER_DOWN:		
 		case MotionEvent.ACTION_POINTER_UP:
 			break;
