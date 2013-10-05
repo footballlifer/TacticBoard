@@ -8,26 +8,26 @@
         android:id="@+id/img_o"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/o3" />
+        android:src="@drawable/blue6" />
     
     <ImageView
         android:id="@+id/img_x"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/x3" />  
+        android:src="@drawable/redx8" />  
     
     <ImageView
         android:id="@+id/plus_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/text_plus3" />
+        android:src="@drawable/t" />
     
     <ImageView
         android:id="@+id/undo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/undo3" 
+        android:src="@drawable/undo5" 
         android:background="@drawable/selector"/>
 
     <ImageView
@@ -35,34 +35,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/movement3" />
+        android:src="@drawable/move2" />
 
     <ImageView
         android:id="@+id/solid_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/solid3" />
+        android:src="@drawable/line5" />
 
     <ImageView
         android:id="@+id/short_dash_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/short_dash3" />
+        android:src="@drawable/short_dash5" />
 
     <ImageView
         android:id="@+id/long_dash_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/long_dash3" />
+        android:src="@drawable/long_dash5" />
 
 	<ImageView
         android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/list" 
+        android:src="@drawable/list2" 
         android:background="@drawable/selector"/>
 	
 </LinearLayout>
