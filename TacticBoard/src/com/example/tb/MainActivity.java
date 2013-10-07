@@ -142,12 +142,12 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		
 		switch (imgV) {
 		case PLAYER_O:
-			iv.setImageResource(R.drawable.blue6);
+			iv.setImageResource(R.drawable.circleblue4);
 			mImgOList.add(iv);
 			break;
 		
 		case PLAYER_X:
-			iv.setImageResource(R.drawable.redx8);
+			iv.setImageResource(R.drawable.circlered6);
 			mImgOList.add(iv);
 			break;
 				

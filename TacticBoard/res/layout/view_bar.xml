@@ -8,13 +8,13 @@
         android:id="@+id/img_o"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/blue6" />
+        android:src="@drawable/circleblue4" />
     
     <ImageView
         android:id="@+id/img_x"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/redx8" />  
+        android:src="@drawable/circlered6" />  
     
     <ImageView
         android:id="@+id/plus_text"
