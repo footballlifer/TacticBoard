@@ -1,4 +1,4 @@
-package com.example.tb;
+package nanofuntas.tb;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
+import com.example.tb.R;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

@@ -1,7 +1,9 @@
-package com.example.tb;
+package nanofuntas.tb;
 
 import java.io.OutputStream;
 import java.util.Stack;
+
+import com.example.tb.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
