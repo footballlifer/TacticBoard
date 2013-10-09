@@ -44,7 +44,6 @@ implements View.OnClickListener, View.OnTouchListener {
 	private boolean mMoving = true;
 		
 	private int mColor = Color.BLACK;
-	private int mSize = 2;
 	
 	public ViewBar(Context context, PaintBoard pb) {
 		super(context);
