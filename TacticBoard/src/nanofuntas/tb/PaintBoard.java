@@ -212,7 +212,6 @@ public class PaintBoard extends View {
 			canvas.drawBitmap(mBitmap, 0, 0, null);
 	}
 	
-	//TODO change API name to setDrawing
 	public void setDrawing(boolean b) {
 		mDrawing = b;
 	}
