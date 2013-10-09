@@ -15,7 +15,7 @@
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/newfile4" />
+            android:src="@drawable/ic_new_file" />
 
         <TextView
             android:id="@+id/textView1"
@@ -35,7 +35,7 @@
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/save3" />
+            android:src="@drawable/ic_save" />
 
         <TextView
             android:id="@+id/textView2"
@@ -55,7 +55,7 @@
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/share3" />
+            android:src="@drawable/ic_share" />
 
         <TextView
             android:id="@+id/textView3"
@@ -81,13 +81,13 @@
                 android:id="@+id/color3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/color3_v1" />
+                android:src="@drawable/ic_color3" />
 
             <ImageView
                 android:id="@+id/color_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/color_blank" />
+                android:src="@drawable/ic_color_blank" />
         </LinearLayout>
 
         <TextView

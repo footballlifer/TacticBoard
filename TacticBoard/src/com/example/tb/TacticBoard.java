@@ -83,7 +83,7 @@ public class TacticBoard extends View {
 	public void init(Context context) {
 		this.mContext = context;
 		setDefaultPaint();
-		mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.field2);
+		mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.img_field);
 		mLineCount = 1;
 	}
 	
