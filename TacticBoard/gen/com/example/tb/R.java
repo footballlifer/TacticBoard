@@ -254,7 +254,7 @@ public final class R {
         public static final int undo=0x7f09001b;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
+        public static final int activity_tactic_board=0x7f030000;
         public static final int color_dialog=0x7f030001;
         public static final int edit_text_dialog=0x7f030002;
         public static final int submenu_list=0x7f030003;

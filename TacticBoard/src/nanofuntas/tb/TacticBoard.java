@@ -91,7 +91,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		// remove status bar
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_tactic_board);
 		
 		mContainer = (ViewGroup) findViewById(R.id.container);
 		mBoard = (ViewGroup) findViewById(R.id.board);
