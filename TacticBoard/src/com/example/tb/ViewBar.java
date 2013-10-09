@@ -18,7 +18,7 @@ implements View.OnClickListener, View.OnTouchListener {
 	private String TAG = "ViewBar";
 	
 	private Context mContext;
-	private TacticBoard mTacticBoard;
+	private PaintBoard mPaintBoard;
 	private ColorPaletteDialog mColorDialog;
 
 	private ImageView mO;
@@ -44,10 +44,10 @@ implements View.OnClickListener, View.OnTouchListener {
 	private int mColor = Color.BLACK;
 	private int mSize = 2;
 	
-	public ViewBar(Context context, TacticBoard tb) {
+	public ViewBar(Context context, PaintBoard pb) {
 		super(context);
 		this.mContext = context;
-		this.mTacticBoard = tb;
+		this.mPaintBoard = pb;
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.view_bar, this, true);
@@ -73,8 +73,8 @@ implements View.OnClickListener, View.OnTouchListener {
 		mList.setOnClickListener(this);
 		
 		// by default, view moving is enabled, drawing is not
-		((MainActivity) mContext).setMoving(mMoving);
-		mTacticBoard.setDrawing(false);
+		((TacticBoard) mContext).setMoving(mMoving);
+		mPaintBoard.setDrawing(false);
 		mMove.setBackgroundColor(Color.LTGRAY);
 		
 		mColorDialog = new ColorPaletteDialog(mContext);
@@ -84,8 +84,8 @@ implements View.OnClickListener, View.OnTouchListener {
 			@Override
 			public void onColorSelected(int color) {
 				mColor = color;
-				((MainActivity) mContext).setTextColor(mColor);
-				mTacticBoard.updatePaintColor(mColor);
+				((TacticBoard) mContext).setTextColor(mColor);
+				mPaintBoard.updatePaintColor(mColor);
 				//mImageViewColor.setBackgroundColor(mColor);
 			}
 		};
@@ -124,7 +124,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		switch (v.getId()) {
 		
 		case R.id.undo:
-			mTacticBoard.undo();
+			mPaintBoard.undo();
 			break;
 		
 		case R.id.move:
@@ -133,44 +133,44 @@ implements View.OnClickListener, View.OnTouchListener {
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.WHITE);
 			
-			((MainActivity) mContext).setMoving(true);
-			mTacticBoard.setDrawing(false);
+			((TacticBoard) mContext).setMoving(true);
+			mPaintBoard.setDrawing(false);
 
 			break;
 		
 		case R.id.solid_line:
-			mTacticBoard.setSolidLinePaint();
+			mPaintBoard.setSolidLinePaint();
 			mMove.setBackgroundColor(Color.WHITE);	
 			mSolidLine.setBackgroundColor(Color.LTGRAY);
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.WHITE);	
 			
-			((MainActivity) mContext).setMoving(false);
-			mTacticBoard.setDrawing(true);
+			((TacticBoard) mContext).setMoving(false);
+			mPaintBoard.setDrawing(true);
 			
 			break;
 				
 		case R.id.short_dash_line:
-			mTacticBoard.setShortDashPaint();
+			mPaintBoard.setShortDashPaint();
 			mMove.setBackgroundColor(Color.WHITE);	
 			mSolidLine.setBackgroundColor(Color.WHITE);
 			mShortDashLine.setBackgroundColor(Color.LTGRAY);
 			mLongDashLine.setBackgroundColor(Color.WHITE);
 			
-			((MainActivity) mContext).setMoving(false);
-			mTacticBoard.setDrawing(true);
+			((TacticBoard) mContext).setMoving(false);
+			mPaintBoard.setDrawing(true);
 			
 			break;
 			
 		case R.id.long_dash_line:
-			mTacticBoard.setLongDashPaint();
+			mPaintBoard.setLongDashPaint();
 			mMove.setBackgroundColor(Color.WHITE);	
 			mSolidLine.setBackgroundColor(Color.WHITE);
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.LTGRAY);
 			
-			((MainActivity) mContext).setMoving(false);
-			mTacticBoard.setDrawing(true);
+			((TacticBoard) mContext).setMoving(false);
+			mPaintBoard.setDrawing(true);
 			
 			break;	
 		
@@ -179,17 +179,17 @@ implements View.OnClickListener, View.OnTouchListener {
 			break;	
 			
 		case R.id.new_file:
-			((MainActivity) mContext).reset();
+			((TacticBoard) mContext).reset();
 			if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
 			break;	
 			
 		case R.id.save:
-			((MainActivity) mContext).saveImgToGallery();
+			((TacticBoard) mContext).saveImgToGallery();
 			if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
 			break;	
 			
 		case R.id.share:
-			((MainActivity) mContext).share();
+			((TacticBoard) mContext).share();
 			if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
 			break;		
 			

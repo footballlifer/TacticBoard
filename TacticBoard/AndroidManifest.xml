@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.tb.MainActivity"
+            android:name="com.example.tb.TacticBoard"
             android:label="@string/app_name" 
             android:screenOrientation="portrait">
             <intent-filter>

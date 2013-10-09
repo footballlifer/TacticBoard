@@ -1,419 +1,398 @@
 package com.example.tb;
 
-import java.io.OutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
-import android.content.Context;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.DashPathEffect;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Rect;
-import android.util.AttributeSet;
+import android.graphics.Bitmap.CompressFormat;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-public class TacticBoard extends View {
+public class TacticBoard extends Activity 
+implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	private boolean DEBUG = true;
 	private String TAG = "TacticBoard";
 	
-	private Context mContext;
-	private int mViewWidth;
-	private int mViewHeight;
+	private final int MAX_PLAYER = 11;
 	
-	private Stack<Bitmap> mUndoStack = new Stack<Bitmap>();
-	private Stack<Path> mPathStack = new Stack<Path>();
+	enum ImgView {PLAYER_O, PLAYER_X};
 	
-	public static int maxUndos = 10;
-
-	private final Paint mPaint = new Paint();
-	private Path mPath = new Path();
-	private Canvas mCanvas;
-	private Bitmap mBitmap;
-	private float mLastX;
-	private float mLastY;
-	private float mCurveEndX;
-	private float mCurveEndY;
-
-	private final float RADIUS_TRIANGLE = 20;
-	private final float RADIUS_CIRCLE = 15;
-	private final float TEXT_SIZE = 30;
-	private final int LINE_NUMBER_COLOR = 0xFFFFFFFF;
-	private float mStartX = -1;
-	private float mStartY = -1;
-	private int mLineCount = 1;
+	private PaintBoard mPaintBoard;
+	private ViewGroup mContainer;
+	private ViewGroup mBoard;
 	
-	private final int SOLID_LINE_WIDTH = 4;
-	private final int SHORT_DASH_WIDTH = 3;
-	private final int SHORT_DASH_DOT = 5;
-	private final int SHORT_DASH_SPACE = 10;
-	private final int LONG_DASH_WIDTH = 5;
-	private final int LONG_DASH_DOT = 40;
-	private final int LONG_DASH_SPACE = 30;
+	private final float TEXT_SIZE_SMALL = 15.0f;
+	private final float TEXT_SIZE_MEDIUM = 25.0f;
+	private final float TEXT_SIZE_LARGE = 35.0f;
 	
-	private static final int INVALIDATE_EXTRA_BORDER = 10;
-	private static final float TOUCH_TOLERANCE = 2;
-	private static final boolean RENDERING_ANTIALIAS = true;
-	private static final boolean DITHER_FLAG = true;
-
-	private int mColor = 0xFF000000;
-
-	private Bitmap mBackGround;
-	private Bitmap mScaledBackGround;
+	private final int REMOVE_BORDWER= 15;
 	
-	private boolean mDrawing = false;
+	// following members are used in dialog
+	private View mView;
+	private EditText mAddingText;
+	private EditText mChangingText;
+	private RadioGroup mRadioGroup;
+	private int mTextColor = 0xFF000000;
 	
-	public TacticBoard(Context context) {
-		super(context);
-		init(context);
-	}	
-	public TacticBoard(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init(context);
-	}
-	public TacticBoard(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		init(context);
-	}
+	private List<ImageView> mImgOList = new ArrayList<ImageView>();
+	private List<ImageView> mImgXList = new ArrayList<ImageView>();
+	private Stack<TextView> mTextStack = new Stack<TextView>();
 	
-	public void init(Context context) {
-		this.mContext = context;
-		setDefaultPaint();
-		mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.img_field);
-		mLineCount = 1;
-	}
+	private int xDelta;
+	private int yDelta;
 	
-	public void setDefaultPaint() {
-		Log.i(TAG, "Constructor Initialized");
-		mPaint.reset();
-		mPaint.setAntiAlias(RENDERING_ANTIALIAS);
-		mPaint.setColor(mColor);
-		mPaint.setStyle(Paint.Style.STROKE);
-		mPaint.setStrokeJoin(Paint.Join.ROUND);
-		mPaint.setStrokeCap(Paint.Cap.ROUND);
-		mPaint.setStrokeWidth(SOLID_LINE_WIDTH);
-		mPaint.setDither(DITHER_FLAG);
+	private boolean mMoving = true;
+	
+	// this is for global view change listener
+	private TextView mTextView;
+	private int mLeft;
+	private int mTop;
+	private int mRight;
+	private int mBottom;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+        
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// remove status bar
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		setContentView(R.layout.activity_main);
 		
-		mLastX = -1;
-		mLastY = -1;
-	}
-	
-	public void setSolidLinePaint() {
-		mPaint.setPathEffect(null);
-		mPaint.setStrokeWidth(SOLID_LINE_WIDTH);
-	}
-	
-	public void setShortDashPaint() {
-		mPaint.setStrokeWidth(SHORT_DASH_WIDTH);
-		mPaint.setPathEffect(
-				new DashPathEffect(new float[] {SHORT_DASH_DOT, SHORT_DASH_SPACE}, 0));
-	}
-	
-	public void setLongDashPaint() {
-		mPaint.setStrokeWidth(LONG_DASH_WIDTH);
-		mPaint.setPathEffect(
-				new DashPathEffect(new float[] {LONG_DASH_DOT, LONG_DASH_SPACE}, 0));
+		mContainer = (ViewGroup) findViewById(R.id.container);
+		mBoard = (ViewGroup) findViewById(R.id.board);
+		mBoard.setOnDragListener(this);	
+		
+		mPaintBoard = (PaintBoard) findViewById(R.id.tb);
+		ViewBar vb = new ViewBar(this, mPaintBoard);
+		
+		FrameLayout frameBar = (FrameLayout) findViewById(R.id.frame_bar);
+		frameBar.addView(vb);
 	}
 
-	public void saveImageToUndoStack() {
-		if (mBitmap == null) return;
-		
-		if (mUndoStack.size() >= maxUndos) {
-			Bitmap i = (Bitmap) mUndoStack.get(0);
-			i.recycle();
-			mUndoStack.remove(i);
-		}
-
-		Bitmap bitmap = Bitmap.createBitmap(mBitmap.getWidth(),
-				mBitmap.getHeight(), Bitmap.Config.ARGB_4444);
-		Canvas canvas = new Canvas();
-		canvas.setBitmap(bitmap);
-		canvas.drawBitmap(mBitmap, 0, 0, mPaint);
-
-		mUndoStack.push(bitmap);
-	}
-
-	public void undo() {
-		Bitmap prev = null;
-		try {
-			prev = (Bitmap) mUndoStack.pop();
-			if (mLineCount > 0) mLineCount --;
-		} catch (Exception e) {
-			Log.e(TAG, "undo exception");
-			e.printStackTrace();
-		}
-
-		if (prev != null) {
-			mCanvas.drawBitmap(prev, 0, 0, mPaint);
-			invalidate();
-
-			prev.recycle();
-		}
-	}
-
-	public void drawBackGround(Canvas canvas) {
-		if (canvas != null) {
-			mScaledBackGround = Bitmap.createScaledBitmap(mBackGround, mViewWidth, mViewHeight, true);
-			canvas.drawBitmap (mScaledBackGround, 0, 0, null);
-			//canvas.drawColor(Color.WHITE);
-		}
-	}
-
-	public void updatePaintProperty(int color, int size) {
-		mPaint.setColor(color);
-		mPaint.setStrokeWidth(size);
-	}
-	
-	public void updatePaintColor(int color) {
-		mPaint.setColor(color);
-	}
-
-	public void updatePaintSize(int size) {
-		mPaint.setStrokeWidth(size);
-	}
-	
-	public void resetTacticBoard() {
-		if (mViewWidth > 0 && mViewHeight > 0) {
-			newImage(mViewWidth, mViewHeight);
-		}
-		mUndoStack.clear();
-		mLineCount = 1;
-	}
-	
-	public void newImage(int width, int height) {
-		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
-		Canvas canvas = new Canvas();
-		canvas.setBitmap(bitmap);
-
-		mBitmap = bitmap;
-		mCanvas = canvas;
-
-		drawBackGround(mCanvas);
-		invalidate();
-	}
-
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		this.mViewWidth = w;
-		this.mViewHeight = h;
-		if (mViewWidth > 0 && mViewHeight >0) 
-			newImage(mViewWidth, mViewHeight);
-	}
-	
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-
-		if (mBitmap != null)
-			canvas.drawBitmap(mBitmap, 0, 0, null);
-	}
-	
-	//TODO change API name to setDrawing
-	public void setDrawing(boolean b) {
-		mDrawing = b;
-	}
-	
-	public boolean onTouchEvent(MotionEvent event) {
-		if (mDrawing == false) return false;
-		
-		int action = event.getAction();
-		Rect rect = null;
-		
-		switch (action) {
-		case MotionEvent.ACTION_DOWN:
-			saveImageToUndoStack();
-			
-			mStartX = event.getX();
-			mStartY = event.getY();
-			
-			rect = touchDown(event);
-			if (rect != null) invalidate(rect);
-			
-			return true;		
-			
-		case MotionEvent.ACTION_MOVE:
-			rect = touchMoveOrUp(event);
-			if (rect != null) invalidate(rect);	
-			
-			return true;
-		
-		case MotionEvent.ACTION_UP:
-			rect = touchMoveOrUp(event);
-			if (rect != null) invalidate(rect);
-			
-			mPathStack.push(mPath);
-			mPath = new Path();
-			//mPath.rewind();
-			
-			rect = drawArrow();
-			invalidate(rect);
-			
-			rect = drawLineNumber(mStartX, mStartY);
-			if (rect != null) invalidate(rect);
-			
-			return true;
-		}
-
-		return false;
-	}
-	
-	private Rect drawLineNumber(float startX, float startY) {
-		float x = startX;
-		float y = startY;
-		
-		String lineNumber = Integer.toString(mLineCount);
-		
-		// draw circle at the starting line point
-		//mPaint.setStyle(Paint.Style.FILL);
-		//mCanvas.drawCircle(x, y, RADIUS_CIRCLE, mPaint);
-		//mPaint.setStyle(Paint.Style.STROKE);
-
-	    Rect numberRect = new Rect();
-		Paint pNumber = new Paint();
-		pNumber.setTextSize(TEXT_SIZE);
-		pNumber.setColor(LINE_NUMBER_COLOR);
-	    pNumber.getTextBounds(lineNumber, 0, lineNumber.length(), numberRect);
-	    
-		mCanvas.drawText(lineNumber, x - numberRect.width()/2, y + numberRect.height()/2, pNumber);
-		
-		mLineCount ++;
-		
-		Rect invalidRect = new Rect();
-		invalidRect.set((int) (x - RADIUS_CIRCLE - INVALIDATE_EXTRA_BORDER), 
-						(int) (y - RADIUS_CIRCLE - INVALIDATE_EXTRA_BORDER),
-						(int) (x + RADIUS_CIRCLE + INVALIDATE_EXTRA_BORDER), 
-						(int) (y + RADIUS_CIRCLE + INVALIDATE_EXTRA_BORDER) );
-		
-		return invalidRect;
-	}
-	
-	private Rect drawArrow() {
-		float preX = mCurveEndX;
-		float preY = mCurveEndY;
-		float centerX = mLastX;
-		float centerY = mLastY;
-
-		float alpha = (float) Math.atan( (preX - centerX)/(preY - centerY) );
-		float alphaDegree = (float) Math.toDegrees(alpha);
-		
-		if (preY - centerY > 0) 
-			alphaDegree = - alphaDegree;
-		else 
-			alphaDegree = 180 - alphaDegree;
-		
-		float p1x = (float) centerX;
-		float p1y = (float) centerY - RADIUS_TRIANGLE;
-		
-		float p2x = (float) (centerX - RADIUS_TRIANGLE * Math.sqrt(3)/2);
-		float p2y = (float) (centerY + RADIUS_TRIANGLE/2);
-		
-		float p3x = (float) centerX;
-		float p3y = (float) (centerY + RADIUS_TRIANGLE/4);
-		
-		float p4x = (float) (centerX + RADIUS_TRIANGLE * Math.sqrt(3)/2);
-		float p4y = (float) (centerY + RADIUS_TRIANGLE/2);
-		
-		Path triangle = new Path();
-		triangle.moveTo(p1x, p1y);
-		triangle.lineTo(p2x, p2y);
-		triangle.lineTo(p3x, p3y);
-		triangle.lineTo(p4x, p4y);
-		triangle.lineTo(p1x, p1y);
-		
-		Matrix m = new Matrix();
-		m.setRotate(alphaDegree, centerX, centerY);
-		triangle.transform(m);
-		
-		Rect invalidRect = new Rect();
-		invalidRect.set( (int) (centerX - RADIUS_TRIANGLE - INVALIDATE_EXTRA_BORDER),
-				(int) (centerY - RADIUS_TRIANGLE - INVALIDATE_EXTRA_BORDER),
-				(int) (centerX + RADIUS_TRIANGLE + INVALIDATE_EXTRA_BORDER),
-				(int) (centerY + RADIUS_TRIANGLE + INVALIDATE_EXTRA_BORDER) );
-		
-		mPaint.setStyle(Paint.Style.FILL);
-		mCanvas.drawPath(triangle, mPaint);
-		mPaint.setStyle(Paint.Style.STROKE);
-		
-		return invalidRect;
-	}
-	
-	private Rect touchDown(MotionEvent event) {
+	@Override
+	public boolean onDrag(View v, DragEvent event) {
 		float x = event.getX();
 		float y = event.getY();
 		
-		mLastX = mCurveEndX = x;
-		mLastY = mCurveEndY = y;
-		
-		mPath.moveTo(x, y);
-		mCanvas.drawPath(mPath, mPaint);
-		
-		final int border = INVALIDATE_EXTRA_BORDER;
-		Rect invalidRect = new Rect();
-		invalidRect.set((int) x - border, (int) y - border, (int) x + border, (int) y + border);
-		
-		return invalidRect;
-	}
-	
-	private Rect touchMoveOrUp(MotionEvent event) {
-		final float x = event.getX();
-		final float y = event.getY();
-		
-		final float dx = Math.abs(x - mLastX);
-		final float dy = Math.abs(y - mLastY);
-		
-		Rect invalidRect = new Rect();
-		if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-			final int border = INVALIDATE_EXTRA_BORDER;
-			invalidRect.set((int) mCurveEndX - border, (int) mCurveEndY - border, 
-					(int) mCurveEndX + border, (int) mCurveEndY + border);
+		switch (event.getAction()) {
+		case DragEvent.ACTION_DRAG_STARTED:
+		case DragEvent.ACTION_DRAG_ENTERED:
+		case DragEvent.ACTION_DRAG_EXITED:
+			break;
 			
-			float cX = mCurveEndX = (x + mLastX) / 2;
-			float cY = mCurveEndY = (y + mLastY) / 2;
+		case DragEvent.ACTION_DROP:
+			View view = (View) event.getLocalState();
 			
-			mPath.quadTo(mLastX, mLastY, cX, cY);
+			if (view.getId() == R.id.img_o)
+				addImgView(ImgView.PLAYER_O, (int)x-view.getWidth()/2, (int)y-view.getHeight()/2, 0, 0);
+			else if (view.getId() == R.id.img_x)
+				addImgView(ImgView.PLAYER_X, (int)x-view.getWidth()/2, (int)y-view.getHeight()/2, 0, 0);
+			else if (view.getId() == R.id.plus_text)
+				showPlusTextDialog((int)x, (int)y, 0, 0);
+			view.setVisibility(View.VISIBLE);
+			break;
 			
-			invalidRect.union((int) mLastX - border, (int) mLastY - border, 
-					(int) mLastX + border, (int) mLastY + border);
-			invalidRect.union((int) cX - border, (int) cY - border, 
-					(int) cX + border, (int) cY + border);
+		case DragEvent.ACTION_DRAG_ENDED:
+			break;
 			
-			mLastX = x;
-			mLastY = y;
-			
-			mCanvas.drawPath(mPath, mPaint);	
+		default:
+			break;
 		}
-		return invalidRect;
+		return true;
 	}
 	
-	// unused API
-	public void resetAllPath() {
-		while(!mPathStack.isEmpty()){
-			Path p = (Path) mPathStack.pop();				
-			p.reset();
+	private void addImgView (ImgView imgV, int l, int t, int r, int b) {
+		ImageView iv = new ImageView(this);
+		
+		switch (imgV) {
+		case PLAYER_O:
+			iv.setImageResource(R.drawable.ic_circle_blue);
+			mImgOList.add(iv);
+			break;
+		
+		case PLAYER_X:
+			iv.setImageResource(R.drawable.ic_circle_red);
+			mImgOList.add(iv);
+			break;
+				
 		}
+		
+		iv.setOnTouchListener(this);
+		mBoard.addView(iv);
+		setViewRelativeParams(iv, l, t, r, b);
 	}
 	
-	// unused API
-	public boolean save(OutputStream outStream) {
+	public boolean onTouch(View view, MotionEvent event) {
+		if (mMoving == false) return false;
+		
+		final int x = (int) event.getRawX();
+		final int y = (int) event.getRawY();
+		
+		switch (event.getAction() & MotionEvent.ACTION_MASK) {
+		
+		case MotionEvent.ACTION_DOWN:
+			RelativeLayout.LayoutParams params = 
+					(RelativeLayout.LayoutParams) view.getLayoutParams();
+			xDelta = x - params.leftMargin;
+			yDelta = y - params.topMargin;
+			break;
+		
+		case MotionEvent.ACTION_MOVE:
+			setViewRelativeParams(view, x-xDelta, y-yDelta, -50, -50);
+			break;
+			
+		case MotionEvent.ACTION_UP:	
+			if (x < REMOVE_BORDWER) view.setVisibility(View.INVISIBLE);
+			break;
+			
+		case MotionEvent.ACTION_POINTER_DOWN:		
+		case MotionEvent.ACTION_POINTER_UP:
+			break;
+			
+		}
+		
+		mContainer.invalidate();
+		return true;
+	}
+
+	@Override
+	public boolean onLongClick(View view) {		
+		// when mMoving is false, onLongClick will be activated
+		mView = view;
+		LayoutInflater inflater = this.getLayoutInflater();
+	    View editTextDialog = inflater.inflate(R.layout.edit_text_dialog, null);
+	    mChangingText = (EditText) editTextDialog.findViewById(R.id.changing_text);
+	    mChangingText.setTextColor(mTextColor);
+		mChangingText.setText( ((TextView)mView).getText().toString() );
+
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle("Edit Text");
+	    builder.setView(editTextDialog);
+	    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	    	@Override
+	    	public void onClick(DialogInterface dialog, int id) {
+	    		mChangingText.clearComposingText();
+	    		((TextView)mView).setText(mChangingText.getText().toString());
+	    	}
+	    });
+	    
+	    builder.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
+	    	@Override
+	    	public void onClick(DialogInterface dialog, int id) {
+				mTextStack.remove((TextView)mView);
+	    		((RelativeLayout)mView.getParent()).removeView(mView);
+	    	}
+	    });
+	    
+	    AlertDialog ad = builder.create();
+	    ad.show();
+		return false;
+	}
+	
+	public void showPlusTextDialog(int l, int t, int r, int b) {	
+		mLeft = l;
+		mTop = t;
+		mRight = r;
+		mBottom = b;
+		
+		LayoutInflater inflater = this.getLayoutInflater();
+	    View textDialog = inflater.inflate(R.layout.text_dialog, null);
+	    mAddingText = (EditText) textDialog.findViewById(R.id.adding_text);
+	    mAddingText.setTextColor(mTextColor);	    
+	    
+	    mRadioGroup = (RadioGroup) textDialog.findViewById(R.id.radio_text);	
+	    
+	    ((RadioButton) textDialog.findViewById(R.id.radio_small)).setTextSize(TEXT_SIZE_SMALL);
+	    ((RadioButton) textDialog.findViewById(R.id.radio_medium)).setTextSize(TEXT_SIZE_MEDIUM);
+	    ((RadioButton) textDialog.findViewById(R.id.radio_large)).setTextSize(TEXT_SIZE_LARGE);
+
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle("Add Text");
+	    builder.setView(textDialog);
+	    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	    	@Override
+	    	public void onClick(DialogInterface dialog, int id) {
+	    		int selectedId = mRadioGroup.getCheckedRadioButtonId();
+	    		float size = TEXT_SIZE_MEDIUM;
+	    		switch(selectedId) {
+	    		case R.id.radio_small:
+	    			size = TEXT_SIZE_SMALL;
+	    			break;
+	    			
+	    		case R.id.radio_medium:
+	    			size = TEXT_SIZE_MEDIUM;
+	    			break;
+	    		
+	    		case R.id.radio_large:
+	    			size = TEXT_SIZE_LARGE;
+	    			break;
+	    			
+	    		default:
+	    			size = TEXT_SIZE_MEDIUM;
+	    			Log.e(TAG, "Error: default text size selected");
+	    			break;
+	    		}
+	    		mAddingText.clearComposingText();
+	    		addText(mAddingText.getText().toString(), size,
+	    				mLeft, mTop, mRight, mBottom);
+	    	}
+	    });
+	    
+	    AlertDialog ad = builder.create();
+	    ad.show();
+	    ad.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+	}
+	
+	private void addText(String txt, float size, int l, int t, int r, int b) {
+		mLeft = l;
+		mTop = t;
+		mRight = r;
+		mBottom = b;
+		
+		mTextView = new TextView(this);
+		mTextView.setOnTouchListener(this);
+		mTextView.setOnLongClickListener(this);
+	    mTextStack.push(mTextView);
+	    mBoard.addView(mTextView);
+	    // TODO: setText Invisible first 
+	    mTextView.setTextSize(size);
+	    mTextView.setTextColor(mTextColor);
+	    mTextView.setText(txt);
+		
+		ViewTreeObserver vto = mTextView.getViewTreeObserver();
+		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+			@Override
+			public void onGlobalLayout() {
+				setViewRelativeParams(mTextView,
+						mLeft-mTextView.getWidth()/2, mTop-mTextView.getHeight()/2, mRight, mBottom);
+				mTextView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+			}
+		});
+	}
+	
+	public void saveImgToGallery() {
+		Bitmap b = takeScreenShot();
+		saveBitmap(b);
+	}
+	
+	private Bitmap takeScreenShot() {
+		View rootView = findViewById(R.id.board);
+		rootView.setDrawingCacheEnabled(true);
+		Bitmap result = Bitmap.createBitmap(rootView.getDrawingCache());
+		rootView.setDrawingCacheEnabled(false);
+		return result;
+	}
+
+	//TODO avoid hard coding
+	private void saveBitmap(Bitmap bitmap) {
+		File imagePath = new File(Environment.getExternalStorageDirectory()
+				+ "/TacticBoard.png");
 		try {
-			mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-			invalidate();
-			return true;
-		} catch (Exception e) {
+			FileOutputStream fos = new FileOutputStream(imagePath);
+			bitmap.compress(CompressFormat.PNG, 100, fos);
+			fos.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+		MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "TB", "TB Picture");
 	}
 	
-	// unused API
-	public void clearUndo() {
-		while (true) {
-			Bitmap prev = (Bitmap) mUndoStack.pop();
-			if (prev == null) return;
-			prev.recycle();
+	public void reset() {
+		while(!mTextStack.isEmpty()) {
+			TextView tv = (TextView) mTextStack.pop();
+			((RelativeLayout) tv.getParent()).removeView(tv);
 		}
+		
+		mPaintBoard.resetPaintBoard();
+		
+		for (ImageView iv : mImgOList) 
+			((RelativeLayout) iv.getParent()).removeView(iv);	
+
+		for (ImageView iv : mImgXList)
+			((RelativeLayout) iv.getParent()).removeView(iv);
+		
+		mImgOList.clear();	
+		mImgXList.clear();
 	}
 	
+	//TODO avoid hard coding
+	public void share() {
+		saveImgToGallery();
+		Intent share = new Intent(Intent.ACTION_SEND);
+
+		//share.setType("text/plain");
+		//share.putExtra(Intent.EXTRA_TEXT, "Share via Tactic Board");
+		share.setType("image/jpeg");
+		share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/TacticBoard.png"));
+		
+		startActivity(Intent.createChooser(share, "Share Image"));
+	}
+	
+	private void setViewRelativeParams(View v, int l, int t, int r, int b) {
+		RelativeLayout.LayoutParams p = 
+				(RelativeLayout.LayoutParams) v.getLayoutParams();
+		p.leftMargin = l;
+		p.topMargin = t;
+		p.rightMargin = r;
+		p.bottomMargin = b;
+		
+		v.setLayoutParams(p);	
+	}
+	
+	public void setMoving(boolean b) {
+		this.mMoving = b;
+	}
+	
+	public void setTextColor(int color) {
+		this.mTextColor = color;
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
 }
