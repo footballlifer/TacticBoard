@@ -19,7 +19,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class PaintBoard extends View {
+public class PaintBoardView extends View {
 	private boolean DEBUG = true;
 	private String TAG = "PaintBoard";
 	
@@ -69,15 +69,15 @@ public class PaintBoard extends View {
 	
 	private boolean mDrawing = false;
 	
-	public PaintBoard(Context context) {
+	public PaintBoardView(Context context) {
 		super(context);
 		init(context);
 	}	
-	public PaintBoard(Context context, AttributeSet attrs) {
+	public PaintBoardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init(context);
 	}
-	public PaintBoard(Context context, AttributeSet attrs, int defStyle) {
+	public PaintBoardView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init(context);
 	}

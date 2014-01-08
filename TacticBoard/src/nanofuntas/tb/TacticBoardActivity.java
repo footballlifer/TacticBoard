@@ -41,7 +41,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class TacticBoard extends Activity 
+public class TacticBoardActivity extends Activity 
 implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	private boolean DEBUG = true;
 	private String TAG = "TacticBoard";
@@ -50,7 +50,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	
 	enum ImgView {PLAYER_O, PLAYER_X};
 	
-	private PaintBoard mPaintBoard;
+	private PaintBoardView mPaintBoard;
 	private ViewGroup mContainer;
 	private ViewGroup mBoard;
 	
@@ -97,7 +97,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		mBoard = (ViewGroup) findViewById(R.id.board);
 		mBoard.setOnDragListener(this);	
 		
-		mPaintBoard = (PaintBoard) findViewById(R.id.tb);
+		mPaintBoard = (PaintBoardView) findViewById(R.id.tb);
 		ViewBar vb = new ViewBar(this, mPaintBoard);
 		
 		FrameLayout frameBar = (FrameLayout) findViewById(R.id.frame_bar);

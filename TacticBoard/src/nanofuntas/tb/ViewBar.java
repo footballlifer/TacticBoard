@@ -20,7 +20,7 @@ implements View.OnClickListener, View.OnTouchListener {
 	private String TAG = "ViewBar";
 	
 	private Context mContext;
-	private PaintBoard mPaintBoard;
+	private PaintBoardView mPaintBoard;
 	private ColorPaletteDialog mColorDialog;
 
 	private ImageView mO;
@@ -45,7 +45,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		
 	private int mColor = Color.BLACK;
 	
-	public ViewBar(Context context, PaintBoard pb) {
+	public ViewBar(Context context, PaintBoardView pb) {
 		super(context);
 		this.mContext = context;
 		this.mPaintBoard = pb;
@@ -74,7 +74,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		mList.setOnClickListener(this);
 		
 		// by default, view moving is enabled, drawing is not
-		((TacticBoard) mContext).setMoving(mMoving);
+		((TacticBoardActivity) mContext).setMoving(mMoving);
 		mPaintBoard.setDrawing(false);
 		mMove.setBackgroundColor(Color.LTGRAY);
 		
@@ -85,7 +85,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			@Override
 			public void onColorSelected(int color) {
 				mColor = color;
-				((TacticBoard) mContext).setTextColor(mColor);
+				((TacticBoardActivity) mContext).setTextColor(mColor);
 				mPaintBoard.updatePaintColor(mColor);
 				//mImageViewColor.setBackgroundColor(mColor);
 			}
@@ -134,7 +134,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.WHITE);
 			
-			((TacticBoard) mContext).setMoving(true);
+			((TacticBoardActivity) mContext).setMoving(true);
 			mPaintBoard.setDrawing(false);
 
 			break;
@@ -146,7 +146,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.WHITE);	
 			
-			((TacticBoard) mContext).setMoving(false);
+			((TacticBoardActivity) mContext).setMoving(false);
 			mPaintBoard.setDrawing(true);
 			
 			break;
@@ -158,7 +158,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			mShortDashLine.setBackgroundColor(Color.LTGRAY);
 			mLongDashLine.setBackgroundColor(Color.WHITE);
 			
-			((TacticBoard) mContext).setMoving(false);
+			((TacticBoardActivity) mContext).setMoving(false);
 			mPaintBoard.setDrawing(true);
 			
 			break;
@@ -170,7 +170,7 @@ implements View.OnClickListener, View.OnTouchListener {
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.LTGRAY);
 			
-			((TacticBoard) mContext).setMoving(false);
+			((TacticBoardActivity) mContext).setMoving(false);
 			mPaintBoard.setDrawing(true);
 			
 			break;	
@@ -180,17 +180,17 @@ implements View.OnClickListener, View.OnTouchListener {
 			break;	
 			
 		case R.id.new_file:
-			((TacticBoard) mContext).reset();
+			((TacticBoardActivity) mContext).reset();
 			if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
 			break;	
 			
 		case R.id.save:
-			((TacticBoard) mContext).saveImgToGallery();
+			((TacticBoardActivity) mContext).saveImgToGallery();
 			if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
 			break;	
 			
 		case R.id.share:
-			((TacticBoard) mContext).share();
+			((TacticBoardActivity) mContext).share();
 			if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
 			break;		
 			

@@ -3,7 +3,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TacticBoard" >
+    tools:context=".TacticBoardActivity" >
 
     <FrameLayout
         android:id="@+id/frame_bar"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/frame_bar" >
 
-        <nanofuntas.tb.PaintBoard
+        <nanofuntas.tb.PaintBoardView
             android:id="@+id/tb"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
