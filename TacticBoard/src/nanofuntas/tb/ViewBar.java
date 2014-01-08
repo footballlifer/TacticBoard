@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 public class ViewBar extends LinearLayout 
 implements View.OnClickListener, View.OnTouchListener {
@@ -90,6 +91,10 @@ implements View.OnClickListener, View.OnTouchListener {
 				//mImageViewColor.setBackgroundColor(mColor);
 			}
 		};
+		
+		if (Config.useMoveIcon == false) {
+			((LinearLayout)mMove.getParent()).removeView(mMove);
+		}
 	}
 	
 	private void popupSubmenu() {

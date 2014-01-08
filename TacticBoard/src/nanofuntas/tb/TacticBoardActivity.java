@@ -44,10 +44,7 @@ import android.widget.TextView;
 public class TacticBoardActivity extends Activity 
 implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	private boolean DEBUG = true;
-	private String TAG = "TacticBoard";
-	
-	private final int MAX_PLAYER = 11;
-	
+	private String TAG = "TacticBoardActivity";	
 	enum ImgView {PLAYER_O, PLAYER_X};
 	
 	private PaintBoardView mPaintBoard;
@@ -98,8 +95,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		mBoard.setOnDragListener(this);	
 		
 		mPaintBoard = (PaintBoardView) findViewById(R.id.tb);
-		ViewBar vb = new ViewBar(this, mPaintBoard);
-		
+		ViewBar vb = new ViewBar(this, mPaintBoard);	
 		FrameLayout frameBar = (FrameLayout) findViewById(R.id.frame_bar);
 		frameBar.addView(vb);
 	}
@@ -129,7 +125,6 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 			
 		case DragEvent.ACTION_DRAG_ENDED:
 			break;
-			
 		default:
 			break;
 		}
@@ -149,7 +144,6 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 			iv.setImageResource(R.drawable.ic_circle_red);
 			mImgOList.add(iv);
 			break;
-				
 		}
 		
 		iv.setOnTouchListener(this);
@@ -158,7 +152,9 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	}
 	
 	public boolean onTouch(View view, MotionEvent event) {
-		if (mMoving == false) return false;
+		if (Config.useMoveIcon == true) {
+			if (mMoving == false) return false;
+		}
 		
 		final int x = (int) event.getRawX();
 		final int y = (int) event.getRawY();

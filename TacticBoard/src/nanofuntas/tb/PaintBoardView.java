@@ -21,7 +21,7 @@ import android.view.View;
 
 public class PaintBoardView extends View {
 	private boolean DEBUG = true;
-	private String TAG = "PaintBoard";
+	private String TAG = "PaintBoardView";
 	
 	private Context mContext;
 	private int mViewWidth;
@@ -198,6 +198,7 @@ public class PaintBoardView extends View {
 		invalidate();
 	}
 
+	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		this.mViewWidth = w;
 		this.mViewHeight = h;
@@ -205,6 +206,7 @@ public class PaintBoardView extends View {
 			newImage(mViewWidth, mViewHeight);
 	}
 	
+	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
@@ -216,8 +218,11 @@ public class PaintBoardView extends View {
 		mDrawing = b;
 	}
 	
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (mDrawing == false) return false;
+		if (Config.useMoveIcon == true) {
+			if (mDrawing == false) return false;
+		}
 		
 		int action = event.getAction();
 		Rect rect = null;
