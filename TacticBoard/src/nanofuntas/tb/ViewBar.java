@@ -32,6 +32,7 @@ implements View.OnClickListener, View.OnTouchListener {
 	private ImageView mShortDashLine;
 	private ImageView mLongDashLine;
 	private ImageView mPlusText;
+	private ImageView mPencil;
 	
 	//Submenu list items
 	private ImageView mList;
@@ -63,6 +64,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		mShortDashLine = (ImageView) findViewById(R.id.short_dash_line);
 		mLongDashLine = (ImageView) findViewById(R.id.long_dash_line);
 		mList = (ImageView) findViewById(R.id.list);
+		mPencil = (ImageView) findViewById(R.id.pencil);
 		
 		mO.setOnTouchListener(this);
 		mX.setOnTouchListener(this);		
@@ -73,6 +75,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		mShortDashLine.setOnClickListener(this);
 		mLongDashLine.setOnClickListener(this);
 		mList.setOnClickListener(this);
+		mPencil.setOnClickListener(this);
 		
 		// by default, view moving is enabled, drawing is not
 		((TacticBoardActivity) mContext).setMoving(mMoving);
@@ -138,9 +141,11 @@ implements View.OnClickListener, View.OnTouchListener {
 			mSolidLine.setBackgroundColor(Color.WHITE);
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.WHITE);
+			mPencil.setBackgroundColor(Color.WHITE);
 			
 			((TacticBoardActivity) mContext).setMoving(true);
 			mPaintBoard.setDrawing(false);
+			mPaintBoard.setPencilMode(false);
 
 			break;
 		
@@ -150,10 +155,12 @@ implements View.OnClickListener, View.OnTouchListener {
 			mSolidLine.setBackgroundColor(Color.LTGRAY);
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.WHITE);	
-			
+			mPencil.setBackgroundColor(Color.WHITE);
+
 			((TacticBoardActivity) mContext).setMoving(false);
 			mPaintBoard.setDrawing(true);
-			
+			mPaintBoard.setPencilMode(false);
+
 			break;
 				
 		case R.id.short_dash_line:
@@ -162,10 +169,12 @@ implements View.OnClickListener, View.OnTouchListener {
 			mSolidLine.setBackgroundColor(Color.WHITE);
 			mShortDashLine.setBackgroundColor(Color.LTGRAY);
 			mLongDashLine.setBackgroundColor(Color.WHITE);
-			
+			mPencil.setBackgroundColor(Color.WHITE);
+
 			((TacticBoardActivity) mContext).setMoving(false);
 			mPaintBoard.setDrawing(true);
-			
+			mPaintBoard.setPencilMode(false);
+
 			break;
 			
 		case R.id.long_dash_line:
@@ -174,12 +183,29 @@ implements View.OnClickListener, View.OnTouchListener {
 			mSolidLine.setBackgroundColor(Color.WHITE);
 			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.LTGRAY);
-			
+			mPencil.setBackgroundColor(Color.WHITE);
+
 			((TacticBoardActivity) mContext).setMoving(false);
 			mPaintBoard.setDrawing(true);
-			
+			mPaintBoard.setPencilMode(false);
+
 			break;	
 		
+		case R.id.pencil:
+			mPaintBoard.setSolidLinePaint();
+			mMove.setBackgroundColor(Color.WHITE);	
+			mSolidLine.setBackgroundColor(Color.WHITE);
+			mShortDashLine.setBackgroundColor(Color.WHITE);
+			mLongDashLine.setBackgroundColor(Color.WHITE);
+			mPencil.setBackgroundColor(Color.LTGRAY);
+
+			((TacticBoardActivity) mContext).setMoving(false);
+			mPaintBoard.setDrawing(true);
+			mPaintBoard.setPencilMode(true);
+			
+			break;	
+			
+			
 		case R.id.list:
 			popupSubmenu();
 			break;	

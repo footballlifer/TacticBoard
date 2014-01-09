@@ -58,6 +58,13 @@
         android:layout_marginLeft="0dp"
         android:src="@drawable/ic_long_dash" />
 
+    <ImageView
+        android:id="@+id/pencil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:src="@drawable/ic_pencil" />
+    
 	<ImageView
         android:id="@+id/list"
         android:layout_width="wrap_content"

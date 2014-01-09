@@ -68,6 +68,7 @@ public class PaintBoardView extends View {
 	private Bitmap mScaledBackGround;
 	
 	private boolean mDrawing = false;
+	private boolean mPencilMode = true;
 	
 	public PaintBoardView(Context context) {
 		super(context);
@@ -253,16 +254,21 @@ public class PaintBoardView extends View {
 			mPath = new Path();
 			//mPath.rewind();
 			
-			rect = drawArrow();
-			invalidate(rect);
-			
-			rect = drawLineNumber(mStartX, mStartY);
-			if (rect != null) invalidate(rect);
-			
+			if (mPencilMode == false) {
+				rect = drawArrow();
+				invalidate(rect);
+				
+				rect = drawLineNumber(mStartX, mStartY);
+				if (rect != null) invalidate(rect);
+			}
 			return true;
 		}
 
 		return false;
+	}
+	
+	public void setPencilMode(boolean b) {
+		this.mPencilMode = b;
 	}
 	
 	private Rect drawLineNumber(float startX, float startY) {
