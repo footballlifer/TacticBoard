@@ -9,11 +9,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -58,7 +60,9 @@ public class PaintBoardView extends View {
 	private final int LONG_DASH_SPACE = 30;
 	
 	private static final int INVALIDATE_EXTRA_BORDER = 10;
-	private static final float TOUCH_TOLERANCE = 2;
+	//TODO
+	private static final float TOUCH_TOLERANCE = 50;
+	//private static final float TOUCH_TOLERANCE = 2;
 	private static final boolean RENDERING_ANTIALIAS = true;
 	private static final boolean DITHER_FLAG = true;
 
@@ -70,6 +74,11 @@ public class PaintBoardView extends View {
 	private boolean mDrawing = false;
 	private boolean mPencilMode = true;
 	
+	//TODO: crookied line
+	private boolean mCrookedLine = true;
+	private static long sTotalCrookCount = 0;
+	private final float CROOKED_RADIUS = 6f;
+
 	public PaintBoardView(Context context) {
 		super(context);
 		init(context);
@@ -242,7 +251,8 @@ public class PaintBoardView extends View {
 			
 		case MotionEvent.ACTION_MOVE:
 			rect = touchMoveOrUp(event);
-			if (rect != null) invalidate(rect);	
+			//if (rect != null) invalidate(rect);	
+			invalidate();
 			
 			return true;
 		
@@ -352,6 +362,8 @@ public class PaintBoardView extends View {
 	}
 	
 	private Rect touchDown(MotionEvent event) {
+		sTotalCrookCount = 0;
+		
 		float x = event.getX();
 		float y = event.getY();
 		
@@ -376,15 +388,46 @@ public class PaintBoardView extends View {
 		final float dy = Math.abs(y - mLastY);
 		
 		Rect invalidRect = new Rect();
-		if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-			final int border = INVALIDATE_EXTRA_BORDER;
+		if (dx < TOUCH_TOLERANCE && dy < TOUCH_TOLERANCE) return invalidRect; 
+		
+		final int border = INVALIDATE_EXTRA_BORDER;
+		
+		if (mCrookedLine == true) {
+			RectF rectF = new RectF();
+			float alpha = (float) Math.atan( (y - mLastY)/(x - mLastX) );
+			float alphaDegree = (float) Math.toDegrees(alpha);
+			
+			float dist = (float) Math.sqrt(Math.pow(x - mLastX, 2) + Math.pow(y- mLastY, 2));
+			int count =  (int) (dist/(2*CROOKED_RADIUS));
+			
+			int direction = 1;
+			if (x - mLastX > 0) 
+				direction = 1;
+			else 
+				direction = -1;
+			
+			float xx = (float) (mLastX + direction * CROOKED_RADIUS * Math.cos(alpha)); 
+			float yy = (float) (mLastY + direction * CROOKED_RADIUS * Math.sin(alpha)); 
+			
+			for (int i = 0; i < count; i++) {
+				rectF.set(xx-CROOKED_RADIUS, yy-CROOKED_RADIUS, xx+CROOKED_RADIUS, yy+CROOKED_RADIUS);
+				int s = (int) Math.pow(-1, sTotalCrookCount); 
+				mCanvas.drawArc(rectF, (alphaDegree),  direction * s * (-180), false, mPaint);
+				xx = (float) (xx + direction * 2 * CROOKED_RADIUS * Math.cos(alpha));
+				yy = (float) (yy + direction * 2 * CROOKED_RADIUS * Math.sin(alpha)); 
+				sTotalCrookCount++;
+			}
+			
+			mLastX = (float) (mLastX + direction * 2 * CROOKED_RADIUS * count * Math.cos(alpha));
+			mLastY = (float) (mLastY + direction * 2 * CROOKED_RADIUS * count * Math.sin(alpha));
+		} else {
 			invalidRect.set((int) mCurveEndX - border, (int) mCurveEndY - border, 
 					(int) mCurveEndX + border, (int) mCurveEndY + border);
 			
 			float cX = mCurveEndX = (x + mLastX) / 2;
 			float cY = mCurveEndY = (y + mLastY) / 2;
 			
-			mPath.quadTo(mLastX, mLastY, cX, cY);
+			mPath.quadTo(mLastX, mLastY, cX, cY);	
 			
 			invalidRect.union((int) mLastX - border, (int) mLastY - border, 
 					(int) mLastX + border, (int) mLastY + border);
@@ -393,9 +436,9 @@ public class PaintBoardView extends View {
 			
 			mLastX = x;
 			mLastY = y;
-			
-			mCanvas.drawPath(mPath, mPaint);	
 		}
+		
+		mCanvas.drawPath(mPath, mPaint);	
 		return invalidRect;
 	}
 	
