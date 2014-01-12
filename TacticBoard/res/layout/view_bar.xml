@@ -59,11 +59,18 @@
         android:src="@drawable/ic_long_dash" />
 
     <ImageView
+        android:id="@+id/crooked_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:src="@drawable/ic_crooked_line" />
+    
+    <ImageView
         android:id="@+id/pencil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:src="@drawable/ic_pencil" />
+        android:src="@drawable/ic_pencil" />    
     
 	<ImageView
         android:id="@+id/list"

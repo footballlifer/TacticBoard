@@ -9,7 +9,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -60,9 +59,7 @@ public class PaintBoardView extends View {
 	private final int LONG_DASH_SPACE = 30;
 	
 	private static final int INVALIDATE_EXTRA_BORDER = 10;
-	//TODO
-	private static final float TOUCH_TOLERANCE = 50;
-	//private static final float TOUCH_TOLERANCE = 2;
+	private static final float TOUCH_TOLERANCE = 2;
 	private static final boolean RENDERING_ANTIALIAS = true;
 	private static final boolean DITHER_FLAG = true;
 
@@ -74,8 +71,7 @@ public class PaintBoardView extends View {
 	private boolean mDrawing = false;
 	private boolean mPencilMode = true;
 	
-	//TODO: crookied line
-	private boolean mCrookedLine = true;
+	private boolean mCrookedLine = false;
 	private static long sTotalCrookCount = 0;
 	private final float CROOKED_RADIUS = 6f;
 
@@ -378,6 +374,10 @@ public class PaintBoardView extends View {
 		invalidRect.set((int) x - border, (int) y - border, (int) x + border, (int) y + border);
 		
 		return invalidRect;
+	}
+	
+	public void setCrookedLineMode(boolean b) {
+		this.mCrookedLine = b;
 	}
 	
 	private Rect touchMoveOrUp(MotionEvent event) {

@@ -389,5 +389,4 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
 }
