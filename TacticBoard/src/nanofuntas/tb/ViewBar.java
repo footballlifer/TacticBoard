@@ -33,6 +33,7 @@ implements View.OnClickListener, View.OnTouchListener {
 	private ImageView mLongDashLine;
 	private ImageView mPlusText;
 	private ImageView mPencil;
+	private ImageView mCrookedLine;
 	
 	//Submenu list items
 	private ImageView mList;
@@ -65,6 +66,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		mLongDashLine = (ImageView) findViewById(R.id.long_dash_line);
 		mList = (ImageView) findViewById(R.id.list);
 		mPencil = (ImageView) findViewById(R.id.pencil);
+		mCrookedLine = (ImageView) findViewById(R.id.crooked_line);
 		
 		mO.setOnTouchListener(this);
 		mX.setOnTouchListener(this);		
@@ -76,6 +78,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		mLongDashLine.setOnClickListener(this);
 		mList.setOnClickListener(this);
 		mPencil.setOnClickListener(this);
+		mCrookedLine.setOnClickListener(this);
 		
 		// by default, view moving is enabled, drawing is not
 		((TacticBoardActivity) mContext).setMoving(mMoving);
@@ -137,74 +140,43 @@ implements View.OnClickListener, View.OnTouchListener {
 			break;
 		
 		case R.id.move:
+			setDrawingDefault();
 			mMove.setBackgroundColor(Color.LTGRAY);	
-			mSolidLine.setBackgroundColor(Color.WHITE);
-			mShortDashLine.setBackgroundColor(Color.WHITE);
-			mLongDashLine.setBackgroundColor(Color.WHITE);
-			mPencil.setBackgroundColor(Color.WHITE);
-			
 			((TacticBoardActivity) mContext).setMoving(true);
 			mPaintBoard.setDrawing(false);
-			mPaintBoard.setPencilMode(false);
-
 			break;
 		
 		case R.id.solid_line:
+			setDrawingDefault();
 			mPaintBoard.setSolidLinePaint();
-			mMove.setBackgroundColor(Color.WHITE);	
 			mSolidLine.setBackgroundColor(Color.LTGRAY);
-			mShortDashLine.setBackgroundColor(Color.WHITE);
-			mLongDashLine.setBackgroundColor(Color.WHITE);	
-			mPencil.setBackgroundColor(Color.WHITE);
-
-			((TacticBoardActivity) mContext).setMoving(false);
-			mPaintBoard.setDrawing(true);
-			mPaintBoard.setPencilMode(false);
-
 			break;
-				
+			
 		case R.id.short_dash_line:
+			setDrawingDefault();
 			mPaintBoard.setShortDashPaint();
-			mMove.setBackgroundColor(Color.WHITE);	
-			mSolidLine.setBackgroundColor(Color.WHITE);
 			mShortDashLine.setBackgroundColor(Color.LTGRAY);
-			mLongDashLine.setBackgroundColor(Color.WHITE);
-			mPencil.setBackgroundColor(Color.WHITE);
-
-			((TacticBoardActivity) mContext).setMoving(false);
-			mPaintBoard.setDrawing(true);
-			mPaintBoard.setPencilMode(false);
-
 			break;
 			
 		case R.id.long_dash_line:
+			setDrawingDefault();
 			mPaintBoard.setLongDashPaint();
-			mMove.setBackgroundColor(Color.WHITE);	
-			mSolidLine.setBackgroundColor(Color.WHITE);
-			mShortDashLine.setBackgroundColor(Color.WHITE);
 			mLongDashLine.setBackgroundColor(Color.LTGRAY);
-			mPencil.setBackgroundColor(Color.WHITE);
-
-			((TacticBoardActivity) mContext).setMoving(false);
-			mPaintBoard.setDrawing(true);
-			mPaintBoard.setPencilMode(false);
-
 			break;	
 		
 		case R.id.pencil:
+			setDrawingDefault();
 			mPaintBoard.setSolidLinePaint();
-			mMove.setBackgroundColor(Color.WHITE);	
-			mSolidLine.setBackgroundColor(Color.WHITE);
-			mShortDashLine.setBackgroundColor(Color.WHITE);
-			mLongDashLine.setBackgroundColor(Color.WHITE);
 			mPencil.setBackgroundColor(Color.LTGRAY);
-
-			((TacticBoardActivity) mContext).setMoving(false);
-			mPaintBoard.setDrawing(true);
 			mPaintBoard.setPencilMode(true);
-			
 			break;	
-			
+		
+		case R.id.crooked_line:
+			setDrawingDefault();
+			mPaintBoard.setSolidLinePaint();
+			mCrookedLine.setBackgroundColor(Color.LTGRAY);
+			mPaintBoard.setCrookedLineMode(true);
+			break;	
 			
 		case R.id.list:
 			popupSubmenu();
@@ -236,6 +208,20 @@ implements View.OnClickListener, View.OnTouchListener {
 		}
 	}
 
+	private void setDrawingDefault() {
+		mMove.setBackgroundColor(Color.WHITE);	
+		mSolidLine.setBackgroundColor(Color.WHITE);
+		mShortDashLine.setBackgroundColor(Color.WHITE);
+		mLongDashLine.setBackgroundColor(Color.WHITE);
+		mPencil.setBackgroundColor(Color.WHITE);
+		mCrookedLine.setBackgroundColor(Color.WHITE);
+		
+		((TacticBoardActivity) mContext).setMoving(false);
+		mPaintBoard.setDrawing(true);
+		mPaintBoard.setPencilMode(false);
+		mPaintBoard.setCrookedLineMode(false);
+	}
+	
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		ClipData data = ClipData.newPlainText("", "");
