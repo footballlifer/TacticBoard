@@ -4,7 +4,6 @@ import com.example.tb.R;
 
 import android.content.ClipData;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 
 public class ViewBar extends LinearLayout 
 implements View.OnClickListener, View.OnTouchListener {
@@ -46,13 +44,44 @@ implements View.OnClickListener, View.OnTouchListener {
 	
 	private boolean mMoving = true;
 		
-	private int mColor = Color.BLACK;
+	private int mColor;
+	private int mWhite;
+	private int mLightGrey;
 	
 	public ViewBar(Context context, PaintBoardView pb) {
 		super(context);
 		this.mContext = context;
 		this.mPaintBoard = pb;
 		
+		initView(context);
+		
+		mColor = getResources().getColor(R.color.Black);
+		mWhite = getResources().getColor(R.color.White);
+		mLightGrey = getResources().getColor(R.color.LightGrey);
+		
+		// by default, view moving is enabled, drawing is not
+		((TacticBoardActivity) mContext).setMoving(mMoving);
+		mPaintBoard.setDrawing(false);
+		mMove.setBackgroundColor(mLightGrey);
+		
+		mColorDialog = new ColorPaletteDialog(mContext);
+		mColorDialog.setCanceledOnTouchOutside(true);
+
+		ColorPaletteDialog.sListener = new ColorPaletteDialog.OnColorSelectedListener() {
+			@Override
+			public void onColorSelected(int color) {
+				mColor = color;
+				((TacticBoardActivity) mContext).setTextColor(mColor);
+				mPaintBoard.updatePaintColor(mColor);
+			}
+		};
+		
+		if (Config.useMoveIcon == false) {
+			((LinearLayout)mMove.getParent()).removeView(mMove);
+		}
+	}
+
+	private void initView(Context context) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.view_bar, this, true);
 		
@@ -79,28 +108,6 @@ implements View.OnClickListener, View.OnTouchListener {
 		mList.setOnClickListener(this);
 		mPencil.setOnClickListener(this);
 		mCrookedLine.setOnClickListener(this);
-		
-		// by default, view moving is enabled, drawing is not
-		((TacticBoardActivity) mContext).setMoving(mMoving);
-		mPaintBoard.setDrawing(false);
-		mMove.setBackgroundColor(Color.LTGRAY);
-		
-		mColorDialog = new ColorPaletteDialog(mContext);
-		mColorDialog.setCanceledOnTouchOutside(true);
-
-		ColorPaletteDialog.sListener = new ColorPaletteDialog.OnColorSelectedListener() {
-			@Override
-			public void onColorSelected(int color) {
-				mColor = color;
-				((TacticBoardActivity) mContext).setTextColor(mColor);
-				mPaintBoard.updatePaintColor(mColor);
-				//mImageViewColor.setBackgroundColor(mColor);
-			}
-		};
-		
-		if (Config.useMoveIcon == false) {
-			((LinearLayout)mMove.getParent()).removeView(mMove);
-		}
 	}
 	
 	private void popupSubmenu() {
@@ -141,7 +148,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		
 		case R.id.move:
 			setDrawingDefault();
-			mMove.setBackgroundColor(Color.LTGRAY);	
+			mMove.setBackgroundColor(mLightGrey);	
 			((TacticBoardActivity) mContext).setMoving(true);
 			mPaintBoard.setDrawing(false);
 			break;
@@ -149,32 +156,32 @@ implements View.OnClickListener, View.OnTouchListener {
 		case R.id.solid_line:
 			setDrawingDefault();
 			mPaintBoard.setSolidLinePaint();
-			mSolidLine.setBackgroundColor(Color.LTGRAY);
+			mSolidLine.setBackgroundColor(mLightGrey);
 			break;
 			
 		case R.id.short_dash_line:
 			setDrawingDefault();
 			mPaintBoard.setShortDashPaint();
-			mShortDashLine.setBackgroundColor(Color.LTGRAY);
+			mShortDashLine.setBackgroundColor(mLightGrey);
 			break;
 			
 		case R.id.long_dash_line:
 			setDrawingDefault();
 			mPaintBoard.setLongDashPaint();
-			mLongDashLine.setBackgroundColor(Color.LTGRAY);
+			mLongDashLine.setBackgroundColor(mLightGrey);
 			break;	
 		
 		case R.id.pencil:
 			setDrawingDefault();
 			mPaintBoard.setSolidLinePaint();
-			mPencil.setBackgroundColor(Color.LTGRAY);
+			mPencil.setBackgroundColor(mLightGrey);
 			mPaintBoard.setPencilMode(true);
 			break;	
 		
 		case R.id.crooked_line:
 			setDrawingDefault();
 			mPaintBoard.setSolidLinePaint();
-			mCrookedLine.setBackgroundColor(Color.LTGRAY);
+			mCrookedLine.setBackgroundColor(mLightGrey);
 			mPaintBoard.setCrookedLineMode(true);
 			break;	
 			
@@ -209,12 +216,12 @@ implements View.OnClickListener, View.OnTouchListener {
 	}
 
 	private void setDrawingDefault() {
-		mMove.setBackgroundColor(Color.WHITE);	
-		mSolidLine.setBackgroundColor(Color.WHITE);
-		mShortDashLine.setBackgroundColor(Color.WHITE);
-		mLongDashLine.setBackgroundColor(Color.WHITE);
-		mPencil.setBackgroundColor(Color.WHITE);
-		mCrookedLine.setBackgroundColor(Color.WHITE);
+		mMove.setBackgroundColor(mWhite);
+		mSolidLine.setBackgroundColor(mWhite);
+		mShortDashLine.setBackgroundColor(mWhite);
+		mLongDashLine.setBackgroundColor(mWhite);
+		mPencil.setBackgroundColor(mWhite);
+		mCrookedLine.setBackgroundColor(mWhite);
 		
 		((TacticBoardActivity) mContext).setMoving(false);
 		mPaintBoard.setDrawing(true);
