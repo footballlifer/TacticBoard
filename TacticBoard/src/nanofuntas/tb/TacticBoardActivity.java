@@ -18,12 +18,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -81,6 +83,9 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	private int mRight;
 	private int mBottom;
 	
+	private int mScreenWidth;
+	private int mScreenHeight;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -109,6 +114,12 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		ViewBar vb = new ViewBar(this, mPaintBoard);	
 		FrameLayout frameBar = (FrameLayout) findViewById(R.id.frame_bar);
 		frameBar.addView(vb);
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		mScreenWidth = size.x;
+		mScreenHeight = size.y;
 	}
 
 	@Override
@@ -184,7 +195,9 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 			break;
 			
 		case MotionEvent.ACTION_UP:	
-			if (x < REMOVE_BORDWER) view.setVisibility(View.INVISIBLE);
+			if ( (x < REMOVE_BORDWER) || (x > mScreenWidth - REMOVE_BORDWER)
+			|| (y < REMOVE_BORDWER) || (y > mScreenHeight - REMOVE_BORDWER) ) 
+				view.setVisibility(View.INVISIBLE);
 			break;
 			
 		case MotionEvent.ACTION_POINTER_DOWN:		
