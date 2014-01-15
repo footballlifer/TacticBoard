@@ -185,58 +185,70 @@ public final class R {
         public static final int selector=0x7f020013;
     }
     public static final class id {
-        public static final int action_settings=0x7f090023;
-        public static final int adding_text=0x7f090013;
+        public static final int action_settings=0x7f090026;
+        public static final int adding_text=0x7f090016;
         public static final int board=0x7f090002;
-        public static final int changing_text=0x7f090005;
-        public static final int color=0x7f09000f;
-        public static final int color3=0x7f090010;
-        public static final int color_grid=0x7f090004;
-        public static final int color_setting=0x7f090011;
+        public static final int button1=0x7f090009;
+        public static final int changing_text=0x7f090006;
+        public static final int color=0x7f090012;
+        public static final int color3=0x7f090013;
+        public static final int color_grid=0x7f090005;
+        public static final int color_setting=0x7f090014;
         public static final int container=0x7f090000;
-        public static final int crooked_line=0x7f090020;
+        public static final int crooked_line=0x7f090023;
         public static final int frame_bar=0x7f090001;
-        public static final int imageView1=0x7f090007;
-        public static final int imageView2=0x7f09000a;
-        public static final int imageView3=0x7f09000d;
-        public static final int img_o=0x7f090018;
-        public static final int img_x=0x7f090019;
-        public static final int list=0x7f090022;
-        public static final int long_dash_line=0x7f09001f;
-        public static final int move=0x7f09001c;
-        public static final int new_file=0x7f090006;
-        public static final int pencil=0x7f090021;
-        public static final int plus_text=0x7f09001a;
-        public static final int radio_large=0x7f090017;
-        public static final int radio_medium=0x7f090016;
-        public static final int radio_small=0x7f090015;
-        public static final int radio_text=0x7f090014;
-        public static final int save=0x7f090009;
-        public static final int share=0x7f09000c;
-        public static final int short_dash_line=0x7f09001e;
-        public static final int solid_line=0x7f09001d;
+        public static final int imageView1=0x7f09000b;
+        public static final int imageView2=0x7f09000d;
+        public static final int imageView3=0x7f090010;
+        public static final int img_o=0x7f09001b;
+        public static final int img_x=0x7f09001c;
+        public static final int list=0x7f090025;
+        public static final int long_dash_line=0x7f090022;
+        public static final int move=0x7f09001f;
+        public static final int new_file=0x7f09000a;
+        public static final int pager=0x7f090004;
+        public static final int pencil=0x7f090024;
+        public static final int plus_text=0x7f09001d;
+        public static final int radio_large=0x7f09001a;
+        public static final int radio_medium=0x7f090019;
+        public static final int radio_small=0x7f090018;
+        public static final int radio_text=0x7f090017;
+        public static final int save=0x7f09000c;
+        public static final int section_label=0x7f090007;
+        public static final int share=0x7f09000f;
+        public static final int short_dash_line=0x7f090021;
+        public static final int solid_line=0x7f090020;
         public static final int tb=0x7f090003;
         public static final int textView1=0x7f090008;
-        public static final int textView2=0x7f09000b;
-        public static final int textView3=0x7f09000e;
-        public static final int textView4=0x7f090012;
-        public static final int undo=0x7f09001b;
+        public static final int textView2=0x7f09000e;
+        public static final int textView3=0x7f090011;
+        public static final int textView4=0x7f090015;
+        public static final int undo=0x7f09001e;
     }
     public static final class layout {
         public static final int activity_tactic_board=0x7f030000;
-        public static final int color_dialog=0x7f030001;
-        public static final int edit_text_dialog=0x7f030002;
-        public static final int submenu_list=0x7f030003;
-        public static final int text_dialog=0x7f030004;
-        public static final int view_bar=0x7f030005;
+        public static final int activity_tutorial=0x7f030001;
+        public static final int color_dialog=0x7f030002;
+        public static final int edit_text_dialog=0x7f030003;
+        public static final int fragment_tutorial1=0x7f030004;
+        public static final int fragment_tutorial2=0x7f030005;
+        public static final int fragment_tutorial3=0x7f030006;
+        public static final int submenu_list=0x7f030007;
+        public static final int text_dialog=0x7f030008;
+        public static final int view_bar=0x7f030009;
     }
     public static final class menu {
         public static final int main=0x7f080000;
+        public static final int tutorial=0x7f080001;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int hello_world=0x7f060002;
+        public static final int title_activity_tutorial=0x7f060003;
+        public static final int title_section1=0x7f060004;
+        public static final int title_section2=0x7f060005;
+        public static final int title_section3=0x7f060006;
     }
     public static final class style {
         /** 

@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
@@ -83,7 +84,17 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        
+		
+		SharedPreferences mSettings = getSharedPreferences("TACTIC_BOARD", 0);
+		boolean firstLaunch = mSettings.getBoolean("FIRST_LAUNCH", false);
+		if (firstLaunch == false) {
+			SharedPreferences.Editor editor = mSettings.edit();
+			editor.putBoolean("FIRST_LAUNCH", true).commit();
+			Intent i = new Intent(TacticBoardActivity.this, TutorialActivity.class);
+			startActivity(i);
+			finish();
+		}
+		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// remove status bar
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 

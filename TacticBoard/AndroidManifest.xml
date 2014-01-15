@@ -3,9 +3,9 @@
     package="com.example.tb"
     android:versionCode="1"
     android:versionName="1.0" >
-	
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
@@ -17,15 +17,18 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="nanofuntas.tb.TacticBoardActivity"
-            android:label="@string/app_name" 
-            android:screenOrientation="portrait">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name="nanofuntas.tb.TutorialActivity"
+            android:label="@string/title_activity_tutorial" >
+        </activity>
     </application>
 
 </manifest>
