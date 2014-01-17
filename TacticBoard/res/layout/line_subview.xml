@@ -2,41 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:background="@color/White" >   
-
-    <ImageView
-        android:id="@+id/img_o"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_circle_blue" />
-    
-    <ImageView
-        android:id="@+id/img_x"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_circle_red" />  
-    
-    <ImageView
-        android:id="@+id/plus_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:src="@drawable/ic_text" />
-    
-    <ImageView
-        android:id="@+id/undo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_undo" 
-        android:background="@drawable/selector"/>
-
-    <ImageView
-        android:id="@+id/move"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:src="@drawable/ic_move" />
+    android:orientation="horizontal" 
+    android:background="@color/White" >
 
     <ImageView
         android:id="@+id/solid_line"
@@ -73,11 +40,4 @@
         android:layout_marginLeft="0dp"
         android:src="@drawable/ic_pencil" />    
     
-	<ImageView
-        android:id="@+id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_list" 
-        android:background="@drawable/selector"/>
-	
 </LinearLayout>

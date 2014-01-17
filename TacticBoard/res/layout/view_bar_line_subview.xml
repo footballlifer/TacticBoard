@@ -39,39 +39,11 @@
         android:src="@drawable/ic_move" />
 
     <ImageView
-        android:id="@+id/solid_line"
+        android:id="@+id/line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
         android:src="@drawable/ic_solid_line" />
-
-    <ImageView
-        android:id="@+id/short_dash_line"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:src="@drawable/ic_short_dash" />
-
-    <ImageView
-        android:id="@+id/long_dash_line"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:src="@drawable/ic_long_dash" />
-
-    <ImageView
-        android:id="@+id/crooked_line"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:src="@drawable/ic_crooked_line" />
-    
-    <ImageView
-        android:id="@+id/pencil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:src="@drawable/ic_pencil" />    
     
 	<ImageView
         android:id="@+id/list"

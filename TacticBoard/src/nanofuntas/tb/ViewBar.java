@@ -26,6 +26,7 @@ implements View.OnClickListener, View.OnTouchListener {
 	private ImageView mX;
 	private ImageView mUndo;
 	private ImageView mMove;
+	private ImageView mLine;
 	private ImageView mSolidLine;
 	private ImageView mShortDashLine;
 	private ImageView mLongDashLine;
@@ -41,6 +42,7 @@ implements View.OnClickListener, View.OnTouchListener {
 	private View mViewColorSetting;
 	private ImageView mImageViewColor;
 	private PopupWindow mPopupWindow;
+	private PopupWindow mLineSubViewPopup;
 	
 	private boolean mMoving = true;
 		
@@ -53,7 +55,10 @@ implements View.OnClickListener, View.OnTouchListener {
 		this.mContext = context;
 		this.mPaintBoard = pb;
 		
-		initView(context);
+		if (Config.useLineSubView == true)
+			initViewLineSubview(context);
+		else 
+			initView(context);
 		
 		mColor = getResources().getColor(R.color.Black);
 		mWhite = getResources().getColor(R.color.White);
@@ -110,6 +115,53 @@ implements View.OnClickListener, View.OnTouchListener {
 		mCrookedLine.setOnClickListener(this);
 	}
 	
+	private void initViewLineSubview(Context context) {	
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater.inflate(R.layout.view_bar_line_subview, this, true);
+	
+		mO = (ImageView) findViewById(R.id.img_o);
+		mX = (ImageView) findViewById(R.id.img_x);
+		mPlusText = (ImageView) findViewById(R.id.plus_text);
+		mUndo = (ImageView) findViewById(R.id.undo);
+		mMove = (ImageView) findViewById(R.id.move);
+		mLine = (ImageView) findViewById(R.id.line);
+		mList = (ImageView) findViewById(R.id.list);
+		
+		mO.setOnTouchListener(this);
+		mX.setOnTouchListener(this);		
+		mPlusText.setOnTouchListener(this);	
+		mUndo.setOnClickListener(this);
+		mMove.setOnClickListener(this);	
+		mLine.setOnClickListener(this);	
+		mList.setOnClickListener(this);
+	}
+	
+	private void popupLineSubmenu() {
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View popupView = inflater.inflate(R.layout.line_subview, null);
+		
+		mSolidLine = (ImageView) popupView.findViewById(R.id.solid_line);
+		mShortDashLine = (ImageView) popupView.findViewById(R.id.short_dash_line);
+		mLongDashLine = (ImageView) popupView.findViewById(R.id.long_dash_line);
+		mPencil = (ImageView) popupView.findViewById(R.id.pencil);
+		mCrookedLine = (ImageView) popupView.findViewById(R.id.crooked_line);
+		
+		mSolidLine.setOnClickListener(this);
+		mShortDashLine.setOnClickListener(this);
+		mLongDashLine.setOnClickListener(this);
+		mPencil.setOnClickListener(this);
+		mCrookedLine.setOnClickListener(this);
+				
+		mLineSubViewPopup = new PopupWindow(popupView, 
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		mLineSubViewPopup.setOutsideTouchable(true);
+		// dismiss popup window while touching outside of popup
+		mLineSubViewPopup.setBackgroundDrawable(new BitmapDrawable());
+		mLineSubViewPopup.setFocusable(true);
+		
+		mLineSubViewPopup.showAsDropDown(mLine);
+	}
+	
 	private void popupSubmenu() {
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View popupView = inflater.inflate(R.layout.submenu_list, null);
@@ -137,7 +189,6 @@ implements View.OnClickListener, View.OnTouchListener {
 		mPopupWindow.showAsDropDown(mList);
 	}
 	
-		
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -157,24 +208,41 @@ implements View.OnClickListener, View.OnTouchListener {
 			setDrawingDefault();
 			mPaintBoard.setSolidLinePaint();
 			mSolidLine.setBackgroundColor(mLightGrey);
+			
+			if (Config.useLineSubView == true) {
+				mLine.setImageResource(R.drawable.ic_solid_line);
+				if (mLineSubViewPopup.isShowing()) mLineSubViewPopup.dismiss();
+			}
 			break;
 			
 		case R.id.short_dash_line:
 			setDrawingDefault();
 			mPaintBoard.setShortDashPaint();
 			mShortDashLine.setBackgroundColor(mLightGrey);
+			if (Config.useLineSubView == true) {
+				mLine.setImageResource(R.drawable.ic_short_dash);
+				if (mLineSubViewPopup.isShowing()) mLineSubViewPopup.dismiss();
+			}
 			break;
 			
 		case R.id.long_dash_line:
 			setDrawingDefault();
 			mPaintBoard.setLongDashPaint();
 			mLongDashLine.setBackgroundColor(mLightGrey);
+			if (Config.useLineSubView == true) {
+				mLine.setImageResource(R.drawable.ic_long_dash);
+				if (mLineSubViewPopup.isShowing()) mLineSubViewPopup.dismiss();
+			}
 			break;	
 		
 		case R.id.pencil:
 			setDrawingDefault();
 			mPaintBoard.setSolidLinePaint();
 			mPencil.setBackgroundColor(mLightGrey);
+			if (Config.useLineSubView == true) {
+				mLine.setImageResource(R.drawable.ic_pencil);
+				if (mLineSubViewPopup.isShowing()) mLineSubViewPopup.dismiss();
+			}
 			mPaintBoard.setPencilMode(true);
 			break;	
 		
@@ -183,6 +251,14 @@ implements View.OnClickListener, View.OnTouchListener {
 			mPaintBoard.setSolidLinePaint();
 			mCrookedLine.setBackgroundColor(mLightGrey);
 			mPaintBoard.setCrookedLineMode(true);
+			if (Config.useLineSubView == true) {
+				mLine.setImageResource(R.drawable.ic_crooked_line);
+				if (mLineSubViewPopup.isShowing()) mLineSubViewPopup.dismiss();
+			}
+			break;	
+			
+		case R.id.line:
+			popupLineSubmenu();
 			break;	
 			
 		case R.id.list:
