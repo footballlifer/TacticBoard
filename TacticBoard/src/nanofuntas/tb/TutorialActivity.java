@@ -59,15 +59,19 @@ public class TutorialActivity extends FragmentActivity {
 			case 2:
 				Fragment fragment3 = new TutorialFragment3();
 				return fragment3;
+			case 3:
+				Fragment fragmentFinal = new TutorialFinalFragment();
+				return fragmentFinal;
+				
 			default: 
 				Log.d(TAG, "getItem() default called");
-				return new TutorialFragment3();
+				return new TutorialFinalFragment();
 			}
 		}
 
 		@Override
 		public int getCount() {
-			return 3;
+			return 4;
 		}
 
 		@Override
@@ -80,6 +84,8 @@ public class TutorialActivity extends FragmentActivity {
 				return getString(R.string.title_section2).toUpperCase(l);
 			case 2:
 				return getString(R.string.title_section3).toUpperCase(l);
+			case 3:
+				return getString(R.string.title_section4).toUpperCase(l);
 			}
 			return null;
 		}
@@ -119,6 +125,19 @@ public class TutorialActivity extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_tutorial3,
+					container, false);
+			return rootView;
+		}
+	}
+	
+	public static class TutorialFinalFragment extends Fragment {
+		public static final String ARG_SECTION_NUMBER = "section_number";
+		public TutorialFinalFragment() {}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_tutorial_final,
 					container, false);
 			return rootView;
 		}
