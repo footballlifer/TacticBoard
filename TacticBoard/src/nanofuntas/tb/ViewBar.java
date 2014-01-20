@@ -67,7 +67,7 @@ implements View.OnClickListener, View.OnTouchListener {
 		// by default, view moving is enabled, drawing is not
 		((TacticBoardActivity) mContext).setMoving(mMoving);
 		mPaintBoard.setDrawing(false);
-		mMove.setBackgroundColor(mLightGrey);
+		mPencil.setBackgroundColor(mLightGrey);
 		
 		mColorDialog = new ColorPaletteDialog(mContext);
 		mColorDialog.setCanceledOnTouchOutside(true);
