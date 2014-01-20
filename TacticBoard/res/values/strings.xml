@@ -30,5 +30,6 @@
     <string name="long_pass">Long Pass</string>
     <string name="move_with_ball">Move with Ball</string>
     <string name="free_drawing">Free Drawing</string>
+    <string name="start">Start</string>
     
 </resources>

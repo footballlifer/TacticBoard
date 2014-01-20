@@ -30,5 +30,6 @@
     <string name="long_pass">롱 패스</string>
     <string name="move_with_ball">공과 함께 이동</string>
     <string name="free_drawing">자유 그림판</string>
+    <string name="start">시작하기</string>
     
 </resources>

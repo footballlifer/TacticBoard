@@ -283,6 +283,7 @@ public final class R {
  TacticBoard defined Strings 
          */
         public static final int small_text=0x7f060008;
+        public static final int start=0x7f060017;
         public static final int title_activity_tutorial=0x7f060007;
         /**  No necessary 
  No necessary 
