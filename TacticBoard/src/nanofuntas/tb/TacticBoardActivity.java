@@ -92,14 +92,13 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		
 		SharedPreferences mSettings = getSharedPreferences("TACTIC_BOARD", 0);
 		boolean firstLaunch = mSettings.getBoolean("FIRST_LAUNCH", false);
-		//TODO: tutorial test
-		//if (firstLaunch == false) {
+		if (firstLaunch == false) {
 			SharedPreferences.Editor editor = mSettings.edit();
 			editor.putBoolean("FIRST_LAUNCH", true).commit();
 			Intent i = new Intent(TacticBoardActivity.this, TutorialActivity.class);
 			startActivity(i);
 			finish();
-		//}
+		}
 		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// remove status bar

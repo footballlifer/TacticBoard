@@ -10,4 +10,24 @@
     <string name="title_section3">Section 3</string>
     <string name="title_section4">Section 4</string>
 
+    <!-- TacticBoard defined Strings -->
+    <string name="small_text">Small Text</string>
+    <string name="medium_text">Medium Text</string>
+    <string name="large_text">Large Text</string>
+    
+    <string name="new_file">New</string>
+    <string name="save">Save</string>
+    <string name="share">Share</string>
+    <string name="color">Color</string>
+    
+    <string name="drag_player">Drag Player</string>
+    <string name="drag_text">Drag Text</string>
+    <string name="remove_player">Remove Player</string>
+    
+    <string name="player_move">Player Move</string>
+    <string name="short_pass">Short Pass</string>
+    <string name="long_pass">Long Pass</string>
+    <string name="move_with_ball">Move with Ball</string>
+    <string name="free_drawing">Free Drawing</string>
+    
 </resources>
