@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -201,9 +202,56 @@ public class PaintBoardView extends View {
 		mCanvas = canvas;
 
 		drawBackGround(mCanvas);
+		//TODO: draw lines
+		drawBackGroundLines(mCanvas);
 		invalidate();
 	}
 
+	//TODO draw lines
+	private void drawBackGroundLines(Canvas canvas) {
+		Paint p = new Paint();
+		p.setStyle(Paint.Style.STROKE);
+		p.setColor(Color.WHITE);
+		p.setStrokeWidth(LONG_DASH_WIDTH);
+		p.setFlags(Paint.ANTI_ALIAS_FLAG);
+		
+		float x = 0;
+		float y = 0;
+		float l = mViewHeight;
+		
+		float length = l;
+		float width = 68 / 105F * l;
+		float radius = 9.15F / 105F * l;
+		
+		float goalLength = 7.32F;
+		
+		float goalAreaLength = 18.32F / 105F * l; // 7.32 + 5.5 + 5.5
+		float goalAreaWidth = 5.5F / 105F * l; 
+		
+		float paneltyWidth = 16.5F / 105F * l;
+		float paneltyLength = 40.32F / 105F * l; // 7.32 + 16.5 + 16.5
+		
+		float paneltyDist = 11F / 105F * l;
+		float paneltyMarkRadius = 0.12F / 105F * l;
+		
+		canvas.drawRect((length - paneltyLength) / 2.0F, 0, 
+				length - (length - paneltyLength) / 2.0F, paneltyWidth, p);
+		
+		
+		/*
+		canvas.drawLine(0, 0, mViewWidth, 0, p);
+		canvas.drawLine(0, mViewHeight, mViewWidth, mViewHeight, p);
+		canvas.drawLine(0, 0, 0, mViewHeight, p);
+		canvas.drawLine(mViewWidth, 0, mViewWidth, mViewHeight, p);
+		*/
+		
+		canvas.drawRect(0, 0, mViewWidth, mViewHeight, p);
+		
+		canvas.drawCircle(mViewWidth/2, mViewHeight/2, 130, p);		
+		canvas.drawLine(0, mViewHeight/2, mViewWidth, mViewHeight/2, p);
+
+	}
+	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		this.mViewWidth = w;
