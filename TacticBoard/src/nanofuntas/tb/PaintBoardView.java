@@ -92,7 +92,8 @@ public class PaintBoardView extends View {
 	public void init(Context context) {
 		this.mContext = context;
 		setDefaultPaint();
-		mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.img_field);
+		//mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.img_field);
+		mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.img_field2);
 		mLineCount = 1;
 	}
 	
@@ -207,7 +208,7 @@ public class PaintBoardView extends View {
 
 	private void drawBackGroundLines(Canvas canvas) {
 		//TODO remove black background
-		canvas.drawColor(Color.BLACK);
+		//canvas.drawColor(Color.BLACK);
 		
 		Paint p = new Paint();
 		p.setStyle(Paint.Style.STROKE);

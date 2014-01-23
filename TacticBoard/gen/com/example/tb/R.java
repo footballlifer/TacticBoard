@@ -194,9 +194,10 @@ public final class R {
         public static final int img_drag_player=0x7f02001c;
         public static final int img_drag_text=0x7f02001d;
         public static final int img_field=0x7f02001e;
-        public static final int img_remove=0x7f02001f;
-        public static final int selected_state=0x7f020020;
-        public static final int selector=0x7f020021;
+        public static final int img_field2=0x7f02001f;
+        public static final int img_remove=0x7f020020;
+        public static final int selected_state=0x7f020021;
+        public static final int selector=0x7f020022;
     }
     public static final class id {
         public static final int action_settings=0x7f09002a;
