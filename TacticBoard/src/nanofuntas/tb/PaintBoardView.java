@@ -201,21 +201,21 @@ public class PaintBoardView extends View {
 		mBitmap = bitmap;
 		mCanvas = canvas;
 
-		drawBackGround(mCanvas);
-		//TODO: draw lines
-		mCanvas.drawColor(Color.BLACK);
+		drawBackGround(mCanvas);	
 		drawBackGroundLines(mCanvas);
 		invalidate();
 	}
 
-	//TODO draw lines
 	private void drawBackGroundLines(Canvas canvas) {
+		canvas.drawColor(Color.BLACK);
+		
 		Paint p = new Paint();
 		p.setStyle(Paint.Style.STROKE);
 		p.setColor(Color.WHITE);
 		p.setStrokeWidth(LONG_DASH_WIDTH);
 		p.setFlags(Paint.ANTI_ALIAS_FLAG);
 		
+		//TODO shift x, y
 		float xShift = 0;
 		float yShift = 0;
 		float l = mViewHeight;
