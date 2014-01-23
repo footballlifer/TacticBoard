@@ -226,43 +226,55 @@ public class PaintBoardView extends View {
 		float fieldWidth = mViewWidth;
 		float goalLength = r * 7.32F / 105.0F * l;
 		float centerCircleRadius = r * 9.15F / 105.0F * l;
+		float paneltyMarkRadius = r * 0.2F / 105.0F * l;
+		float cornerRadius = r * 2.0F / 105.0F * l;
 		float goalAreaLength = r * 18.32F / 105.0F * l; // 7.32 + 5.5 + 5.5
 		float goalAreaWidth = r * 5.5F / 105.0F * l; 
 		float paneltyAreaWidth = r * 16.5F / 105.0F * l;
 		float paneltyAreaLength = r * 40.32F / 105.0F * l; // 7.32 + 16.5 + 16.5
 		float paneltyDist = r * 11F / 105.0F * l;
-		float paneltyMarkRadius = r * 0.2F / 105.0F * l;
 		float lineWitdh = r * 0.12F / 105.0F * l;
 		
 		p.setStrokeWidth(lineWitdh);
-		// draw penalty area and goal area of upper filed
+		
+		// draw penalty area and goal area of filed
 		canvas.drawRect((fieldWidth-paneltyAreaLength)/2.0F, 0, 
 				fieldWidth - (fieldWidth-paneltyAreaLength)/2.0F, paneltyAreaWidth, p);
 		canvas.drawRect((fieldWidth-paneltyAreaLength) / 2.0F, fieldLength-paneltyAreaWidth, 
 				fieldWidth - (fieldWidth-paneltyAreaLength)/2.0F, fieldLength, p);
-		// draw penalty area and goal area of lower filed
 		canvas.drawRect((fieldWidth-goalAreaLength)/2.0F, 0, 
 				fieldWidth - (fieldWidth-goalAreaLength)/2.0F, goalAreaWidth, p);
 		canvas.drawRect((fieldWidth-goalAreaLength)/2.0F, fieldLength-goalAreaWidth, 
 				fieldWidth - (fieldWidth-goalAreaLength)/2.0F, fieldLength, p);
-		// draw penalty area and goal area of upper filed
+		
+		// draw penalty arc
 		RectF rfUp= new RectF(fieldWidth/2.0F-centerCircleRadius, paneltyDist-centerCircleRadius, 
 				fieldWidth/2.0F+centerCircleRadius, paneltyDist+centerCircleRadius);
 		canvas.drawArc(rfUp, 37, 106, false, p); // 36 = Math.toDegrees(Math.atan(5.5/9.15))
-		// draw penalty area and goal area of lower filed
 		RectF rfDown= new RectF(fieldWidth/2.0F-centerCircleRadius, fieldLength-paneltyDist-centerCircleRadius, 
 				fieldWidth/2.0F+centerCircleRadius, fieldLength-paneltyDist+centerCircleRadius);
 		canvas.drawArc(rfDown, -37, -106, false, p);
-		// draw corner arcs
-		canvas.drawCircle(0, 0, 20, p);		
-		canvas.drawCircle(fieldWidth, 0, 20, p);		
-		canvas.drawCircle(0, fieldLength, 20, p);		
-		canvas.drawCircle(fieldWidth, fieldLength, 20, p);		
+		
+		// draw corners
+		RectF cUpLeft= new RectF(0-cornerRadius, 0-cornerRadius, 
+				0+cornerRadius, 0+cornerRadius);
+		canvas.drawArc(cUpLeft, 0, 90, false, p); 
+		RectF cDownLeft= new RectF(0-cornerRadius, fieldLength-cornerRadius, 
+				0+cornerRadius, fieldLength+cornerRadius);
+		canvas.drawArc(cDownLeft, 0, -90, false, p); 
+		RectF cUpRight= new RectF(fieldWidth-cornerRadius, 0-cornerRadius, 
+				fieldWidth+cornerRadius, 0+cornerRadius);
+		canvas.drawArc(cUpRight, 90, 90, false, p); 
+		RectF cDownRight= new RectF(fieldWidth-cornerRadius, fieldLength-cornerRadius, 
+				fieldWidth+cornerRadius, fieldLength+cornerRadius);
+		canvas.drawArc(cDownRight, -90, -90, false, p); 
+		
 		// draw field lines
 		canvas.drawRect(0, 0, fieldWidth, fieldLength, p);
 		// draw center circle
-		canvas.drawCircle(fieldWidth/2, fieldLength/2, 130, p);		
+		canvas.drawCircle(fieldWidth/2, fieldLength/2, centerCircleRadius, p);		
 		canvas.drawLine(0, fieldLength/2, fieldWidth, fieldLength/2, p);
+		
 		// draw markers
 		p.setStyle(Paint.Style.FILL_AND_STROKE);
 		canvas.drawCircle(fieldWidth/2, paneltyDist, paneltyMarkRadius, p);
