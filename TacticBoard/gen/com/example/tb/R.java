@@ -187,20 +187,17 @@ public final class R {
         public static final int ic_share=0x7f020015;
         public static final int ic_short_dash=0x7f020016;
         public static final int ic_solid_line=0x7f020017;
-        public static final int ic_tb=0x7f020018;
-        public static final int ic_tb2=0x7f020019;
-        public static final int ic_tb3=0x7f02001a;
-        public static final int ic_tb6=0x7f02001b;
-        public static final int ic_text=0x7f02001c;
-        public static final int ic_undo=0x7f02001d;
-        public static final int img_dark_background=0x7f02001e;
-        public static final int img_drag_player=0x7f02001f;
-        public static final int img_drag_text=0x7f020020;
-        public static final int img_field=0x7f020021;
-        public static final int img_field2=0x7f020022;
-        public static final int img_remove=0x7f020023;
-        public static final int selected_state=0x7f020024;
-        public static final int selector=0x7f020025;
+        public static final int ic_tb7=0x7f020018;
+        public static final int ic_text=0x7f020019;
+        public static final int ic_undo=0x7f02001a;
+        public static final int img_dark_background=0x7f02001b;
+        public static final int img_drag_player=0x7f02001c;
+        public static final int img_drag_text=0x7f02001d;
+        public static final int img_field=0x7f02001e;
+        public static final int img_field2=0x7f02001f;
+        public static final int img_remove=0x7f020020;
+        public static final int selected_state=0x7f020021;
+        public static final int selector=0x7f020022;
     }
     public static final class id {
         public static final int action_settings=0x7f09002a;

@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
-
-import com.example.tb.R;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -43,6 +43,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.tb.R;
 
 public class TacticBoardActivity extends Activity 
 implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
@@ -86,9 +88,16 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	private int mScreenWidth;
 	private int mScreenHeight;
 	
+	private String ROOT;
+	private final String APP_NAME = "Soccer_Tactic_Board";
+	private final String TEMP = "TEMP";
+	private final String TEMP_IMAGE_NAME = "TacticBoard.png";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		ROOT = Environment.getExternalStorageDirectory().toString();
 		
 		SharedPreferences mSettings = getSharedPreferences("TACTIC_BOARD", 0);
 		boolean firstLaunch = mSettings.getBoolean("FIRST_LAUNCH", false);
@@ -331,6 +340,11 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		saveBitmap(b);
 	}
 	
+	private void saveTempImg() {
+		Bitmap b = takeScreenShot();
+		saveTempBitmap(b);
+	}
+	
 	private Bitmap takeScreenShot() {
 		View rootView = findViewById(R.id.board);
 		rootView.setDrawingCacheEnabled(true);
@@ -339,10 +353,39 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		return result;
 	}
 
-	//TODO avoid hard coding
 	private void saveBitmap(Bitmap bitmap) {
-		File imagePath = new File(Environment.getExternalStorageDirectory()
-				+ "/TacticBoard.png");
+		File imageDir = new File(ROOT + "/" + APP_NAME);
+    	if(!imageDir.exists())
+    		imageDir.mkdirs();
+    	
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        Date now = new Date();
+        String strDate = sdf.format(now);
+    	    	
+    	String imagePath = ROOT + "/" + APP_NAME + "/" + strDate + ".png";
+    	File image = new File(imagePath);
+		
+    	try {
+			FileOutputStream fos = new FileOutputStream(image);
+			bitmap.compress(CompressFormat.PNG, 100, fos);
+			fos.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MediaStore.Images.Media.insertImage(
+				this.getContentResolver(), bitmap, "STB", "STB Picture");
+	}
+	
+	private void saveTempBitmap(Bitmap bitmap) {
+		File imageDir = new File(ROOT + "/" + APP_NAME + "/" + TEMP);
+    	if(!imageDir.exists())
+    		imageDir.mkdirs();
+    	
+		File imagePath = new File(imageDir + "/" + TEMP_IMAGE_NAME);
 		try {
 			FileOutputStream fos = new FileOutputStream(imagePath);
 			bitmap.compress(CompressFormat.PNG, 100, fos);
@@ -354,7 +397,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 			e.printStackTrace();
 		}
 
-		MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "TB", "TB Picture");
+		MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "STB", "STB Picture");
 	}
 	
 	public void reset() {
@@ -375,16 +418,18 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		mImgXList.clear();
 	}
 	
-	//TODO avoid hard coding
 	public void share() {
-		saveImgToGallery();
+		saveTempImg();
 		Intent share = new Intent(Intent.ACTION_SEND);
 
 		//share.setType("text/plain");
 		//share.putExtra(Intent.EXTRA_TEXT, "Share via Tactic Board");
-		share.setType("image/jpeg");
-		share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/TacticBoard.png"));
+		share.setType("image/png");
 		
+		final String imageDir = ROOT + "/" + APP_NAME + "/" + TEMP;
+    	final String fileName = imageDir + "/" + TEMP_IMAGE_NAME;
+		
+		share.putExtra(Intent.EXTRA_STREAM, Uri.parse(fileName));
 		startActivity(Intent.createChooser(share, "Share Image"));
 	}
 	
