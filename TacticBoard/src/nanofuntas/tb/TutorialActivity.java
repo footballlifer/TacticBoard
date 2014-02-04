@@ -38,7 +38,7 @@ public class TutorialActivity extends FragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.tutorial, menu);
+		//getMenuInflater().inflate(R.menu.tutorial, menu);
 		return true;
 	}
 
