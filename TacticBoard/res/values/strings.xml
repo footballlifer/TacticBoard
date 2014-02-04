@@ -32,4 +32,6 @@
     <string name="free_drawing">Free Drawing</string>
     <string name="start">Start</string>
     
+    <string name="save_image">Image saved to gallery</string>
+    
 </resources>

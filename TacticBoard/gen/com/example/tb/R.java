@@ -279,6 +279,7 @@ public final class R {
         public static final int player_move=0x7f060012;
         public static final int remove_player=0x7f060011;
         public static final int save=0x7f06000c;
+        public static final int save_image=0x7f060018;
         public static final int share=0x7f06000d;
         public static final int short_pass=0x7f060013;
         /**  TacticBoard defined Strings 

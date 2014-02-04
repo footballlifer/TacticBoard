@@ -43,6 +43,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tb.R;
 
@@ -378,6 +379,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 
 		MediaStore.Images.Media.insertImage(
 				this.getContentResolver(), bitmap, "STB", "STB Picture");
+		Toast.makeText(getApplication(), R.string.save_image, Toast.LENGTH_SHORT).show();
 	}
 	
 	private void saveTempBitmap(Bitmap bitmap) {
