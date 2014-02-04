@@ -19,7 +19,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.tb.R;
+import nanofuntas.tb.R;
 
 public class PaintBoardView extends View {
 	private boolean DEBUG = true;

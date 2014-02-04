@@ -45,7 +45,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tb.R;
+import nanofuntas.tb.R;
 
 public class TacticBoardActivity extends Activity 
 implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {

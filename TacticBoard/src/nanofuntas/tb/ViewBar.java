@@ -1,6 +1,6 @@
 package nanofuntas.tb;
 
-import com.example.tb.R;
+import nanofuntas.tb.R;
 
 import android.content.ClipData;
 import android.content.Context;
