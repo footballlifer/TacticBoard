@@ -92,7 +92,6 @@ public class PaintBoardView extends View {
 	public void init(Context context) {
 		this.mContext = context;
 		setDefaultPaint();
-		//mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.img_field);
 		mBackGround = BitmapFactory.decodeResource(getResources(),R.drawable.img_field2);
 		mLineCount = 1;
 	}

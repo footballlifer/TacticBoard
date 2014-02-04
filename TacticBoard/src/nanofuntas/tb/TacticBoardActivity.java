@@ -92,7 +92,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 	private String ROOT;
 	private final String APP_NAME = "Soccer_Tactic_Board";
 	private final String TEMP = "TEMP";
-	private final String TEMP_IMAGE_NAME = "TacticBoard.png";
+	private final String TEMP_IMAGE_NAME = "TacticBoard.jpeg";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -363,12 +363,12 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
         Date now = new Date();
         String strDate = sdf.format(now);
     	    	
-    	String imagePath = ROOT + "/" + APP_NAME + "/" + strDate + ".png";
+    	String imagePath = ROOT + "/" + APP_NAME + "/" + strDate + ".jpeg";
     	File image = new File(imagePath);
 		
     	try {
 			FileOutputStream fos = new FileOutputStream(image);
-			bitmap.compress(CompressFormat.PNG, 100, fos);
+			bitmap.compress(CompressFormat.JPEG, 100, fos);
 			fos.flush();
 			fos.close();
 		} catch (FileNotFoundException e) {
@@ -376,7 +376,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+    	
 		MediaStore.Images.Media.insertImage(
 				this.getContentResolver(), bitmap, "STB", "STB Picture");
 		Toast.makeText(getApplication(), R.string.save_image, Toast.LENGTH_SHORT).show();
@@ -390,7 +390,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 		File imagePath = new File(imageDir + "/" + TEMP_IMAGE_NAME);
 		try {
 			FileOutputStream fos = new FileOutputStream(imagePath);
-			bitmap.compress(CompressFormat.PNG, 100, fos);
+			bitmap.compress(CompressFormat.JPEG, 100, fos);
 			fos.flush();
 			fos.close();
 		} catch (FileNotFoundException e) {
@@ -426,7 +426,7 @@ implements View.OnTouchListener, View.OnLongClickListener, View.OnDragListener {
 
 		//share.setType("text/plain");
 		//share.putExtra(Intent.EXTRA_TEXT, "Share via Tactic Board");
-		share.setType("image/png");
+		share.setType("image/jpeg");
 		
 		final String imageDir = ROOT + "/" + APP_NAME + "/" + TEMP;
     	final String fileName = imageDir + "/" + TEMP_IMAGE_NAME;
